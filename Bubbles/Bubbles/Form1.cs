@@ -10,8 +10,50 @@ using System.Windows.Forms;
 
 namespace Bubbles {
     public partial class MainWindow : Form {
+
+        Environment environment;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public MainWindow() {
             InitializeComponent();
+
+            //instantiates the environment variable
+            environment = new Environment();
+        }
+
+        /// <summary>
+        /// What happens when the window loads up
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_Load(object sender, EventArgs e) {
+
+            //adds one bubble into the center of the scene on load
+            environment.AddBubble(100, 50, Size.Width / 2, Size.Height / 2);
+        }
+
+        /// <summary>
+        /// The sequence for drawing out (invalidating) the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_Paint(object sender, PaintEventArgs e) {
+
+            //draws the environment
+            environment.Draw(e);
+        }
+
+        /// <summary>
+        /// Allows time to pass in the program
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ProgramTimer_Tick(object sender, EventArgs e) {
+
+            //passes time in the environment
+            environment.Tick();
         }
     }
 }
