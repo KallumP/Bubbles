@@ -28,10 +28,43 @@ namespace Bubbles {
         /// <param name="_mass">The mass of the bubble</param>
         /// <param name="_radius">The radius of the bubble</param>
         /// <param name="_position">The position of the bubble</param>
-        public void AddBubble(int _mass, int _radius, int x, int y) {
+        public void AddBubble(int _mass, int x, int y) {
 
             //adds the bubble into the list
-            bubbles.Add(new Bubble(_mass, _radius, new Vector2D(x, y)));
+            bubbles.Add(new Bubble(_mass, new Vector2D(x, y), this));
+        }
+
+        /// <summary>
+        /// Removes a selected bubble from the list
+        /// </summary>
+        /// <param name="id">The id of the bubble to remove</param>
+        public void RemoveBubble(int id) {
+
+            //loops backwards through the bubbles
+            for(int i = bubbles.Count - 1; i >= 0; i--) {
+
+                //makes sure that the bubble exists
+                if(bubbles[i].id == id) {
+
+                    //ticks each bubble
+                    bubbles.RemoveAt(i);
+
+                    //stops searching
+                    break;
+                }
+            }
+        }
+
+        public void Click(int x, int y) {
+
+            //loops backwards through the bubbles
+            for(int i = bubbles.Count - 1; i >= 0; i--)
+
+                //makes sure that the bubble exists
+                if(bubbles[i] != null)
+
+                    //ticks each bubble
+                    bubbles[i].CheckClick(x, y);
         }
 
         /// <summary>
@@ -39,12 +72,14 @@ namespace Bubbles {
         /// </summary>
         public void Tick() {
 
-            //loops through the bubbles
-            foreach(Bubble b in bubbles)
+            //loops backwards through the bubbles
+            for(int i = bubbles.Count - 1; i >= 0; i--)
 
-                //ticks each bubble
-                b.Tick();
+                //makes sure that the bubble exists
+                if(bubbles[i] != null)
 
+                    //ticks each bubble
+                    bubbles[i].Tick();
         }
 
         /// <summary>
@@ -53,11 +88,14 @@ namespace Bubbles {
         /// <param name="e"></param>
         public void Draw(PaintEventArgs e) {
 
-            //loops through the bubbles
-            foreach(Bubble b in bubbles)
+            //loops backwards through the bubbles
+            for(int i = bubbles.Count - 1; i >= 0; i--)
 
-                //draws out the current bubble
-                b.Draw(e);
+                //makes sure that the bubble exists
+                if(bubbles[i] != null)
+
+                    //draws out the current bubble
+                    bubbles[i].Draw(e);
         }
     }
 }

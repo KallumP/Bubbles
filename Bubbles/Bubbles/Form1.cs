@@ -31,7 +31,7 @@ namespace Bubbles {
         private void MainWindow_Load(object sender, EventArgs e) {
 
             //adds one bubble into the center of the scene on load
-            environment.AddBubble(100, 50, Size.Width / 2, Size.Height / 2);
+            environment.AddBubble(100, Size.Width / 2, Size.Height / 2);
         }
 
         /// <summary>
@@ -54,6 +54,19 @@ namespace Bubbles {
 
             //passes time in the environment
             environment.Tick();
+
+            //redraws the form
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Sends a click position to the environment
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_MouseClick(object sender, MouseEventArgs e) {
+
+            environment.Click(e.X, e.Y);
         }
     }
 }
