@@ -32,9 +32,19 @@ namespace Bubbles {
         int mass;
 
         /// <summary>
-        /// The position (center of the bubble)
+        /// The angle of the velocity
         /// </summary>
-        Vector2D position;
+        float angle;
+
+        /// <summary>
+        /// The force
+        /// </summary>
+        Vector2D force;
+
+        /// <summary>
+        /// The accelaration
+        /// </summary>
+        Vector2D accelaration;
 
         /// <summary>
         /// The velocity
@@ -42,12 +52,14 @@ namespace Bubbles {
         Vector2D velocity;
 
         /// <summary>
-        /// The force
+        /// The position (center of the bubble)
         /// </summary>
-        Vector2D force;
+        Vector2D position;
+
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -69,7 +81,28 @@ namespace Bubbles {
         /// The tick sequence
         /// </summary>
         public void Tick() {
+            Move();
+        }
 
+        /// <summary>
+        /// Moves the bubble by its velocity
+        /// </summary>
+        void Move()
+        {
+            position.Add(velocity);
+        }
+
+
+        public void ApplyForce(Vector2D _force)
+        {
+            //calculates the accelaration of the bubble
+            accelaration = Vector2D.DivideByNumber(_force, mass);
+
+            //calculates the velocity of the bubble
+            velocity.Add(accelaration);
+
+
+            angle = 
         }
 
         /// <summary>
@@ -105,7 +138,7 @@ namespace Bubbles {
         /// <summary>
         /// Makes the bubble explode into smaller bubbles
         /// </summary>
-        public void Explode() {
+        void Explode() {
 
             //adds two new bubbles into the environment
             environment.AddBubble(mass / 2, (int)position.x - 30, (int)position.y - 30);
