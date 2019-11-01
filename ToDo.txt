@@ -1,9 +1,5 @@
-Bubble should have a method that returns a boolean value for if it was clicked.
-
 Bubble should explode where it takes a random number based on the mass/radius.
-Split the bubble into many smaller bubbles (add new bubbles to environment, make self null)
 
-On click, check the bubble click method, and if true, explode
 
 Holding down on the screen will start to make a bubble that starts small and grows until mouse up
 

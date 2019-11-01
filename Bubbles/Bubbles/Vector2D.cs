@@ -34,7 +34,7 @@ namespace Bubbles {
 
             x = _x;
             y = _y;
-        }
+        } 
 
         /// <summary>
         /// Adds a Vector2D object's components onto this Vector2D object.

@@ -11,7 +11,7 @@ namespace Bubbles {
         /// <summary>
         /// Used to store the bubbles in the environment
         /// </summary>
-        List<Bubble> bubbles;
+        public List<Bubble> bubbles;
 
         /// <summary>
         /// Constructor
@@ -28,10 +28,10 @@ namespace Bubbles {
         /// <param name="_mass">The mass of the bubble</param>
         /// <param name="_radius">The radius of the bubble</param>
         /// <param name="_position">The position of the bubble</param>
-        public void AddBubble(int _mass, int x, int y) {
+        public void AddBubble(Bubble b) {
 
             //adds the bubble into the list
-            bubbles.Add(new Bubble(_mass, new Vector2D(x, y), this));
+            bubbles.Add(b);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Bubbles {
             for(int i = bubbles.Count - 1; i >= 0; i--) {
 
                 //makes sure that the bubble exists
-                if(bubbles[i].id == id) {
+                if(bubbles[i].Id == id) {
 
                     //ticks each bubble
                     bubbles.RemoveAt(i);

@@ -6,20 +6,27 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace Bubbles {
-    class Bubble {
+namespace Bubbles
+{
+    class Bubble
+    {
 
         #region Variables
 
         /// <summary>
+        /// A variable used to generate random numbers
+        /// </summary>
+        Random rnd = new Random();
+
+        /// <summary>
         /// Keeps track of the next id to assign to a bubble
         /// </summary>
-        static int nextID = 0;
+        static int nextId = 0;
 
         /// <summary>
         /// Used to identify the bubble
         /// </summary>
-        public int id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// An instance to the environment
@@ -30,16 +37,6 @@ namespace Bubbles {
         /// The mass (radius is direcly correlated to mass)
         /// </summary>
         int mass;
-
-        /// <summary>
-        /// The angle of the velocity
-        /// </summary>
-        float angle;
-
-        /// <summary>
-        /// The force
-        /// </summary>
-        Vector2D force;
 
         /// <summary>
         /// The accelaration
@@ -61,26 +58,53 @@ namespace Bubbles {
         #region Methods
 
         /// <summary>
-        /// Constructor
+        /// Constructor for a bubble
         /// </summary>
         /// <param name="_mass">The mass of the bubble</param>
-        /// <param name="_radius">The radius of the bubble</param>
         /// <param name="_position">The position of the bubble</param>
         /// <param name="parent">An instance to the environment</param>
-        public Bubble(int _mass, Vector2D _position, Environment parent) {
+        public Bubble(int _mass, Vector2D _position, Environment parent)
+        {
 
             environment = parent;
             mass = _mass;
             position = _position;
 
+            //populates the vector
+            velocity = new Vector2D(0, 0);
+
             //assgns the next id
-            id = nextID++;
+            Id = nextId++;
         }
+
+        /// <summary>
+        /// Constructor for creating a bubble with an inital force
+        /// </summary>
+        /// <param name="_mass">The mass of the bubble</param>
+        /// <param name="_position">The position of the bubble</param>
+        /// <param name="_force">The starting force</param>
+        /// <param name="parent">An instance to the environment</param>
+        public Bubble(int _mass, Vector2D _position, Vector2D _force, Environment parent)
+        {
+            environment = parent;
+            mass = _mass;
+            position = _position;
+
+            //populates the vector
+            velocity = new Vector2D(0, 0);
+
+            ApplyForce(_force);
+
+            //assgns the next id
+            Id = nextId++;
+        }
+
 
         /// <summary>
         /// The tick sequence
         /// </summary>
-        public void Tick() {
+        public void Tick()
+        {
             Move();
         }
 
@@ -92,7 +116,10 @@ namespace Bubbles {
             position.Add(velocity);
         }
 
-
+        /// <summary>
+        /// Applies a force to the bubble using newtonian physics
+        /// </summary>
+        /// <param name="_force">The force to apply</param>
         public void ApplyForce(Vector2D _force)
         {
             //calculates the accelaration of the bubble
@@ -102,7 +129,6 @@ namespace Bubbles {
             velocity.Add(accelaration);
 
 
-            angle = 
         }
 
         /// <summary>
@@ -110,7 +136,8 @@ namespace Bubbles {
         /// </summary>
         /// <param name="x">The x coordinate of the click</param>
         /// <param name="y">The y coordinate of the click</param>
-        public void CheckClick(int x, int y) {
+        public void CheckClick(int x, int y)
+        {
 
             //gets the x distance between the two points
             float xDist = position.x - x;
@@ -122,7 +149,7 @@ namespace Bubbles {
             float dist = (float)Math.Sqrt(Math.Pow(xDist, 2) + Math.Pow(yDist, 2));
 
             //checks to see if the distance found is smaller than the radius
-            if(dist < mass)
+            if (dist < mass)
                 Click();
         }
 
@@ -131,29 +158,71 @@ namespace Bubbles {
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void Click() {
+        public void Click()
+        {
             Explode();
         }
 
         /// <summary>
         /// Makes the bubble explode into smaller bubbles
         /// </summary>
-        void Explode() {
+        public void Explode()
+        {
 
-            //adds two new bubbles into the environment
-            environment.AddBubble(mass / 2, (int)position.x - 30, (int)position.y - 30);
-            environment.AddBubble(mass / 2, (int)position.x + 30, (int)position.y + 30);
+            //sets up the maginituded of the force to apply to the new bubbles
+            float radius = rnd.Next(100, 150);
 
-            //tells the environment to remove itself
-            environment.RemoveBubble(id);
+            //sets up how many bubbles to make in the explosion
+            //float newBubbleCount = rnd.Next(3, 7);
+            float newBubbleCount = 2;
 
+
+            //gets a random x value for the force between negative and positive of the radius
+            float xForce = radius * ((float)rnd.NextDouble() * 2 - 1); ;
+
+            //calculates the y value for the force
+            float yForce = (float)Math.Sqrt(Math.Pow(radius, 2) - Math.Pow(xForce, 2));
+
+
+            //adds a new bubbles with a starting force
+            environment.AddBubble(new Bubble(mass / 2, position, new Vector2D(xForce, yForce), environment));
+
+            //calculates a 50% to flip the y value
+            yForce = -yForce;
+            xForce = -xForce;
+
+            //adds a new bubbles with a starting force
+            environment.AddBubble(new Bubble(mass / 2, position, new Vector2D(xForce, yForce), environment));
+
+            ////loops through and makes the correct amount of bubbles
+            //for (int i = 0; i < newBubbleCount; i++)
+            //{
+
+            //    //gets a random x value for the force between negative and positive of the radius
+            //    float xForce = radius * ((float)rnd.NextDouble() * 2 - 1); ;
+
+            //    //calculates the y value for the force
+            //    float yForce = (float)Math.Sqrt(Math.Pow(radius, 2) - Math.Pow(xForce, 2));
+
+            //    //calculates a 50% to flip the y value
+            //    if (rnd.Next(0, 2) == 0)
+            //        yForce = -yForce;
+
+            //    //adds a new bubbles with a starting force
+            //    environment.AddBubble(new Bubble(mass / 2, position, new Vector2D(xForce, yForce), environment));
+
+            //}
+
+            //tells the environment to remove itself after the explosion
+            environment.RemoveBubble(Id);
         }
 
         /// <summary>
         /// Draws the bubble
         /// </summary>
         /// <param name="e"></param>
-        public void Draw(PaintEventArgs e) {
+        public void Draw(PaintEventArgs e)
+        {
 
             //draws the bubble with a default color, position and radius
             e.Graphics.FillEllipse(
