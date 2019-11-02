@@ -79,7 +79,7 @@ namespace Bubbles {
                 if(bubbles[i] != null)
 
                     //ticks each bubble
-                    bubbles[i].Tick();
+                    bubbles[i].Move();
         }
 
         /// <summary>

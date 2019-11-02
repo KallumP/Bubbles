@@ -8,6 +8,7 @@ using System.Drawing;
 namespace Bubbles {
     class Vector2D {
 
+        #region Variables
         /// <summary>
         /// X value
         /// </summary>
@@ -18,6 +19,10 @@ namespace Bubbles {
         /// </summary>
         public float y { get; set; }
 
+        static Random rnd = new Random();
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Constructor for an empty vector
         /// </summary>
@@ -42,6 +47,7 @@ namespace Bubbles {
         /// <param name="v">The Vector2D object to be added on</param>
         public void Add(Vector2D v)
         {
+
             x += v.x;
             y += v.y;
         }
@@ -64,5 +70,27 @@ namespace Bubbles {
             //returns the vector
             return returnVector;
         }
+
+        /// <summary>
+        /// Creates a vector2d object with a certain magnitude
+        /// </summary>
+        /// <param name="magnitude">The magnitude of the force to be created</param>
+        /// <returns>A vector2d that points in a random direction</returns>
+        public static Vector2D CreateRandomDirection(float magnitude)
+        {
+
+            //gets a random x value for the force between negative and positive of the radius
+            float xForce = magnitude * ((float)rnd.NextDouble() * 2 - 1); ;
+
+            //calculates the y value for the force
+            float yForce = (float)Math.Sqrt(Math.Pow(magnitude, 2) - Math.Pow(xForce, 2));
+
+            //calculates a 50% to flip the y value
+            if (rnd.Next(0, 2) == 0)
+                yForce = -yForce;
+
+            return new Vector2D(xForce, yForce);
+        }
+        #endregion
     }
 }

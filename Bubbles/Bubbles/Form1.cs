@@ -31,8 +31,7 @@ namespace Bubbles {
         private void MainWindow_Load(object sender, EventArgs e) {
 
             //adds one bubble into the center of the scene on load
-            environment.AddBubble(new Bubble(100, new Vector2D(Size.Width / 2, Size.Height / 2), environment));
-            environment.bubbles[0].Explode();
+            environment.AddBubble(new Bubble(100, new Vector2D(Size.Width / 2, Size.Height / 2), Vector2D.CreateRandomDirection(5), environment));
         }
 
         /// <summary>
