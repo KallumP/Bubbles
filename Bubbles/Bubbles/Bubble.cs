@@ -12,7 +12,6 @@ namespace Bubbles
     {
 
         #region Variables
-
         /// <summary>
         /// A variable used to generate random numbers
         /// </summary>
@@ -21,7 +20,7 @@ namespace Bubbles
         /// <summary>
         /// Keeps track of the next id to assign to a bubble
         /// </summary>
-        static int nextId = 0;
+        public static int nextId;
 
         /// <summary>
         /// Used to identify the bubble
@@ -39,11 +38,6 @@ namespace Bubbles
         int mass;
 
         /// <summary>
-        /// The accelaration
-        /// </summary>
-        Vector2D accelaration;
-
-        /// <summary>
         /// The velocity
         /// </summary>
         Vector2D velocity;
@@ -52,7 +46,6 @@ namespace Bubbles
         /// The position (center of the bubble)
         /// </summary>
         Vector2D position;
-
         #endregion
 
         #region Methods
@@ -104,20 +97,20 @@ namespace Bubbles
         /// </summary>
         public void Move()
         {
-            position.Add(velocity);
+            position = Vector2D.Add(position, velocity);
         }
 
         /// <summary>
         /// Applies a force to the bubble using newtonian physics
         /// </summary>
         /// <param name="_force">The force to apply</param>
-        public void ApplyForce(Vector2D _force)
+        void ApplyForce(Vector2D _force)
         {
             //calculates the accelaration of the bubble
-            accelaration = Vector2D.DivideByNumber(_force, mass);
+            Vector2D accelaration = Vector2D.DivideByNumber(_force, mass);
 
             //calculates the velocity of the bubble
-            velocity.Add(accelaration);
+            velocity = Vector2D.Add(velocity, accelaration);
         }
 
         /// <summary>
@@ -147,7 +140,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void Click()
+        void Click()
         {
             Explode();
         }
@@ -155,21 +148,20 @@ namespace Bubbles
         /// <summary>
         /// Makes the bubble explode into smaller bubbles
         /// </summary>
-        public void Explode()
+        void Explode()
         {
 
             //sets up the maginituded of the force to apply to the new bubbles
-            float magnitude = rnd.Next(10, 15);
+            float magnitude = rnd.Next(20, 40);
 
             //sets up how many bubbles to make in the explosion
-            //float newBubbleCount = rnd.Next(3, 7);
-            float newBubbleCount = 2;
+            float newBubbleCount = rnd.Next(2, 10);
 
             //loops through and makes the correct amount of bubbles
             for (int i = 0; i < newBubbleCount; i++)
 
                 //adds a new bubbles with a starting force
-                environment.AddBubble(new Bubble(mass / 2, position, Vector2D.CreateRandomDirection(magnitude), environment));
+                environment.AddBubble(new Bubble(mass / 3, position, Vector2D.CreateRandomDirection(magnitude), environment));
 
             //tells the environment to remove this bubble instance after the explosion
             environment.RemoveBubble(Id);

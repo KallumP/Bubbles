@@ -18,6 +18,9 @@ namespace Bubbles {
         /// </summary>
         public Environment() {
 
+            //resets the bubble id counter
+            Bubble.nextId = 0;
+
             //instantiates the list of bubbles
             bubbles = new List<Bubble>();
         }
@@ -55,6 +58,11 @@ namespace Bubbles {
             }
         }
 
+        /// <summary>
+        /// The click event
+        /// </summary>
+        /// <param name="x">The x coord of the click</param>
+        /// <param name="y">The y coord of the click</param>
         public void Click(int x, int y) {
 
             //loops backwards through the bubbles
@@ -73,13 +81,13 @@ namespace Bubbles {
         public void Tick() {
 
             //loops backwards through the bubbles
-            for(int i = bubbles.Count - 1; i >= 0; i--)
+            for (int i = bubbles.Count - 1; i >= 0; i--)
 
                 //makes sure that the bubble exists
-                if(bubbles[i] != null)
-
+                if (bubbles[i] != null)
+                
                     //ticks each bubble
-                    bubbles[i].Move();
+                    bubbles[i].Move();                    
         }
 
         /// <summary>
@@ -87,6 +95,9 @@ namespace Bubbles {
         /// </summary>
         /// <param name="e"></param>
         public void Draw(PaintEventArgs e) {
+
+            //ticks the environment first
+            Tick();
 
             //loops backwards through the bubbles
             for(int i = bubbles.Count - 1; i >= 0; i--)

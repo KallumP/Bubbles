@@ -45,11 +45,14 @@ namespace Bubbles {
         /// Adds a Vector2D object's components onto this Vector2D object.
         /// </summary>
         /// <param name="v">The Vector2D object to be added on</param>
-        public void Add(Vector2D v)
+        public static Vector2D Add(Vector2D v1, Vector2D v2)
         {
+            Vector2D returnVector = new Vector2D();
 
-            x += v.x;
-            y += v.y;
+            returnVector.x = v1.x + v2.x;
+            returnVector.y = v1.y + v2.y;
+
+            return returnVector;
         }
     
         /// <summary>

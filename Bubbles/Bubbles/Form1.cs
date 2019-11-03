@@ -8,19 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Bubbles {
-    public partial class MainWindow : Form {
-
+namespace Bubbles
+{
+    public partial class MainWindow : Form
+    {
+        /// <summary>
+        /// An environment instance
+        /// </summary>
         Environment environment;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public MainWindow() {
+        public MainWindow()
+        {
             InitializeComponent();
-
-            //instantiates the environment variable
-            environment = new Environment();
         }
 
         /// <summary>
@@ -28,10 +30,22 @@ namespace Bubbles {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MainWindow_Load(object sender, EventArgs e) {
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+            Setup();
+        }
+
+        /// <summary>
+        /// Sets up the environment
+        /// </summary>
+        void Setup()
+        {
+
+            //instantiates the environment variable
+            environment = new Environment();
 
             //adds one bubble into the center of the scene on load
-            environment.AddBubble(new Bubble(100, new Vector2D(Size.Width / 2, Size.Height / 2), Vector2D.CreateRandomDirection(5), environment));
+            environment.AddBubble(new Bubble(100, new Vector2D(Size.Width / 2, Size.Height / 2), environment));
         }
 
         /// <summary>
@@ -39,7 +53,8 @@ namespace Bubbles {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MainWindow_Paint(object sender, PaintEventArgs e) {
+        private void MainWindow_Paint(object sender, PaintEventArgs e)
+        {
 
             //draws the environment
             environment.Draw(e);
@@ -50,10 +65,8 @@ namespace Bubbles {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ProgramTimer_Tick(object sender, EventArgs e) {
-
-            //passes time in the environment
-            environment.Tick();
+        private void ProgramTimer_Tick(object sender, EventArgs e)
+        {
 
             //redraws the form
             Invalidate();
@@ -64,9 +77,20 @@ namespace Bubbles {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MainWindow_MouseClick(object sender, MouseEventArgs e) {
+        private void MainWindow_MouseClick(object sender, MouseEventArgs e)
+        {
 
             environment.Click(e.X, e.Y);
+        }
+
+        /// <summary>
+        /// Restarts the program
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Reset_btn_Click(object sender, EventArgs e)
+        {
+            Setup();
         }
     }
 }
