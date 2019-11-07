@@ -27,19 +27,9 @@ namespace Bubbles
         Environment environment;
 
         /// <summary>
-        /// The mass (radius is direcly correlated to mass)
-        /// </summary>
-        int mass;
-
-        /// <summary>
         /// The velocity
         /// </summary>
         Vector2D velocity;
-
-        /// <summary>
-        /// The position (center of the bubble)
-        /// </summary>
-        Vector2D position;
         #endregion
 
         #region Properties
@@ -57,6 +47,16 @@ namespace Bubbles
         /// Stores if the bubble will attract other bubbles
         /// </summary>
         public bool ZeroMass { get; set; }
+
+        /// <summary>
+        /// The position (center of the bubble)
+        /// </summary>
+        public Vector2D position { get; set; }
+
+        /// <summary>
+        /// The mass (radius is direcly correlated to mass)
+        /// </summary>
+        public int mass { get; set; }
         #endregion
 
         #region Methods
@@ -126,7 +126,7 @@ namespace Bubbles
         /// Applies a force to the bubble using newtonian physics
         /// </summary>
         /// <param name="_force">The force to apply</param>
-        void ApplyForce(Vector2D _force)
+        public void ApplyForce(Vector2D _force)
         {
             //calculates the accelaration of the bubble
             Vector2D accelaration = Vector2D.DivideByNumber(_force, mass);
@@ -174,30 +174,25 @@ namespace Bubbles
         {
 
             //sets up how many bubbles to make in the explosion
-            int newBubbleCount = rnd.Next(10, 15);
+            int newBubbleCount = rnd.Next(10, 20);
 
             //sets up the size of the new bubbles
             int newMass = mass / newBubbleCount;
-
-            //works out the angle to put the bubbles in at
-            float angle = ((float)Math.PI * 2) / newBubbleCount;
-
-
 
             //loops through and makes the correct amount of bubbles
             for (int i = 0; i < newBubbleCount; i++)
             {
 
-                //Vector2D currentForce = Vector2D.CreateVector(10, angle * i);
-                //environment.AddBubble(new Bubble(newMass, position, currentForce, environment));
+                //creates a new random force magnitude
+                int forceMagnitude = rnd.Next(100, 200);
 
+                Vector2D force = Vector2D.CreateVector(forceMagnitude);
 
-                int forceMagnitude = rnd.Next(10, 30);
-                environment.AddBubble(new Bubble(newMass, position, Vector2D.CreateVector(forceMagnitude), environment, false, false)); ;
+                //adds a bubble into the environment
+                environment.AddBubble(new Bubble(newMass, Vector2D.Add(position, force), force, environment, false, false)); 
             }
 
-
-            //tells the environment to remove this bubble instance after the explosion
+            //Removes this bubble instance after the explosion
             environment.RemoveBubble(Id);
         }
 
@@ -215,6 +210,10 @@ namespace Bubbles
                 position.y - mass,
                 mass * 2,
                 mass * 2);
+
+
+            e.Graphics.DrawLine(Pens.Black, position.x, position.y, position.x + velocity.x * 10, position.y + velocity.y * 10);
+
 
             //draws out the id of the bubble
             e.Graphics.DrawString(Id.ToString(),

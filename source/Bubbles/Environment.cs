@@ -15,6 +15,8 @@ namespace Bubbles
         /// </summary>
         List<Bubble> bubbles;
 
+        int G = 50;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -80,21 +82,25 @@ namespace Bubbles
                     //loops through each of the bubbles to see what force to apply
                     for (int j = 0; j < bubbles.Count; j++)
 
-
                         //makes sure that bubbles isnt attracting to itself
-                        if (j != i)
+                        if (i != j)
 
-                            if (bubbles[j].ZeroMass)
+                            //checks to see if the current bubble will induce a force
+                            if (!bubbles[j].ZeroMass)
                             {
 
+                                //gets the distance between the two bubbles
+                                float distance = Vector2D.Distance(bubbles[i].position, bubbles[j].position);
+
+                                //gets the angle between the two bubbles
+                                float angle = Vector2D.Angle(bubbles[i].position, bubbles[j].position);
+
+                                //creates a gravitational force using F = (GMm) / (r^2)
+                                Vector2D force = Vector2D.CreateVector(G * bubbles[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2), angle);
+
+                                //applies the gravitational force to the bubble;
+                                bubbles[i].ApplyForce(force);
                             }
-
-
-
-
-
-
-
         }
 
         /// <summary>
@@ -111,7 +117,7 @@ namespace Bubbles
                 //makes sure that the bubble exists
                 if (bubbles[i] != null)
 
-                    //ticks each bubble
+                    //calls the check click event on each bubble
                     bubbles[i].CheckClick(x, y);
         }
 
@@ -120,6 +126,8 @@ namespace Bubbles
         /// </summary>
         public void Tick()
         {
+
+            Attract();
 
             //loops backwards through the bubbles
             for (int i = bubbles.Count - 1; i >= 0; i--)

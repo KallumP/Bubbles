@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace Bubbles {
-    class Vector2D {
+namespace Bubbles
+{
+    class Vector2D
+    {
 
         #region Variables
         /// <summary>
@@ -26,7 +28,8 @@ namespace Bubbles {
         /// <summary>
         /// Constructor for an empty vector
         /// </summary>
-        public Vector2D() {
+        public Vector2D()
+        {
 
         }
 
@@ -35,11 +38,12 @@ namespace Bubbles {
         /// </summary>
         /// <param name="x">Starting x value</param>
         /// <param name="y">Starting y value</param>
-        public Vector2D(float _x, float _y) {
+        public Vector2D(float _x, float _y)
+        {
 
             x = _x;
             y = _y;
-        } 
+        }
 
         /// <summary>
         /// Adds a Vector2D object's components onto this Vector2D object.
@@ -54,7 +58,7 @@ namespace Bubbles {
 
             return returnVector;
         }
-    
+
         /// <summary>
         /// Divides a vector by a single number
         /// </summary>
@@ -85,10 +89,10 @@ namespace Bubbles {
             //gets a random x value for the force between negative and positive of the radius
             float xForce = magnitude * ((float)rnd.NextDouble() * 2 - 1); ;
 
-            //calculates the y value for the force
+            //calculates the y value for the force (using the x value to keep the magnitude constant)
             float yForce = (float)Math.Sqrt(Math.Pow(magnitude, 2) - Math.Pow(xForce, 2));
 
-            //calculates a 50% to flip the y value
+            //calculates a 50% chance to flip the y value
             if (rnd.Next(0, 2) == 0)
                 yForce = -yForce;
 
@@ -103,33 +107,71 @@ namespace Bubbles {
         /// <returns>A Vector2D object with the correct magnitude and angle</returns>
         public static Vector2D CreateVector(float magnitude, float angle)
         {
-
+            //instantiates a vector
             Vector2D returnVector = new Vector2D();
 
-            //checks to see if the sin values will be zero
-            if (Math.Sin(angle) == 0)
-            
-                //sets the x component of the displacement and force vectors to the magnitude (as sin will return 0)
-                returnVector.x = magnitude;
+            //calculates the x components of the displacement and force vector
+            returnVector.x = magnitude * (float)Math.Sin(angle + Math.PI / 2);
 
-            else
-            
-                //calculates the x components of the displacement and force vector
-                returnVector.x = magnitude * (float)Math.Sin(angle);
+            //calculates the y component of the displacement and force vectors
+            returnVector.y = magnitude * (float)Math.Cos(angle - Math.PI / 2);
 
-
-            //checks to see if the cos values will be zero
-            if (Math.Cos(angle) == 0)
-            
-                //sets the y component of the displacement and force vectors to the magnitude (as sin will return 0)
-                returnVector.y = magnitude;
-
-            else
-
-                //calculates the y component of the displacement and force vectors
-                returnVector.y = magnitude * (float)Math.Cos(angle);
-            
+            //returns the vector
             return returnVector;
+        }
+
+
+
+        /// <summary>
+        /// Returns the distance between two position vectors
+        /// </summary>
+        /// <param name="v1">The first position</param>
+        /// <param name="v2">The second position</param>
+        /// <returns>The distance between the two entered points</returns>
+        public static float Distance(Vector2D v1, Vector2D v2)
+        {
+
+            //calculates the distance on the x axis
+            float xDist = v1.x - v2.x;
+
+            //calculates the squared x distance
+            float xDist2 = (float)Math.Pow(xDist, 2);
+
+
+            //calculates the distance on the y axis
+            float yDist = v1.y - v2.y;
+
+            //calculates the squared y distance
+            float yDist2 = (float)Math.Pow(yDist, 2);
+
+
+            //calculates the distance using pythagoras
+            float distance = (float)Math.Sqrt(xDist2 + yDist2);
+
+            //returns the distance
+            return distance;
+        }
+
+        /// <summary>
+        /// Calculates the angle between two position vectors 
+        /// </summary>
+        /// <param name="v1">The first position</param>
+        /// <param name="v2">The second position</param>
+        /// <returns>The angle, north based, in radians (0 radians would be straight up)</returns>
+        public static float Angle(Vector2D v1, Vector2D v2)
+        {
+
+            //calculates the distance on the x axis
+            float xDist = v2.x - v1.x;
+
+            //calculates the distance on the y axis
+            float yDist = v2.y - v1.y;
+
+            //calculates the angle between the two positions
+            float angle = (float)Math.Atan2(yDist, xDist);
+
+            //returns the angle
+            return angle;
         }
         #endregion
     }

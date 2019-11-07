@@ -45,7 +45,8 @@ namespace Bubbles
             environment = new Environment();
 
             //adds one bubble into the center of the scene on load
-            environment.AddBubble(new Bubble(300, new Vector2D(Size.Width / 2, Size.Height / 2), environment, true, false));
+            environment.AddBubble(new Bubble(300, new Vector2D(Size.Width / 2, Size.Height / 2), environment, false, false));
+
         }
 
         /// <summary>
@@ -79,8 +80,11 @@ namespace Bubbles
         /// <param name="e"></param>
         private void MainWindow_MouseClick(object sender, MouseEventArgs e)
         {
-
+            //sends the click event into the environment
             environment.Click(e.X, e.Y);
+
+            //adds a new bubble on click
+            //environment.AddBubble(new Bubble(100, new Vector2D(e.X, e.Y), environment, false, false));
         }
 
         /// <summary>
