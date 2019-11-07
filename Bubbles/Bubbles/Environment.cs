@@ -5,18 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Bubbles {
-    class Environment {
+namespace Bubbles
+{
+    class Environment
+    {
 
         /// <summary>
         /// Used to store the bubbles in the environment
         /// </summary>
-        public List<Bubble> bubbles;
+        List<Bubble> bubbles;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public Environment() {
+        public Environment()
+        {
 
             //resets the bubble id counter
             Bubble.nextId = 0;
@@ -31,7 +34,8 @@ namespace Bubbles {
         /// <param name="_mass">The mass of the bubble</param>
         /// <param name="_radius">The radius of the bubble</param>
         /// <param name="_position">The position of the bubble</param>
-        public void AddBubble(Bubble b) {
+        public void AddBubble(Bubble b)
+        {
 
             //adds the bubble into the list
             bubbles.Add(b);
@@ -41,13 +45,16 @@ namespace Bubbles {
         /// Removes a selected bubble from the list
         /// </summary>
         /// <param name="id">The id of the bubble to remove</param>
-        public void RemoveBubble(int id) {
+        public void RemoveBubble(int id)
+        {
 
             //loops backwards through the bubbles
-            for(int i = bubbles.Count - 1; i >= 0; i--) {
+            for (int i = bubbles.Count - 1; i >= 0; i--)
+            {
 
                 //makes sure that the bubble exists
-                if(bubbles[i].Id == id) {
+                if (bubbles[i].Id == id)
+                {
 
                     //ticks each bubble
                     bubbles.RemoveAt(i);
@@ -59,17 +66,50 @@ namespace Bubbles {
         }
 
         /// <summary>
+        /// Applies forces to the bubbles using gravity from other bubbles
+        /// </summary>
+        void Attract()
+        {
+
+            //loops through each of the bubbles to apply the force
+            for (int i = 0; i < bubbles.Count; i++)
+
+                //checks to see if the bubble should move (not static)
+                if (!bubbles[i].Static)
+
+                    //loops through each of the bubbles to see what force to apply
+                    for (int j = 0; j < bubbles.Count; j++)
+
+
+                        //makes sure that bubbles isnt attracting to itself
+                        if (j != i)
+
+                            if (bubbles[j].ZeroMass)
+                            {
+
+                            }
+
+
+
+
+
+
+
+        }
+
+        /// <summary>
         /// The click event
         /// </summary>
         /// <param name="x">The x coord of the click</param>
         /// <param name="y">The y coord of the click</param>
-        public void Click(int x, int y) {
+        public void Click(int x, int y)
+        {
 
             //loops backwards through the bubbles
-            for(int i = bubbles.Count - 1; i >= 0; i--)
+            for (int i = bubbles.Count - 1; i >= 0; i--)
 
                 //makes sure that the bubble exists
-                if(bubbles[i] != null)
+                if (bubbles[i] != null)
 
                     //ticks each bubble
                     bubbles[i].CheckClick(x, y);
@@ -78,32 +118,34 @@ namespace Bubbles {
         /// <summary>
         /// The tick sequence
         /// </summary>
-        public void Tick() {
+        public void Tick()
+        {
 
             //loops backwards through the bubbles
             for (int i = bubbles.Count - 1; i >= 0; i--)
 
                 //makes sure that the bubble exists
                 if (bubbles[i] != null)
-                
+
                     //ticks each bubble
-                    bubbles[i].Move();                    
+                    bubbles[i].Move();
         }
 
         /// <summary>
         /// Draws out the instance of the environment, along with everything in it
         /// </summary>
         /// <param name="e"></param>
-        public void Draw(PaintEventArgs e) {
+        public void Draw(PaintEventArgs e)
+        {
 
             //ticks the environment first
             Tick();
 
             //loops backwards through the bubbles
-            for(int i = bubbles.Count - 1; i >= 0; i--)
+            for (int i = bubbles.Count - 1; i >= 0; i--)
 
                 //makes sure that the bubble exists
-                if(bubbles[i] != null)
+                if (bubbles[i] != null)
 
                     //draws out the current bubble
                     bubbles[i].Draw(e);

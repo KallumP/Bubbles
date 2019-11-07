@@ -45,7 +45,7 @@ namespace Bubbles
             environment = new Environment();
 
             //adds one bubble into the center of the scene on load
-            environment.AddBubble(new Bubble(100, new Vector2D(Size.Width / 2, Size.Height / 2), environment));
+            environment.AddBubble(new Bubble(300, new Vector2D(Size.Width / 2, Size.Height / 2), environment, true, false));
         }
 
         /// <summary>

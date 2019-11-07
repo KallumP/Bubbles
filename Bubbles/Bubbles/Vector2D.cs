@@ -75,11 +75,11 @@ namespace Bubbles {
         }
 
         /// <summary>
-        /// Creates a vector2d object with a certain magnitude
+        /// Creates a vector2d object with only a known magnitude
         /// </summary>
         /// <param name="magnitude">The magnitude of the force to be created</param>
         /// <returns>A vector2d that points in a random direction</returns>
-        public static Vector2D CreateRandomDirection(float magnitude)
+        public static Vector2D CreateVector(float magnitude)
         {
 
             //gets a random x value for the force between negative and positive of the radius
@@ -93,6 +93,43 @@ namespace Bubbles {
                 yForce = -yForce;
 
             return new Vector2D(xForce, yForce);
+        }
+
+        /// <summary>
+        /// Creates a vector2d object with a known magnitude and angle
+        /// </summary>
+        /// <param name="magnitude">The magnitude of the vector to make</param>
+        /// <param name="angle">The angle to rotate the angle by</param>
+        /// <returns>A Vector2D object with the correct magnitude and angle</returns>
+        public static Vector2D CreateVector(float magnitude, float angle)
+        {
+
+            Vector2D returnVector = new Vector2D();
+
+            //checks to see if the sin values will be zero
+            if (Math.Sin(angle) == 0)
+            
+                //sets the x component of the displacement and force vectors to the magnitude (as sin will return 0)
+                returnVector.x = magnitude;
+
+            else
+            
+                //calculates the x components of the displacement and force vector
+                returnVector.x = magnitude * (float)Math.Sin(angle);
+
+
+            //checks to see if the cos values will be zero
+            if (Math.Cos(angle) == 0)
+            
+                //sets the y component of the displacement and force vectors to the magnitude (as sin will return 0)
+                returnVector.y = magnitude;
+
+            else
+
+                //calculates the y component of the displacement and force vectors
+                returnVector.y = magnitude * (float)Math.Cos(angle);
+            
+            return returnVector;
         }
         #endregion
     }

@@ -8,3 +8,6 @@ Here you can select the increase rate, the speed at which a bubble grows when ad
 change the color
 start size
 mass
+
+
+Dont use a random outward movement, and always have the bubbles go straight outward at a refular angle intervale
