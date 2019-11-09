@@ -11,3 +11,5 @@ mass
 
 
 Dont use a random outward movement, and always have the bubbles go straight outward at a refular angle intervale
+
+collision will make the bubbles combine masses (and have the net velocity of the two bubbles)

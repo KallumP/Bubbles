@@ -15,7 +15,10 @@ namespace Bubbles
         /// </summary>
         List<Bubble> bubbles;
 
-        int G = 50;
+        /// <summary>
+        /// Gravitational constant
+        /// </summary>
+        int G = 30;
 
         /// <summary>
         /// Constructor
@@ -96,7 +99,7 @@ namespace Bubbles
                                 float angle = Vector2D.Angle(bubbles[i].position, bubbles[j].position);
 
                                 //creates a gravitational force using F = (GMm) / (r^2)
-                                Vector2D force = Vector2D.CreateVector(G * bubbles[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2), angle);
+                                Vector2D force = Vector2D.CreateGravityFixedVector(G * bubbles[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2), angle);
 
                                 //applies the gravitational force to the bubble;
                                 bubbles[i].ApplyForce(force);

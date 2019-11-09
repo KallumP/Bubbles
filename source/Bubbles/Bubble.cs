@@ -30,6 +30,11 @@ namespace Bubbles
         /// The velocity
         /// </summary>
         Vector2D velocity;
+
+        /// <summary>
+        /// The fastest a bubble can move
+        /// </summary>
+        int terminalVelocity;
         #endregion
 
         #region Properties
@@ -70,20 +75,7 @@ namespace Bubbles
         /// <param name="_zeroMass">If the bubble will have a gravitational force</param>
         public Bubble(int _mass, Vector2D _position, Environment parent, bool _static, bool _zeroMass)
         {
-
-            environment = parent;
-            mass = _mass;
-            position = _position;
-
-            //populates the vector
-            velocity = new Vector2D(0, 0);
-
-            Static = _static;
-
-            ZeroMass = _zeroMass;
-
-            //assgns the next id
-            Id = nextId++;
+            Setup(_mass, _position, parent, _static, _zeroMass);
         }
 
         /// <summary>
@@ -97,6 +89,22 @@ namespace Bubbles
         /// <param name="_zeroMass">If the bubble will have a gravitational force</param>
         public Bubble(int _mass, Vector2D _position, Vector2D _force, Environment parent, bool _static, bool _zeroMass)
         {
+
+            Setup(_mass, _position, parent, _static, _zeroMass);
+
+            ApplyForce(_force);
+        }
+
+        /// <summary>
+        /// Sets up the bubble
+        /// </summary>
+        /// <param name="_mass"></param>
+        /// <param name="_position"></param>
+        /// <param name="parent"></param>
+        /// <param name="_static"></param>
+        /// <param name="_zeroMass"></param>
+        public void Setup(int _mass, Vector2D _position, Environment parent, bool _static, bool _zeroMass)
+        {
             environment = parent;
             mass = _mass;
             position = _position;
@@ -104,11 +112,12 @@ namespace Bubbles
             //populates the vector
             velocity = new Vector2D(0, 0);
 
+            terminalVelocity = 10;
+
             Static = _static;
 
             ZeroMass = _zeroMass;
 
-            ApplyForce(_force);
 
             //assgns the next id
             Id = nextId++;
@@ -133,6 +142,12 @@ namespace Bubbles
 
             //calculates the velocity of the bubble
             velocity = Vector2D.Add(velocity, accelaration);
+
+            //checks to see if the veclocity is too fast
+            if (velocity.Magnitude() > terminalVelocity)
+
+                //constrains the velocity
+                velocity.Constrain(terminalVelocity);
         }
 
         /// <summary>
@@ -173,24 +188,28 @@ namespace Bubbles
         void Explode()
         {
 
-            //sets up how many bubbles to make in the explosion
-            int newBubbleCount = rnd.Next(10, 20);
+            //sets up how many bubbles to take in the explosion
+            int newBubbleCount = rnd.Next(20, 30);
 
             //sets up the size of the new bubbles
             int newMass = mass / newBubbleCount;
 
-            //loops through and makes the correct amount of bubbles
-            for (int i = 0; i < newBubbleCount; i++)
-            {
+            //makes sure that the new masses are not too small
+            if (newMass > 1)
 
-                //creates a new random force magnitude
-                int forceMagnitude = rnd.Next(100, 200);
+                //loops through and makes the correct amount of bubbles
+                for (int i = 0; i < newBubbleCount; i++)
+                {
 
-                Vector2D force = Vector2D.CreateVector(forceMagnitude);
+                    //creates a new random force magnitude
+                    int forceMagnitude = rnd.Next(100, 300);
 
-                //adds a bubble into the environment
-                environment.AddBubble(new Bubble(newMass, Vector2D.Add(position, force), force, environment, false, false)); 
-            }
+                    //creates the gravitational force
+                    Vector2D force = Vector2D.CreateVector(forceMagnitude);
+
+                    //adds a bubble into the environment
+                    environment.AddBubble(new Bubble(newMass, Vector2D.Add(position, Vector2D.DivideByNumber(force, 2f)), force, environment, false, false));
+                }
 
             //Removes this bubble instance after the explosion
             environment.RemoveBubble(Id);
@@ -204,24 +223,13 @@ namespace Bubbles
         {
 
             //draws the bubble with a default color, position and radius
-            e.Graphics.DrawEllipse(
-                Pens.Blue,
-                position.x - mass,
-                position.y - mass,
-                mass * 2,
-                mass * 2);
+            e.Graphics.DrawEllipse(Pens.Blue, position.x - mass, position.y - mass, mass * 2, mass * 2);
 
-
-            e.Graphics.DrawLine(Pens.Black, position.x, position.y, position.x + velocity.x * 10, position.y + velocity.y * 10);
-
+            //draws out the velocity of the bubble
+            e.Graphics.DrawLine(Pens.Black, position.x, position.y, position.x + velocity.x * 3, position.y + velocity.y * 3);
 
             //draws out the id of the bubble
-            e.Graphics.DrawString(Id.ToString(),
-                SystemFonts.DefaultFont,
-                Brushes.Blue,
-                position.x,
-                position.y);
-
+            //e.Graphics.DrawString(Id.ToString(), SystemFonts.DefaultFont, Brushes.Blue, position.x, position.y);
         }
         #endregion
     }

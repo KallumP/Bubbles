@@ -1,5 +1,5 @@
 ﻿namespace Bubbles {
-    partial class MainWindow {
+    partial class AnimationWindow {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -53,9 +53,9 @@
             this.DoubleBuffered = true;
             this.Name = "MainWindow";
             this.Text = "Bubbles";
-            this.Load += new System.EventHandler(this.MainWindow_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainWindow_Paint);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseClick);
+            this.Load += new System.EventHandler(this.AnimationWindow_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AnimationWindow_Paint);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AnimationWindow_MouseClick);
             this.ResumeLayout(false);
 
         }

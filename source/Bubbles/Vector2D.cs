@@ -9,7 +9,6 @@ namespace Bubbles
 {
     class Vector2D
     {
-
         #region Variables
         /// <summary>
         /// X value
@@ -21,6 +20,9 @@ namespace Bubbles
         /// </summary>
         public float y { get; set; }
 
+        /// <summary>
+        /// Random number generator
+        /// </summary>
         static Random rnd = new Random();
         #endregion
 
@@ -65,7 +67,7 @@ namespace Bubbles
         /// <param name="v">The vector to be divided</param>
         /// <param name="denominator">The number to divide by</param>
         /// <returns>The new divided vector</returns>
-        public static Vector2D DivideByNumber(Vector2D v, int denominator)
+        public static Vector2D DivideByNumber(Vector2D v, float denominator)
         {
             //The vector that will be returned
             Vector2D returnVector = new Vector2D();
@@ -105,8 +107,9 @@ namespace Bubbles
         /// <param name="magnitude">The magnitude of the vector to make</param>
         /// <param name="angle">The angle to rotate the angle by</param>
         /// <returns>A Vector2D object with the correct magnitude and angle</returns>
-        public static Vector2D CreateVector(float magnitude, float angle)
+        public static Vector2D CreateGravityFixedVector(float magnitude, float angle)
         {
+
             //instantiates a vector
             Vector2D returnVector = new Vector2D();
 
@@ -116,11 +119,46 @@ namespace Bubbles
             //calculates the y component of the displacement and force vectors
             returnVector.y = magnitude * (float)Math.Cos(angle - Math.PI / 2);
 
+
             //returns the vector
             return returnVector;
         }
 
+        public static Vector2D CreateVector(float magnitude, float angle)
+        {
 
+            //instantiates a vector
+            Vector2D returnVector = new Vector2D();
+
+            //calculates the x components of the displacement and force vector
+            returnVector.x = magnitude * (float)Math.Sin(angle);
+
+            //calculates the y component of the displacement and force vectors
+            returnVector.y = magnitude * (float)Math.Cos(angle);
+
+
+            //returns the vector
+            return returnVector;
+        }
+
+        /// <summary>
+        /// Constrains the vector to a certain magnitude
+        /// </summary>
+        /// <param name="v">The vector to constrain</param>
+        /// <param name="magnitude">The magnitude to constrain the vector by</param>
+        /// <returns>The constrained vector</returns>
+        public void Constrain(float magnitude)
+        {
+            //calculates the angle of the vector (0 based)
+            float angle = Angle();
+
+            //creates a new vector with the new magnitude
+            Vector2D constrainedVector = CreateVector(magnitude, angle);
+
+            //sets the vectors components to the new vector
+            x = constrainedVector.x;
+            y = constrainedVector.y;
+        }
 
         /// <summary>
         /// Returns the distance between two position vectors
@@ -150,6 +188,34 @@ namespace Bubbles
 
             //returns the distance
             return distance;
+        }
+
+        /// <summary>
+        /// Calculates the magnitude for the vector (0 based)
+        /// </summary>
+        /// <returns>The magnitude of the vector</returns>
+        public float Magnitude()
+        {
+            //finds the magnitude of the vector using pythagorus
+            float magnitude = (float)Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+
+            //returns the magnitude
+            return magnitude;
+        }
+
+        /// <summary>
+        /// Calculates the angle of a vector
+        /// </summary>
+        /// <param name="v">The vector who's angle is to be found</param>
+        /// <returns>The angle of the vector</returns>
+        public float Angle()
+        {
+
+            //calculates the vectors angle
+            float angle = (float)Math.Atan2(x, y);
+
+            //returns the angle
+            return angle;
         }
 
         /// <summary>

@@ -10,17 +10,19 @@ using System.Windows.Forms;
 
 namespace Bubbles
 {
-    public partial class MainWindow : Form
+    public partial class AnimationWindow : Form
     {
         /// <summary>
         /// An environment instance
         /// </summary>
         Environment environment;
 
+        int startingMass = 300;
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public MainWindow()
+        public AnimationWindow()
         {
             InitializeComponent();
         }
@@ -30,8 +32,10 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MainWindow_Load(object sender, EventArgs e)
+        private void AnimationWindow_Load(object sender, EventArgs e)
         {
+            WindowState = FormWindowState.Maximized;
+
             Setup();
         }
 
@@ -45,7 +49,7 @@ namespace Bubbles
             environment = new Environment();
 
             //adds one bubble into the center of the scene on load
-            environment.AddBubble(new Bubble(300, new Vector2D(Size.Width / 2, Size.Height / 2), environment, false, false));
+            environment.AddBubble(new Bubble(startingMass, new Vector2D(Size.Width / 2, Size.Height / 2), environment, true, false)); ;
 
         }
 
@@ -54,7 +58,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MainWindow_Paint(object sender, PaintEventArgs e)
+        private void AnimationWindow_Paint(object sender, PaintEventArgs e)
         {
 
             //draws the environment
@@ -78,13 +82,13 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MainWindow_MouseClick(object sender, MouseEventArgs e)
+        private void AnimationWindow_MouseClick(object sender, MouseEventArgs e)
         {
             //sends the click event into the environment
             environment.Click(e.X, e.Y);
 
             //adds a new bubble on click
-            //environment.AddBubble(new Bubble(100, new Vector2D(e.X, e.Y), environment, false, false));
+            //environment.AddBubble(new Bubble(20, new Vector2D(e.X, e.Y), new Vector2D(100, 0), environment, false, true));
         }
 
         /// <summary>
