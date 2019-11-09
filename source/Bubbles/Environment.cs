@@ -76,34 +76,40 @@ namespace Bubbles
         void Attract()
         {
 
-            //loops through each of the bubbles to apply the force
-            for (int i = 0; i < bubbles.Count; i++)
+            //loops backwards through each of the bubbles to apply the force
+            for (int i = bubbles.Count - 1; i >= 0; i--)
 
-                //checks to see if the bubble should move (not static)
-                if (!bubbles[i].Static)
+                //makes sure that the bubble exists
+                if (bubbles[i] != null)
 
-                    //loops through each of the bubbles to see what force to apply
-                    for (int j = 0; j < bubbles.Count; j++)
+                    //checks to see if the bubble should move (not static)
+                    if (!bubbles[i].Static)
 
-                        //makes sure that bubbles isnt attracting to itself
-                        if (i != j)
+                        //loops through each of the bubbles to see what force to apply
+                        for (int j = bubbles.Count - 1; j >= 0; j--)
 
-                            //checks to see if the current bubble will induce a force
-                            if (!bubbles[j].ZeroMass)
-                            {
+                            //makes sure that the bubble exists
+                            if (bubbles[i] != null)
 
-                                //gets the distance between the two bubbles
-                                float distance = Vector2D.Distance(bubbles[i].position, bubbles[j].position);
+                                //makes sure that bubbles isnt attracting to itself
+                                if (i != j)
 
-                                //gets the angle between the two bubbles
-                                float angle = Vector2D.Angle(bubbles[i].position, bubbles[j].position);
+                                    //checks to see if the current bubble will induce a force
+                                    if (!bubbles[j].ZeroMass)
+                                    {
 
-                                //creates a gravitational force using F = (GMm) / (r^2)
-                                Vector2D force = Vector2D.CreateGravityFixedVector(G * bubbles[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2), angle);
+                                        //gets the distance between the two bubbles
+                                        float distance = Vector2D.Distance(bubbles[i].position, bubbles[j].position);
 
-                                //applies the gravitational force to the bubble;
-                                bubbles[i].ApplyForce(force);
-                            }
+                                        //gets the angle between the two bubbles
+                                        float angle = Vector2D.Angle(bubbles[i].position, bubbles[j].position);
+
+                                        //creates a gravitational force using F = (GMm) / (r^2)
+                                        Vector2D force = Vector2D.CreateGravityFixedVector(G * bubbles[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2), angle);
+
+                                        //applies the gravitational force to the bubble;
+                                        bubbles[i].ApplyForce(force);
+                                    }
         }
 
         /// <summary>
@@ -130,6 +136,7 @@ namespace Bubbles
         public void Tick()
         {
 
+            //implements gravity
             Attract();
 
             //loops backwards through the bubbles
@@ -140,6 +147,9 @@ namespace Bubbles
 
                     //ticks each bubble
                     bubbles[i].Move();
+
+            //checks for collisions
+            CheckCollision();
         }
 
         /// <summary>
@@ -160,6 +170,35 @@ namespace Bubbles
 
                     //draws out the current bubble
                     bubbles[i].Draw(e);
+        }
+
+        /// <summary>
+        /// Checks each of the bubles to see of any of them collided
+        /// </summary>
+        void CheckCollision()
+        {
+
+            //loops backwards through each of the bubbles
+            for (int i = bubbles.Count - 1; i >= 0; i--)
+
+                //makes sure that the bubble exists
+                if (bubbles[i] != null)
+
+                    //loops backwards through each of the bubbles
+                    for (int j = i - 1; j >= 0; j--)
+
+
+                        //makes sure that the bubble exists
+                        if (bubbles[i] != null)
+
+                            //makes sure that bubbles isnt colliding with itself
+                            if (i != j)
+
+                                //checks for a collision with the bubble in the second for loop
+                                if (bubbles[i].CheckCollision(bubbles[j]))
+
+                                    //stops searching for more collisions
+                                    break;                            
         }
     }
 }

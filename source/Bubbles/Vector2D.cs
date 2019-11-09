@@ -102,6 +102,28 @@ namespace Bubbles
         }
 
         /// <summary>
+        /// Creates a vector with a known magnitude and angle
+        /// </summary>
+        /// <param name="magnitude">The magnitude of the vector to make</param>
+        /// <param name="angle">The angle of the vector to make</param>
+        /// <returns>The vector</returns>
+        public static Vector2D CreateVector(float magnitude, float angle)
+        {
+
+            //instantiates a vector
+            Vector2D returnVector = new Vector2D();
+
+            //calculates the x components of the displacement and force vector
+            returnVector.x = magnitude * (float)Math.Sin(angle);
+
+            //calculates the y component of the displacement and force vectors
+            returnVector.y = magnitude * (float)Math.Cos(angle);
+
+            //returns the vector
+            return returnVector;
+        }
+
+        /// <summary>
         /// Creates a vector2d object with a known magnitude and angle
         /// </summary>
         /// <param name="magnitude">The magnitude of the vector to make</param>
@@ -118,23 +140,6 @@ namespace Bubbles
 
             //calculates the y component of the displacement and force vectors
             returnVector.y = magnitude * (float)Math.Cos(angle - Math.PI / 2);
-
-
-            //returns the vector
-            return returnVector;
-        }
-
-        public static Vector2D CreateVector(float magnitude, float angle)
-        {
-
-            //instantiates a vector
-            Vector2D returnVector = new Vector2D();
-
-            //calculates the x components of the displacement and force vector
-            returnVector.x = magnitude * (float)Math.Sin(angle);
-
-            //calculates the y component of the displacement and force vectors
-            returnVector.y = magnitude * (float)Math.Cos(angle);
 
 
             //returns the vector
@@ -188,6 +193,28 @@ namespace Bubbles
 
             //returns the distance
             return distance;
+        }
+
+        /// <summary>
+        /// Gets the center of two position vectors
+        /// </summary>
+        /// <param name="v1">The first position</param>
+        /// <param name="v2">The second position</param>
+        /// <returns>The center of the two vectors</returns>
+        public static Vector2D Midpoint(Vector2D v1, Vector2D v2)
+        {
+            //declares and instantiates a vector to return
+            Vector2D halfDistance = new Vector2D();
+
+            //finds out what half the distance is between the x and the y
+            halfDistance.x = (v2.x - v1.x) / 2;
+            halfDistance.y = (v2.y - v1.y) / 2;
+
+            //gets the midpoint by adding the half distance to the first vector
+            Vector2D returnVector = Add(halfDistance, v1);
+
+            //returns the midpoint posisition
+            return returnVector;
         }
 
         /// <summary>

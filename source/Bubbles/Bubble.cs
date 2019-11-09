@@ -124,11 +124,20 @@ namespace Bubbles
         }
 
         /// <summary>
-        /// Moves the bubble by its velocity
+        /// Draws the bubble
         /// </summary>
-        public void Move()
+        /// <param name="e"></param>
+        public void Draw(PaintEventArgs e)
         {
-            position = Vector2D.Add(position, velocity);
+
+            //draws the bubble with a default color, position and radius
+            e.Graphics.DrawEllipse(Pens.Blue, position.x - mass, position.y - mass, mass * 2, mass * 2);
+
+            //draws out the velocity of the bubble
+            e.Graphics.DrawLine(Pens.Black, position.x, position.y, position.x + velocity.x * 3, position.y + velocity.y * 3);
+
+            //draws out the id of the bubble
+            //e.Graphics.DrawString(Id.ToString(), SystemFonts.DefaultFont, Brushes.Blue, position.x, position.y);
         }
 
         /// <summary>
@@ -148,6 +157,14 @@ namespace Bubbles
 
                 //constrains the velocity
                 velocity.Constrain(terminalVelocity);
+        }
+
+        /// <summary>
+        /// Moves the bubble by its velocity
+        /// </summary>
+        public void Move()
+        {
+            position = Vector2D.Add(position, velocity);
         }
 
         /// <summary>
@@ -183,6 +200,62 @@ namespace Bubbles
         }
 
         /// <summary>
+        /// Checks to see if there was a collision with this and the input bubble
+        /// </summary>
+        /// <param name="b">The bubble to check for a collision with</param>
+        /// <returns>If there was a collision</returns>
+        public bool CheckCollision(Bubble b)
+        {
+
+            //checks to see if the distance between the two points is smaller than the two radii (mass = radius)
+            if (Vector2D.Distance(position, b.position) <= mass + b.mass)
+            {
+                //starts the collision sequence
+                Collide(b);
+
+                //lets the environment know that there was a collision
+                return true;
+            }
+            else
+
+                //lets the environment know that there was no collision
+                return false;
+        }
+
+        /// <summary>
+        /// The collision sequence
+        /// </summary>
+        /// <param name="b">The bubble that this collided with</param>
+        void Collide(Bubble b)
+        {
+            //declares a variable used to store what position to put the new bubble at
+            Vector2D positionToTake;
+
+            //checks to see if the two masses were equal
+            if (mass == b.mass)
+
+                //sets the new bubble's position to the midpoint of the two colliding bubbles
+                positionToTake = Vector2D.Midpoint(position, b.position);
+
+            //checks to see if this has less mass than b
+            else if (mass < b.mass)
+
+                //sets the new bubble's position to b's position
+                positionToTake = b.position;
+            else
+
+                //sets the new bubble's position to this' position
+                positionToTake = position;
+
+            //adds the new bubble with the combined mass
+            environment.AddBubble(new Bubble(mass + b.mass, positionToTake, environment, false, false));
+
+            //removes the two colliding bubbles
+            environment.RemoveBubble(Id);
+            environment.RemoveBubble(b.Id);
+        }
+
+        /// <summary>
         /// Makes the bubble explode into smaller bubbles
         /// </summary>
         void Explode()
@@ -215,22 +288,8 @@ namespace Bubbles
             environment.RemoveBubble(Id);
         }
 
-        /// <summary>
-        /// Draws the bubble
-        /// </summary>
-        /// <param name="e"></param>
-        public void Draw(PaintEventArgs e)
-        {
 
-            //draws the bubble with a default color, position and radius
-            e.Graphics.DrawEllipse(Pens.Blue, position.x - mass, position.y - mass, mass * 2, mass * 2);
 
-            //draws out the velocity of the bubble
-            e.Graphics.DrawLine(Pens.Black, position.x, position.y, position.x + velocity.x * 3, position.y + velocity.y * 3);
-
-            //draws out the id of the bubble
-            //e.Graphics.DrawString(Id.ToString(), SystemFonts.DefaultFont, Brushes.Blue, position.x, position.y);
-        }
         #endregion
     }
 }

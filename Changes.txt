@@ -1,3 +1,7 @@
+Collision now works, bubbles will combine masses on collision
+User can choose to either explode a clicked bubble, or create a new one on click
+
+
 Gravity now works (the gravity's CreateForce has the angle fixed, but other CreateForce method does not which seems to work properly)
 Window now maximises on load
 

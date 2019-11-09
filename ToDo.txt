@@ -1,6 +1,3 @@
-Bubble should explode where it takes a random number based on the mass/radius.
-
-
 Holding down on the screen will start to make a bubble that starts small and grows until mouse up
 
 On a certain keycombination, open the settings window.
@@ -13,3 +10,5 @@ mass
 Dont use a random outward movement, and always have the bubbles go straight outward at a refular angle intervale
 
 collision will make the bubbles combine masses (and have the net velocity of the two bubbles)
+
+Use radius (calculated from mass) to draw the bubble

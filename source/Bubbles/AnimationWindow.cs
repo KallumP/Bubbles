@@ -12,12 +12,15 @@ namespace Bubbles
 {
     public partial class AnimationWindow : Form
     {
+        enum Modes { Create, Explode }
+        Modes mode;
+
         /// <summary>
         /// An environment instance
         /// </summary>
         Environment environment;
 
-        int startingMass = 300;
+        int startingMass = 200;
 
         /// <summary>
         /// Constructor
@@ -35,6 +38,10 @@ namespace Bubbles
         private void AnimationWindow_Load(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Maximized;
+
+            mode = Modes.Explode;
+
+            mode_lbl.Text = "Mode: " + mode.ToString();
 
             Setup();
         }
@@ -84,11 +91,16 @@ namespace Bubbles
         /// <param name="e"></param>
         private void AnimationWindow_MouseClick(object sender, MouseEventArgs e)
         {
-            //sends the click event into the environment
-            environment.Click(e.X, e.Y);
 
-            //adds a new bubble on click
-            //environment.AddBubble(new Bubble(20, new Vector2D(e.X, e.Y), new Vector2D(100, 0), environment, false, true));
+            if (mode == Modes.Explode)
+
+                //sends the click event into the environment
+                environment.Click(e.X, e.Y);
+
+            else
+
+                //adds a new bubble on click
+                environment.AddBubble(new Bubble(20, new Vector2D(e.X, e.Y), new Vector2D(100, 0), environment, false, true));
         }
 
         /// <summary>
@@ -99,6 +111,17 @@ namespace Bubbles
         private void Reset_btn_Click(object sender, EventArgs e)
         {
             Setup();
+        }
+
+        private void Switch_btn_Click(object sender, EventArgs e)
+        {
+
+            if (mode == Modes.Create)
+                mode = Modes.Explode;
+            else
+                mode = Modes.Create;
+
+            mode_lbl.Text = "Mode: " + mode.ToString();
         }
     }
 }
