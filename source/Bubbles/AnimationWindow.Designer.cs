@@ -28,6 +28,7 @@
             this.Reset_btn = new System.Windows.Forms.Button();
             this.Switch_btn = new System.Windows.Forms.Button();
             this.mode_lbl = new System.Windows.Forms.Label();
+            this.vectorDebug = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ProgramTimer
@@ -48,6 +49,7 @@
             // 
             // Switch_btn
             // 
+            this.Switch_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Switch_btn.Location = new System.Drawing.Point(12, 415);
             this.Switch_btn.Name = "Switch_btn";
             this.Switch_btn.Size = new System.Drawing.Size(88, 23);
@@ -58,23 +60,38 @@
             // 
             // mode_lbl
             // 
+            this.mode_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.mode_lbl.AutoSize = true;
             this.mode_lbl.Location = new System.Drawing.Point(13, 396);
             this.mode_lbl.Name = "mode_lbl";
+            this.mode_lbl.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.mode_lbl.Size = new System.Drawing.Size(37, 13);
             this.mode_lbl.TabIndex = 2;
             this.mode_lbl.Text = "Mode:";
+            // 
+            // vectorDebug
+            // 
+            this.vectorDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.vectorDebug.Location = new System.Drawing.Point(713, 12);
+            this.vectorDebug.Name = "vectorDebug";
+            this.vectorDebug.Size = new System.Drawing.Size(75, 23);
+            this.vectorDebug.TabIndex = 3;
+            this.vectorDebug.Text = "Vector Lines";
+            this.vectorDebug.UseVisualStyleBackColor = true;
+            this.vectorDebug.Click += new System.EventHandler(this.vectorDebug_Click);
             // 
             // AnimationWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.vectorDebug);
             this.Controls.Add(this.mode_lbl);
             this.Controls.Add(this.Switch_btn);
             this.Controls.Add(this.Reset_btn);
             this.DoubleBuffered = true;
             this.Name = "AnimationWindow";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "Bubbles";
             this.Load += new System.EventHandler(this.AnimationWindow_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.AnimationWindow_Paint);
@@ -90,6 +107,7 @@
         private System.Windows.Forms.Button Reset_btn;
         private System.Windows.Forms.Button Switch_btn;
         private System.Windows.Forms.Label mode_lbl;
+        private System.Windows.Forms.Button vectorDebug;
     }
 }
 

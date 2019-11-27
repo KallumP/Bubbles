@@ -12,7 +12,17 @@ namespace Bubbles
 {
     public partial class AnimationWindow : Form
     {
+
+        #region Variables
+
+        /// <summary>
+        /// What types of modes there are in the program
+        /// </summary>
         enum Modes { Create, Explode }
+
+        /// <summary>
+        /// The current mode of the program
+        /// </summary>
         Modes mode;
 
         /// <summary>
@@ -21,7 +31,9 @@ namespace Bubbles
         Environment environment;
 
         int startingMass = 200;
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Constructor
         /// </summary>
@@ -69,7 +81,7 @@ namespace Bubbles
         {
 
             //draws the environment
-            environment.Draw(e);
+            environment.Draw(e, Size);
         }
 
         /// <summary>
@@ -113,6 +125,11 @@ namespace Bubbles
             Setup();
         }
 
+        /// <summary>
+        /// Switches between the different modes in the program
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Switch_btn_Click(object sender, EventArgs e)
         {
 
@@ -123,5 +140,16 @@ namespace Bubbles
 
             mode_lbl.Text = "Mode: " + mode.ToString();
         }
+
+        /// <summary>
+        /// Changes if the program should show the velocity lines
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void vectorDebug_Click(object sender, EventArgs e)
+        {
+            environment.drawVectorLines = !environment.drawVectorLines; 
+        }
+        #endregion
     }
 }

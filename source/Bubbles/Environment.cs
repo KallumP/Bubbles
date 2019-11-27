@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Bubbles
 {
     class Environment
     {
-
+        #region Variables
         /// <summary>
         /// Used to store the bubbles in the environment
         /// </summary>
@@ -19,12 +20,23 @@ namespace Bubbles
         /// Gravitational constant
         /// </summary>
         int G = 30;
+        #endregion
 
+        #region Properties
+        /// <summary>
+        /// Debug values that determins whether the vector lines should be draw
+        /// </summary>
+        public bool drawVectorLines { get; set; }
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Constructor
         /// </summary>
         public Environment()
         {
+            //sets up the debug values
+            drawVectorLines = false;
 
             //resets the bubble id counter
             Bubble.nextId = 0;
@@ -156,7 +168,8 @@ namespace Bubbles
         /// Draws out the instance of the environment, along with everything in it
         /// </summary>
         /// <param name="e"></param>
-        public void Draw(PaintEventArgs e)
+        /// <param name="windowSize">The size of the window being draw to</param>
+        public void Draw(PaintEventArgs e, Size windowSize)
         {
 
             //ticks the environment first
@@ -169,7 +182,7 @@ namespace Bubbles
                 if (bubbles[i] != null)
 
                     //draws out the current bubble
-                    bubbles[i].Draw(e);
+                    bubbles[i].Draw(e, windowSize, drawVectorLines);
         }
 
         /// <summary>
@@ -198,7 +211,8 @@ namespace Bubbles
                                 if (bubbles[i].CheckCollision(bubbles[j]))
 
                                     //stops searching for more collisions
-                                    break;                            
+                                    break;
         }
+        #endregion
     }
 }

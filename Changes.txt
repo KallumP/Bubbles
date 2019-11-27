@@ -1,3 +1,6 @@
+Bubbles that are off screen will no longer be rendered, instead there will be a marker that where it is offscreen
+
+
 Collision now works, bubbles will combine masses on collision
 User can choose to either explode a clicked bubble, or create a new one on click
 

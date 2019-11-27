@@ -127,14 +127,78 @@ namespace Bubbles
         /// Draws the bubble
         /// </summary>
         /// <param name="e"></param>
-        public void Draw(PaintEventArgs e)
+        /// <param name="windowSize">The size of the window being drawn to</param>
+        /// <param name="velocityLines">If the program should draw the velocity lines of the bubble</param>
+        public void Draw(PaintEventArgs e, Size windowSize, bool velocityLines)
         {
+            Point pointer = new Point();
+            bool draw = true;
 
-            //draws the bubble with a default color, position and radius
-            e.Graphics.DrawEllipse(Pens.Blue, position.x - mass, position.y - mass, mass * 2, mass * 2);
+            //sets up the window size to be right actual size
+            windowSize.Width -= 17;
+            windowSize.Height -= 40;
 
-            //draws out the velocity of the bubble
-            e.Graphics.DrawLine(Pens.Black, position.x, position.y, position.x + velocity.x * 3, position.y + velocity.y * 3);
+            //checks to see if any part of the bubble was within the width
+            if (position.x - mass < windowSize.Width && position.x + mass > 0)
+            {
+
+                //saves the x position of the pointer as the bubble's x postion
+                pointer.X = (int)position.x;
+            }
+            else if (position.x - mass > windowSize.Width)
+            {
+
+                //saves the x position of the pointer as the right most side of the window
+                pointer.X = windowSize.Width - 10;
+                draw = false;
+            }
+            else if (position.x + mass < 0)
+            {
+
+                //saves the x position of the pointer as the left most side of the window
+                pointer.X = 5;
+                draw = false;
+            }
+
+
+            if (position.y - mass < windowSize.Height && position.y + mass > 0)
+            {
+
+                //saves the y position of the pointer as the bubble's y postion
+                pointer.Y = (int)position.y;
+            }
+            else if (position.y - mass > windowSize.Height)
+            {
+
+                //saves the y position of the pointer as the right most side of the window
+                pointer.Y = windowSize.Height - 10;
+                draw = false;
+            }
+            else if (position.y + mass < 0)
+            {
+
+                //saves the y position of the pointer as the left most side of the window
+                pointer.Y = 5;
+                draw = false;
+            }
+
+            //checks to see if the bubble should be drawn
+            if (draw)
+
+                //draws the bubble with a default color, position and radius
+                e.Graphics.DrawEllipse(Pens.Blue, position.x - mass, position.y - mass, mass * 2, mass * 2);
+
+            else
+
+                //draws out a pointer showing where the bubble is offscreen
+                e.Graphics.FillEllipse(Brushes.Red, pointer.X, pointer.Y, 5, 5);
+
+
+            //checks to see if the velocity lines should be drawn
+            if (velocityLines)
+
+                //draws out the velocity of the bubble
+                e.Graphics.DrawLine(Pens.Black, position.x, position.y, position.x + velocity.x * 3, position.y + velocity.y * 3);
 
             //draws out the id of the bubble
             //e.Graphics.DrawString(Id.ToString(), SystemFonts.DefaultFont, Brushes.Blue, position.x, position.y);
