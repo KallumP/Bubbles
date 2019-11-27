@@ -1,5 +1,5 @@
 ﻿namespace Bubbles {
-    partial class AnimationWindow {
+    partial class MainWindow {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -39,9 +39,11 @@
             // 
             // Reset_btn
             // 
+            this.Reset_btn.Enabled = false;
+            this.Reset_btn.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Reset_btn.Location = new System.Drawing.Point(12, 12);
             this.Reset_btn.Name = "Reset_btn";
-            this.Reset_btn.Size = new System.Drawing.Size(75, 23);
+            this.Reset_btn.Size = new System.Drawing.Size(75, 33);
             this.Reset_btn.TabIndex = 0;
             this.Reset_btn.Text = "Reset";
             this.Reset_btn.UseVisualStyleBackColor = true;
@@ -50,9 +52,11 @@
             // Switch_btn
             // 
             this.Switch_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Switch_btn.Location = new System.Drawing.Point(12, 415);
+            this.Switch_btn.Enabled = false;
+            this.Switch_btn.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Switch_btn.Location = new System.Drawing.Point(12, 406);
             this.Switch_btn.Name = "Switch_btn";
-            this.Switch_btn.Size = new System.Drawing.Size(88, 23);
+            this.Switch_btn.Size = new System.Drawing.Size(88, 32);
             this.Switch_btn.TabIndex = 1;
             this.Switch_btn.Text = "Switch Mode";
             this.Switch_btn.UseVisualStyleBackColor = true;
@@ -62,25 +66,29 @@
             // 
             this.mode_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.mode_lbl.AutoSize = true;
-            this.mode_lbl.Location = new System.Drawing.Point(13, 396);
+            this.mode_lbl.Enabled = false;
+            this.mode_lbl.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mode_lbl.Location = new System.Drawing.Point(12, 374);
             this.mode_lbl.Name = "mode_lbl";
             this.mode_lbl.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.mode_lbl.Size = new System.Drawing.Size(37, 13);
+            this.mode_lbl.Size = new System.Drawing.Size(56, 29);
             this.mode_lbl.TabIndex = 2;
             this.mode_lbl.Text = "Mode:";
             // 
             // vectorDebug
             // 
             this.vectorDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.vectorDebug.Enabled = false;
+            this.vectorDebug.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.vectorDebug.Location = new System.Drawing.Point(713, 12);
             this.vectorDebug.Name = "vectorDebug";
-            this.vectorDebug.Size = new System.Drawing.Size(75, 23);
+            this.vectorDebug.Size = new System.Drawing.Size(75, 33);
             this.vectorDebug.TabIndex = 3;
             this.vectorDebug.Text = "Vector Lines";
             this.vectorDebug.UseVisualStyleBackColor = true;
             this.vectorDebug.Click += new System.EventHandler(this.vectorDebug_Click);
             // 
-            // AnimationWindow
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -90,11 +98,12 @@
             this.Controls.Add(this.Switch_btn);
             this.Controls.Add(this.Reset_btn);
             this.DoubleBuffered = true;
-            this.Name = "AnimationWindow";
+            this.Name = "MainWindow";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "Bubbles";
             this.Load += new System.EventHandler(this.AnimationWindow_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.AnimationWindow_Paint);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyDown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AnimationWindow_MouseClick);
             this.ResumeLayout(false);
             this.PerformLayout();

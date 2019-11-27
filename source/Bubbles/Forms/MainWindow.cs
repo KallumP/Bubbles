@@ -1,29 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Bubbles
 {
-    public partial class AnimationWindow : Form
+    public partial class MainWindow : Form
     {
-
         #region Variables
-
         /// <summary>
         /// What types of modes there are in the program
         /// </summary>
-        enum Modes { Create, Explode }
-
-        /// <summary>
-        /// The current mode of the program
-        /// </summary>
-        Modes mode;
+        public enum Modes { Create, Explode }
 
         /// <summary>
         /// An environment instance
@@ -33,11 +20,18 @@ namespace Bubbles
         int startingMass = 200;
         #endregion
 
+        #region Properties
+        /// <summary>
+        /// The current mode of the program
+        /// </summary>
+        public Modes mode { get; set; }
+        #endregion
+
         #region Methods
         /// <summary>
         /// Constructor
         /// </summary>
-        public AnimationWindow()
+        public MainWindow()
         {
             InitializeComponent();
         }
@@ -148,8 +142,23 @@ namespace Bubbles
         /// <param name="e"></param>
         private void vectorDebug_Click(object sender, EventArgs e)
         {
-            environment.drawVectorLines = !environment.drawVectorLines; 
+            environment.drawVectorLines = !environment.drawVectorLines;
         }
         #endregion
+
+        /// <summary>
+        /// KeyDown event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Options o = new Options(this);
+
+                o.Show();
+            }
+        }
     }
 }

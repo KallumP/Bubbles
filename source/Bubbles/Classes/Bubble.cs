@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Bubbles
 {
@@ -138,47 +134,49 @@ namespace Bubbles
             windowSize.Width -= 17;
             windowSize.Height -= 40;
 
+            int inset = 5;
+
             //checks to see if any part of the bubble was within the width
-            if (position.x - mass < windowSize.Width && position.x + mass > 0)
+            if (position.x - mass < windowSize.Width - inset && position.x + mass > inset)
             {
 
                 //saves the x position of the pointer as the bubble's x postion
                 pointer.X = (int)position.x;
             }
-            else if (position.x - mass > windowSize.Width)
+            else if (position.x - mass > windowSize.Width - inset)
             {
 
                 //saves the x position of the pointer as the right most side of the window
-                pointer.X = windowSize.Width - 10;
+                pointer.X = windowSize.Width - inset;
                 draw = false;
             }
-            else if (position.x + mass < 0)
+            else if (position.x + mass < inset)
             {
 
                 //saves the x position of the pointer as the left most side of the window
-                pointer.X = 5;
+                pointer.X = inset;
                 draw = false;
             }
 
 
-            if (position.y - mass < windowSize.Height && position.y + mass > 0)
+            if (position.y - mass < windowSize.Height - inset && position.y + mass > inset)
             {
 
                 //saves the y position of the pointer as the bubble's y postion
                 pointer.Y = (int)position.y;
             }
-            else if (position.y - mass > windowSize.Height)
+            else if (position.y - mass > windowSize.Height - inset)
             {
 
                 //saves the y position of the pointer as the right most side of the window
-                pointer.Y = windowSize.Height - 10;
+                pointer.Y = windowSize.Height - inset;
                 draw = false;
             }
-            else if (position.y + mass < 0)
+            else if (position.y + mass < inset)
             {
 
                 //saves the y position of the pointer as the left most side of the window
-                pointer.Y = 5;
+                pointer.Y = inset;
                 draw = false;
             }
 

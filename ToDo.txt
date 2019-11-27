@@ -1,14 +1,21 @@
-Holding down on the screen will start to make a bubble that starts small and grows until mouse up
 
+
+Settings:
 On a certain keycombination, open the settings window.
 Here you can select the increase rate, the speed at which a bubble grows when adding to the window
 change the color
 start size
 mass
 
+Animate the debug part (slowly make the window larger, and move the buttons up from the bottom)
+figure out why the timer stops ticking immediately
 
+
+Functionality:
 Dont use a random outward movement, and always have the bubbles go straight outward at a refular angle intervale
 
 collision will make the bubbles combine masses (and have the net velocity of the two bubbles)
 
 Use radius (calculated from mass) to draw the bubble
+
+Holding down on the screen will start to make a bubble that starts small and grows until mouse up
