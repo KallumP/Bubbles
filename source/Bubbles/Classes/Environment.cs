@@ -16,7 +16,7 @@ namespace Bubbles
         /// <summary>
         /// Gravitational constant
         /// </summary>
-        int G = 70;
+        int G = 50;
         #endregion
 
         #region Properties

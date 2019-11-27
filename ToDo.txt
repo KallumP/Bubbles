@@ -8,7 +8,8 @@ start size
 mass
 
 Animate the debug part (slowly make the window larger, and move the buttons up from the bottom)
-figure out why the timer stops ticking immediately
+
+
 
 
 Functionality:

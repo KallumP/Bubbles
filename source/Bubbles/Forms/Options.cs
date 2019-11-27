@@ -18,11 +18,23 @@ namespace Bubbles
         /// </summary>
         bool debugOpen;
 
-        #region ResizeAnimationVariables
+        bool checkBoxFocus;
+
+        #region AnimationVariables
         /// <summary>
-        /// The difference in sizes for the form resize animation
+        /// The length used for all animations
+        /// </summary>
+        int animationLength;
+
+        /// <summary>
+        /// The size's change steps for the form resize animation
         /// </summary>
         Point sizeAnimationStep;
+
+        /// <summary>
+        /// The amount to resize the form by
+        /// </summary>
+        int resizeAmount;
 
         /// <summary>
         /// The time left within the animation
@@ -33,26 +45,30 @@ namespace Bubbles
         /// Stores is the window is currently animating
         /// </summary>
         bool animating;
-
-        /// <summary>
-        /// Timer used to animate the form resize
-        /// </summary>
-        System.Timers.Timer sizeAnimationTimer;
-
-        /// <summary>
-        /// The interval between ticks for the timer;
-        /// </summary>
-        int timerInterval = 100;
         #endregion
         #endregion
 
-        public Options(MainWindow _parent)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="_parent">A reference to the main window</param>
+        /// <param name="drawVel">If the drawVelocity was true in the environment</param>
+        public Options(MainWindow _parent, bool drawVel)
         {
             InitializeComponent();
 
             parent = _parent;
 
+            animationLength = 100;
+
+            resizeAmount = 150;
+
+            checkBoxFocus = false;
+
             animating = false;
+
+            VelocityLines_check.Checked = drawVel;
+
         }
 
         /// <summary>
@@ -71,21 +87,49 @@ namespace Bubbles
         /// <param name="e"></param>
         void CheckForDebugAction(MouseEventArgs e)
         {
-            if (!debugOpen)
 
-                //checks to see if the mouse's y was within the control
-                if (e.Y > 0 && e.Y < Size.Height)
+            int triggerStart = 160;
+            int triggerEnd = 400;
 
-                    //checks to see if the mouse's x was in the right place for debug
-                    if (e.X > 200 && e.X < 250 && !debugOpen)
-                    
-                        //animates the window to open the debug panel
-                        SetupSizeAnimation(Size, new Size(Size.Width + 100, Size.Height), 500);
+            //checks to see if the mouse was in the right place to trigger the debug open
+            if (e.Y > 0 && e.Y < Size.Height && e.X > triggerStart && e.X < triggerEnd)
+            {
 
-                    else if (e.X > 0 && e.X <= 200 && debugOpen)
-                    
-                        //animates the window to collapse the debug panel
-                        SetupSizeAnimation(Size, new Size(Size.Width - 100, Size.Height), 500);    
+                //checks to see if the debug was closed
+                if (!debugOpen)
+
+                    OpenDebug();
+            }
+            else
+            {
+
+                //checks to see if the debug was open
+                if (debugOpen)
+
+                    CloseDebug();
+            }
+        }
+
+        /// <summary>
+        /// Starts the debug open sequence
+        /// </summary>
+        void OpenDebug()
+        {
+            //animates the window to open the debug panel
+            SetupSizeAnimation(Size, new Size(Size.Width + resizeAmount, Size.Height), animationLength);
+        }
+
+        /// <summary>
+        /// Starts the debug close sequence
+        /// </summary>
+        void CloseDebug()
+        {
+
+            //doesnt close the debug if the mouse is over the checkbox
+            if (!checkBoxFocus)
+
+                //animates the window to collapse the debug panel
+                SetupSizeAnimation(Size, new Size(Size.Width - resizeAmount, Size.Height), animationLength);
         }
 
         /// <summary>
@@ -110,7 +154,7 @@ namespace Bubbles
                 timeLeft = length;
 
                 //figures out how many time steps there will be
-                int timeSteps = timeLeft / timerInterval;
+                int timeSteps = timeLeft / SizeAnimationTimer.Interval;
 
                 Point sizeAnimationDifference = new Point();
 
@@ -124,14 +168,7 @@ namespace Bubbles
                 sizeAnimationStep.X = sizeAnimationDifference.X / timeSteps;
                 sizeAnimationStep.Y = sizeAnimationDifference.Y / timeSteps;
 
-
-                //sets up the timer for the animation
-                sizeAnimationTimer = new System.Timers.Timer();
-
-                sizeAnimationTimer.Interval = timerInterval;
-                sizeAnimationTimer.AutoReset = true;
-                sizeAnimationTimer.Elapsed += AnimateResize;
-                sizeAnimationTimer.Start();
+                SizeAnimationTimer.Start();
             }
         }
 
@@ -144,24 +181,60 @@ namespace Bubbles
         {
 
             //makes sure that the timer is ticking for the right amount of time
-            if (timeLeft <= 0)
+            if (timeLeft > 0)
             {
-                Console.WriteLine(timeLeft);
-                //Size newSize = new Size(Size.Width + sizeAnimationStep.X, Size.Height + sizeAnimationStep.Y);
-                //Size = newSize;
+                //Console.WriteLine(timeLeft);
+                Size newSize = new Size(Size.Width + sizeAnimationStep.X, Size.Height + sizeAnimationStep.Y);
+                Size = newSize;
             }
             else
             {
                 //stops the timer is too long has passed
-                sizeAnimationTimer.Stop();
+                SizeAnimationTimer.Stop();
+
                 animating = false;
             }
 
-
-
-
             //keeps track of how much time has passed
-            timeLeft -= (int)sizeAnimationTimer.Interval;
+            timeLeft -= (int)SizeAnimationTimer.Interval;
+        }
+
+        #region Mode Switching
+        private void SpawnMass_radio_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.mode = MainWindow.Modes.Create;
+            parent.SwitchModes(false);
+        }
+
+        private void ExplodeMass_radio_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.mode = MainWindow.Modes.Explode;
+            parent.SwitchModes(false);
+        }
+
+        private void CreateRockets_radio_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.mode = MainWindow.Modes.Rocket;
+            parent.SwitchModes(false);
+        }
+        #endregion
+
+        /// <summary>
+        /// Click event for the velocity lines checkbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VelocityLines_check_Click(object sender, EventArgs e)
+        {
+            bool velocityLinesChecked = false;
+
+            //checks to see if the box was checked
+            if (VelocityLines_check.Checked)
+                velocityLinesChecked = true;
+
+            //sends the status of the checkbox to the main form
+            parent.Debugs(velocityLinesChecked);
+
         }
     }
 }

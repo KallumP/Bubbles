@@ -1,33 +1,32 @@
-Bubbles that are off screen will no longer be rendered, instead there will be a marker that where it is offscreen
+v3
+Options window now has all settings
+Options window is now animated
+Options window started
 
+
+v2
+Bubbles that are off screen will no longer be rendered, instead there will be a marker that where it is offscreen
 
 Collision now works, bubbles will combine masses on collision
 User can choose to either explode a clicked bubble, or create a new one on click
 
 
+v1
 Gravity now works (the gravity's CreateForce has the angle fixed, but other CreateForce method does not which seems to work properly)
 Window now maximises on load
 
-
 Gravity function now works (maybe a bit of tweaking required)
-
 
 Gravity function started
 
-
 Explosion has been reverted to be completeley random in direction
-
 
 Explosion now sends the child bubbles in regular angle intervals from the center of explosion
 
-
 Explosion physics now work bubbles
-
 
 Movement now works using newtonian physics
 
-
 Explosion physics started, a bubble will create two bubbles on click, and the original bubble will be deleted
-
 
 Program made.
