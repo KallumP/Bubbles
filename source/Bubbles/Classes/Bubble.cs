@@ -120,6 +120,61 @@ namespace Bubbles
         }
 
         /// <summary>
+        /// Checks to see if the bubble was clicked
+        /// </summary>
+        /// <param name="x">The x coordinate of the click</param>
+        /// <param name="y">The y coordinate of the click</param>
+        public void CheckClick(int x, int y)
+        {
+
+            //gets the x distance between the two points
+            float xDist = position.x - x;
+
+            //gets the y distance between the two points
+            float yDist = position.y - y;
+
+            //calculates the hypotenuse using pythagoras
+            float dist = (float)Math.Sqrt(Math.Pow(xDist, 2) + Math.Pow(yDist, 2));
+
+            //checks to see if the distance found is smaller than the radius
+            if (dist < mass)
+                Click();
+        }
+
+        /// <summary>
+        /// What happens when the bubble is clicked
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        void Click()
+        {
+            Explode();
+        }
+
+        /// <summary>
+        /// Checks if the inputed mouse location hovered over this bubble
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public bool CheckHover(int x, int y)
+        {
+            //gets the x distance between the two points
+            float xDist = position.x - x;
+
+            //gets the y distance between the two points
+            float yDist = position.y - y;
+
+            //calculates the hypotenuse using pythagoras
+            float dist = (float)Math.Sqrt(Math.Pow(xDist, 2) + Math.Pow(yDist, 2));
+
+            //checks to see if the distance found is smaller than the radius
+            if (dist < mass)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
         /// Draws the bubble
         /// </summary>
         /// <param name="e"></param>
@@ -230,38 +285,6 @@ namespace Bubbles
         }
 
         /// <summary>
-        /// Checks to see if the bubble was clicked
-        /// </summary>
-        /// <param name="x">The x coordinate of the click</param>
-        /// <param name="y">The y coordinate of the click</param>
-        public void CheckClick(int x, int y)
-        {
-
-            //gets the x distance between the two points
-            float xDist = position.x - x;
-
-            //gets the y distance between the two points
-            float yDist = position.y - y;
-
-            //calculates the hypotenuse using pythagoras
-            float dist = (float)Math.Sqrt(Math.Pow(xDist, 2) + Math.Pow(yDist, 2));
-
-            //checks to see if the distance found is smaller than the radius
-            if (dist < mass)
-                Click();
-        }
-
-        /// <summary>
-        /// What happens when the bubble is clicked
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        void Click()
-        {
-            Explode();
-        }
-
-        /// <summary>
         /// Checks to see if there was a collision with this and the input bubble
         /// </summary>
         /// <param name="b">The bubble to check for a collision with</param>
@@ -320,7 +343,7 @@ namespace Bubbles
         /// <summary>
         /// Makes the bubble explode into smaller bubbles
         /// </summary>
-        void Explode()
+        public void Explode()
         {
 
             //sets up how many bubbles to take in the explosion
@@ -349,9 +372,6 @@ namespace Bubbles
             //Removes this bubble instance after the explosion
             environment.RemoveBubble(Id);
         }
-
-
-
         #endregion
     }
 }

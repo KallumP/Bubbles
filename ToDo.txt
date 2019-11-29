@@ -20,3 +20,15 @@ collision will make the bubbles combine masses (and have the net velocity of the
 Use radius (calculated from mass) to draw the bubble
 
 Holding down on the screen will start to make a bubble that starts small and grows until mouse up
+
+rockets
+snap to a bubble, and on space lift off
+maybe inherit from the bubbles class
+rockets will eventually have fuel that when used, slowly gets lighter
+when removing the rocket, check to see if it hasnt taken off yet
+
+trail of bubbles locations
+
+drawvector debug setting should be static andin bubble
+
+update the rockets position each tick so tht it stays snapped to a bubble

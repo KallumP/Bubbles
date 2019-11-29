@@ -67,8 +67,7 @@ namespace Bubbles
 
             animating = false;
 
-            VelocityLines_check.Checked = drawVel;
-
+            CheckBoxes(drawVel);
         }
 
         /// <summary>
@@ -200,6 +199,7 @@ namespace Bubbles
         }
 
         #region Mode Switching
+
         private void SpawnMass_radio_CheckedChanged(object sender, EventArgs e)
         {
             parent.mode = MainWindow.Modes.Create;
@@ -216,6 +216,24 @@ namespace Bubbles
         {
             parent.mode = MainWindow.Modes.Rocket;
             parent.SwitchModes(false);
+        }
+
+        /// <summary>
+        /// Checks the relevant boxes
+        /// </summary>
+        /// <param name="drawVel">The draw velocity lines debug setting</param>
+        void CheckBoxes(bool drawVel)
+        {
+            VelocityLines_check.Checked = drawVel;
+
+            if (parent.mode == MainWindow.Modes.Create)
+                SpawnMass_radio.Checked = true;
+
+            else if (parent.mode == MainWindow.Modes.Explode)
+                ExplodeMass_radio.Checked = true;
+
+            else if (parent.mode == MainWindow.Modes.Rocket)
+                CreateRockets_radio.Checked = true;
         }
         #endregion
 

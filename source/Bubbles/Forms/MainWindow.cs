@@ -44,7 +44,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AnimationWindow_Load(object sender, EventArgs e)
+        private void MainWindow_Load(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Maximized;
 
@@ -74,7 +74,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AnimationWindow_Paint(object sender, PaintEventArgs e)
+        private void MainWindow_Paint(object sender, PaintEventArgs e)
         {
 
             //draws the environment
@@ -98,43 +98,21 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AnimationWindow_MouseClick(object sender, MouseEventArgs e)
+        private void MainWindow_MouseClick(object sender, MouseEventArgs e)
         {
-
-            if (mode == Modes.Create)
-
-                //adds a new bubble on click
-                environment.AddBubble(new Bubble(20, new Vector2D(e.X, e.Y), new Vector2D(100, 0), environment, false, true));
-
-            else if (mode == Modes.Explode)
-
-                //sends the click event into the environment
-                environment.Click(e.X, e.Y);
-
-            else if (mode == Modes.Rocket)
-            {
-
-            }
+            //sends the click event into the environment
+            environment.Click(mode, e.X, e.Y);
         }
 
         /// <summary>
-        /// Switches between the different modes in the program
+        /// Mouse move event
         /// </summary>
-        /// <param name="switchMode">If the program should switch the current mode</param>
-        public void SwitchModes(bool switchMode)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_MouseMove(object sender, MouseEventArgs e)
         {
-
-            //checks to see if the mode should be switched
-            if (switchMode)
-                if (mode == Modes.Create)
-                    mode = Modes.Explode;
-                else if (mode == Modes.Explode)
-                    mode = Modes.Rocket;
-                else
-                    mode = Modes.Create;
-
-            //updates the label
-            mode_lbl.Text = "Mode: " + mode.ToString();
+            //sends the mouse move event
+            environment.Hover(mode, e.X, e.Y);
         }
 
         /// <summary>
@@ -167,6 +145,33 @@ namespace Bubbles
                 Options o = new Options(this, environment.drawVectorLines);
                 o.Show();
             }
+
+            else if (e.KeyCode == Keys.Space)
+
+                environment.KeyDown(mode, e.KeyCode.ToString());
+        }
+
+        /// <summary>
+        /// Switches between the different modes in the program
+        /// </summary>
+        /// <param name="switchMode">If the program should switch the current mode</param>
+        public void SwitchModes(bool switchMode)
+        {
+
+            //checks to see if the mode should be switched
+            if (switchMode)
+
+                if (mode == Modes.Create)
+                    mode = Modes.Explode;
+
+                else if (mode == Modes.Explode)
+                    mode = Modes.Rocket;
+
+                else if (mode == Modes.Rocket)
+                    mode = Modes.Create;
+
+            //updates the label
+            mode_lbl.Text = "Mode: " + mode.ToString();
         }
 
         /// <summary>
@@ -178,5 +183,7 @@ namespace Bubbles
             environment.drawVectorLines = velocityLines;
         }
         #endregion
+
+
     }
 }
