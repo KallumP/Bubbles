@@ -1,3 +1,7 @@
+v4
+Rockets added, still need some tweaking
+Mode resetting glitch fixed
+
 v3
 Options window now has all settings
 Options window is now animated

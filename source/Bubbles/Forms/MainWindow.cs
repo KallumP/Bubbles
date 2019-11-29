@@ -78,7 +78,7 @@ namespace Bubbles
         {
 
             //draws the environment
-            environment.Draw(e, Size);
+            environment.Draw(e, Size, ProgramTimer.Interval);
         }
 
         /// <summary>

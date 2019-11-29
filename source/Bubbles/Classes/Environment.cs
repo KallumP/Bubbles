@@ -217,7 +217,7 @@ namespace Bubbles
         /// <summary>
         /// The tick sequence
         /// </summary>
-        public void Tick()
+        public void Tick(int timeInterval)
         {
 
             //implements gravity
@@ -234,6 +234,15 @@ namespace Bubbles
                     //ticks each bubble
                     bubbles[i].Move();
 
+            //loops backwards through the bubbles
+            for (int i = rockets.Count - 1; i >= 0; i--)
+
+                //makes sure that the bubble exists
+                if (rockets[i] != null)
+
+                    //ticks each bubble
+                    rockets[i].Tick(timeInterval);
+
             //checks for collisions
             CheckCollision();
         }
@@ -243,11 +252,12 @@ namespace Bubbles
         /// </summary>
         /// <param name="e"></param>
         /// <param name="windowSize">The size of the window being draw to</param>
-        public void Draw(PaintEventArgs e, Size windowSize)
+        /// <param name="timeInterval">Time passed since the last tick</param>
+        public void Draw(PaintEventArgs e, Size windowSize, int timeInterval)
         {
 
             //ticks the environment first
-            Tick();
+            Tick(timeInterval);
 
             //checks to see that the temp rocket exists
             if (tempRocket != null)
@@ -270,8 +280,6 @@ namespace Bubbles
 
                     //draws out the current bubble
                     bubbles[i].Draw(e, windowSize, drawVectorLines);
-
-
         }
 
         /// <summary>
@@ -293,7 +301,7 @@ namespace Bubbles
                         for (int j = bubbles.Count - 1; j >= 0; j--)
 
                             //makes sure that the bubble exists
-                            if (bubbles[i] != null)
+                            if (bubbles[j] != null)
 
                                 //makes sure that bubbles isnt attracting to itself
                                 if (i != j)
@@ -331,9 +339,8 @@ namespace Bubbles
                     //loops backwards through each of the bubbles
                     for (int j = i - 1; j >= 0; j--)
 
-
                         //makes sure that the bubble exists
-                        if (bubbles[i] != null)
+                        if (bubbles[j] != null)
 
                             //makes sure that bubbles isnt colliding with itself
                             if (i != j)
@@ -356,28 +363,31 @@ namespace Bubbles
                 //makes sure that the rocket exists
                 if (rockets[i] != null)
 
-                    //loops through each of the bubbles to see what force to apply
-                    for (int j = bubbles.Count - 1; j >= 0; j--)
+                    //checks to see if the rocket is available to have gravity applied to it (only if it has taken off of is falling)
+                    if (rockets[i].status == Rocket.Statuses.takeOff || rockets[i].status == Rocket.Statuses.freeFall)
 
-                        //makes sure that the bubble exists
-                        if (bubbles[i] != null)
+                        //loops through each of the bubbles to see what force to apply
+                        for (int j = bubbles.Count - 1; j >= 0; j--)
 
-                            //checks to see if the current bubble will induce a force
-                            if (!bubbles[j].ZeroMass)
-                            {
+                            //makes sure that the bubble exists
+                            if (bubbles[j] != null)
 
-                                //gets the distance between the two bubbles
-                                float distance = Vector2D.Distance(rockets[i].position, bubbles[j].position);
+                                //checks to see if the current bubble will induce a force
+                                if (!bubbles[j].ZeroMass)
+                                {
 
-                                //gets the angle between the two bubbles
-                                float angle = Vector2D.Angle(rockets[i].position, bubbles[j].position);
+                                    //gets the distance between the two bubbles
+                                    float distance = Vector2D.Distance(rockets[i].position, bubbles[j].position);
 
-                                //creates a gravitational force using F = (GMm) / (r^2)
-                                Vector2D force = Vector2D.CreateGravityFixedVector(G * bubbles[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2), angle);
+                                    //gets the angle between the two bubbles
+                                    float angle = Vector2D.Angle(rockets[i].position, bubbles[j].position);
 
-                                //applies the gravitational force to the bubble;
-                                rockets[i].ApplyForce(force);
-                            }
+                                    //creates a gravitational force using F = (GMm) / (r^2)
+                                    Vector2D force = Vector2D.CreateGravityFixedVector(G * rockets[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2), angle);
+
+                                    //applies the gravitational force to the bubble;
+                                    rockets[i].ApplyForce(force);
+                                }
         }
 
         /// <summary>
@@ -385,7 +395,7 @@ namespace Bubbles
         /// </summary>
         void AddTempRocket()
         {
-            tempRocket = new Rocket(30, this);
+            tempRocket = new Rocket(30, this, 500);
         }
 
         /// <summary>
