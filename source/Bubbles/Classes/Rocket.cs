@@ -39,7 +39,7 @@ namespace Bubbles
         /// <summary>
         /// An enum containing all the statuses that the rocket can be in
         /// </summary>
-        public enum Statuses { temp, snapped, takeOff, freeFall }
+        public enum Statuses { temp, tempSnapped, snapped, takeOff, freeFall }
         #endregion
 
         #region Properties
@@ -96,7 +96,7 @@ namespace Bubbles
         {
 
             //checks that the rocket is snapped to a bubble
-            if (status == Statuses.snapped)
+            if (status == Statuses.tempSnapped)
 
                 UpdatePos((int)position.x, (int)position.y);
 
@@ -105,6 +105,10 @@ namespace Bubbles
             {
                 GenerateThrust(timeInterval);
 
+                Move();
+            }
+            else if (status == Statuses.freeFall)
+            {
                 Move();
             }
         }
@@ -117,8 +121,63 @@ namespace Bubbles
         public void Draw(PaintEventArgs e, Size windowSize)
         {
 
-            e.Graphics.FillRectangle(Brushes.Green, position.x, position.y, 5, 5);
+            e.Graphics.FillRectangle(Brushes.Green, position.x - 5, position.y - 5, 10, 10);
 
+        }
+
+        /// <summary>
+        /// Snaps to a particular bubble
+        /// </summary>
+        /// <param name="b">The bubble to snap to</param>
+        /// <param name="x">The mouse x</param>
+        /// <param name="y">The mouse y</param>
+        public void Snap(Bubble b, int x, int y)
+        {
+
+            //sets what bubble it is snapped to
+            snappedTo = b;
+
+            //changes the status to snapped
+            status = Statuses.tempSnapped;
+
+            //updates the position to appear snapped
+            UpdatePos(x, y);
+        }
+
+        /// <summary>
+        /// Snapps to a newly created bubble
+        /// </summary>
+        /// <param name="b">The bubble to snap to</param>
+        public void ReSnap(Bubble b)
+        {
+            //sets what bubble it is snapped to
+            snappedTo = b;
+
+            UpdatePos((int)position.x, (int)position.y);
+        }
+
+        /// <summary>
+        /// Detatches from the bubble
+        /// </summary>
+        public void UnSnap()
+        {
+
+            //removes the bubble that was being snapped to
+            snappedTo = null;
+
+            //updates the status
+            status = Statuses.temp;
+
+        }
+
+        /// <summary>
+        /// Removes the temporary status from the rocket
+        /// </summary>
+        public void RemoveTemp()
+        {
+
+            //saves the status as not being temporary
+            status = Statuses.tempSnapped;
         }
 
         /// <summary>
@@ -136,45 +195,14 @@ namespace Bubbles
             }
             else
             {
-                //thrustAngle = (float)(0.5 * Math.PI + Vector2D.Angle(snappedTo.position, new Vector2D(x, y)));
+
+                //calculates the angle between the bubble center and the rocket
                 thrustAngle = (float)(2 * Math.PI - (3 * Math.PI / 2 + Vector2D.Angle(snappedTo.position, new Vector2D(x, y))));
 
+                //updates the position to stay snapped to the bubble
                 position.x = snappedTo.mass * (float)Math.Sin(thrustAngle) + snappedTo.position.x;
                 position.y = snappedTo.mass * (float)Math.Cos(thrustAngle) + snappedTo.position.y;
             }
-
-        }
-
-        /// <summary>
-        /// Snaps to a particular bubble
-        /// </summary>
-        /// <param name="b">The bubble to snap to</param>
-        /// <param name="x">The mouse x</param>
-        /// <param name="y">The mouse y</param>
-        public void Snap(Bubble b, int x, int y)
-        {
-
-            //sets what bubble it is snapped to
-            snappedTo = b;
-
-            //changes the status
-            status = Statuses.snapped;
-
-            //updates the position to appear snapped
-            UpdatePos(x, y);
-        }
-
-        /// <summary>
-        /// Detatches from the bubble
-        /// </summary>
-        public void UnSnap()
-        {
-
-            //removes the bubble that was being snapped to
-            snappedTo = null;
-
-            //updates the status
-            status = Statuses.temp;
 
         }
 
@@ -209,10 +237,16 @@ namespace Bubbles
 
                 //applies the force
                 ApplyForce(force);
-            }
 
-            //reduces the fuel time by the time time that passed
-            fuelTime -= timeInterval;
+                //reduces the fuel time by the time time that passed
+                fuelTime -= timeInterval;
+            }
+            else
+            {
+
+                //changes the status to freefall
+                status = Statuses.freeFall;
+            }
         }
 
         /// <summary>
@@ -234,7 +268,7 @@ namespace Bubbles
                 //constrains the velocity
                 velocity.Constrain(terminalVelocity);
         }
-    
+
         /// <summary>
         /// Moves the rocket by the velocity
         /// </summary>

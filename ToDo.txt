@@ -1,19 +1,12 @@
-
-
 Settings:
-On a certain keycombination, open the settings window.
 Here you can select the increase rate, the speed at which a bubble grows when adding to the window
 change the color
 start size
 mass
 
-Animate the debug part (slowly make the window larger, and move the buttons up from the bottom)
-
-
 
 
 Functionality:
-Dont use a random outward movement, and always have the bubbles go straight outward at a refular angle intervale
 
 collision will make the bubbles combine masses (and have the net velocity of the two bubbles)
 
@@ -21,14 +14,24 @@ Use radius (calculated from mass) to draw the bubble
 
 Holding down on the screen will start to make a bubble that starts small and grows until mouse up
 
-rockets
-snap to a bubble, and on space lift off
-maybe inherit from the bubbles class
-rockets will eventually have fuel that when used, slowly gets lighter
-when removing the rocket, check to see if it hasnt taken off yet
-
 trail of bubbles locations
 
-drawvector debug setting should be static andin bubble
+draw velocity debug setting should be static and in bubble
+
+Don't use IDs, just remove from the bubble object itself as the identifier
+
+rockets
+maybe inherit from the bubbles class
+
+rockets will eventually have fuel that when used, slowly gets lighter
 
 update the rockets position each tick so tht it stays snapped to a bubble
+
+When a rocket collides, resnap it, but still apply force (collided mode). 
+If the force's center of mass direction component is negative (pointing away from the mass), then let it get attracted to wards that force
+
+use a tempSnapped mode to signify that the rocket has snapped to a bubble but is still a temp rocket
+
+Use an interface to check if something should be attracted
+
+when a bubble collides, resnap if the one of the two bubbles contained a rocket (loop through each rocket and see if the bubbles being removed were in that rocekt)

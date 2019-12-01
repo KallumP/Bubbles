@@ -54,43 +54,6 @@ namespace Bubbles
         }
 
         /// <summary>
-        /// Adds a new bubbles into the environment's list of bubbles
-        /// </summary>
-        /// <param name="_mass">The mass of the bubble</param>
-        /// <param name="_radius">The radius of the bubble</param>
-        /// <param name="_position">The position of the bubble</param>
-        public void AddBubble(Bubble b)
-        {
-
-            //adds the bubble into the list
-            bubbles.Add(b);
-        }
-
-        /// <summary>
-        /// Removes a selected bubble from the list
-        /// </summary>
-        /// <param name="id">The id of the bubble to remove</param>
-        public void RemoveBubble(int id)
-        {
-
-            //loops backwards through the bubbles
-            for (int i = bubbles.Count - 1; i >= 0; i--)
-            {
-
-                //makes sure that the bubble exists
-                if (bubbles[i].Id == id)
-                {
-
-                    //ticks each bubble
-                    bubbles.RemoveAt(i);
-
-                    //stops searching
-                    break;
-                }
-            }
-        }
-
-        /// <summary>
         /// The click event
         /// </summary>
         /// <param name="x">The x coord of the click</param>
@@ -125,11 +88,11 @@ namespace Bubbles
                     AddTempRocket();
 
                 //checks to see if the temp rocket wasn't snapped to a bubble
-                else if (tempRocket.snappedTo == null)
+                else if (tempRocket.status == Rocket.Statuses.temp)
                     RemoveTempRocket();
 
                 //checks to see if the temp rocket was snapped to a bubble
-                else if (tempRocket.snappedTo != null)
+                else if (tempRocket.status == Rocket.Statuses.tempSnapped)
                     AddRocket();
 
         }
@@ -170,9 +133,7 @@ namespace Bubbles
 
                                 //stops searching after a bubble was found
                                 break;
-
                             }
-
 
                     //checks to see if the position needs to be updated
                     if (updatePos)
@@ -221,7 +182,7 @@ namespace Bubbles
         {
 
             //implements gravity
-            Attract();
+            AttractBubbles();
 
             AttractRockets();
 
@@ -244,7 +205,7 @@ namespace Bubbles
                     rockets[i].Tick(timeInterval);
 
             //checks for collisions
-            CheckCollision();
+            CheckBubbleCollision();
         }
 
         /// <summary>
@@ -283,9 +244,46 @@ namespace Bubbles
         }
 
         /// <summary>
+        /// Adds a new bubbles into the environment's list of bubbles
+        /// </summary>
+        /// <param name="_mass">The mass of the bubble</param>
+        /// <param name="_radius">The radius of the bubble</param>
+        /// <param name="_position">The position of the bubble</param>
+        public void AddBubble(Bubble b)
+        {
+
+            //adds the bubble into the list
+            bubbles.Add(b);
+        }
+
+        /// <summary>
+        /// Removes a selected bubble from the list
+        /// </summary>
+        /// <param name="id">The id of the bubble to remove</param>
+        public void RemoveBubble(int id)
+        {
+
+            //loops backwards through the bubbles
+            for (int i = bubbles.Count - 1; i >= 0; i--)
+            {
+
+                //makes sure that the bubble exists
+                if (bubbles[i].Id == id)
+                {
+
+                    //ticks each bubble
+                    bubbles.RemoveAt(i);
+
+                    //stops searching
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Applies forces to the bubbles using gravity from other bubbles
         /// </summary>
-        void Attract()
+        void AttractBubbles()
         {
 
             //loops backwards through each of the bubbles to apply the force
@@ -327,7 +325,7 @@ namespace Bubbles
         /// <summary>
         /// Checks each of the bubles to see of any of them collided
         /// </summary>
-        void CheckCollision()
+        void CheckBubbleCollision()
         {
 
             //loops backwards through each of the bubbles
@@ -350,6 +348,53 @@ namespace Bubbles
 
                                     //stops searching for more collisions
                                     break;
+        }
+
+        /// <summary>
+        /// Adds a temporary rocket into the environment
+        /// </summary>
+        void AddTempRocket()
+        {
+            tempRocket = new Rocket(30, this, 500);
+        }
+
+        /// <summary>
+        /// Removes the temporary rocket from the environment
+        /// </summary>
+        void RemoveTempRocket()
+        {
+            tempRocket = null;
+        }
+
+        /// <summary>
+        /// Adds the temp rocket to the list of rockets
+        /// </summary>
+        void AddRocket()
+        {
+
+            //checks to see if there was a temp rocket
+            if (tempRocket != null)
+            {
+
+                //remvoes the temp status
+                tempRocket.RemoveTemp();
+
+                rockets.Add(tempRocket);
+            }
+
+
+            //removes the temp rocket
+            RemoveTempRocket();
+        }
+
+        /// <summary>
+        /// Removes the input rocket from the list
+        /// </summary>
+        /// <param name="r"></param>
+        void RemoveRocket(Rocket r)
+        {
+
+            rockets.Remove(r);
         }
 
         /// <summary>
@@ -391,45 +436,16 @@ namespace Bubbles
         }
 
         /// <summary>
-        /// Adds a temporary rocket into the environment
+        /// Checks to see if a rocket collides with a bubble
         /// </summary>
-        void AddTempRocket()
+        void CheckRocketCollision()
         {
-            tempRocket = new Rocket(30, this, 500);
+
         }
 
         /// <summary>
-        /// Removes the temporary rocket from the environment
+        /// Causes all the bubbles to explode
         /// </summary>
-        void RemoveTempRocket()
-        {
-            tempRocket = null;
-        }
-
-        /// <summary>
-        /// Adds the temp rocket to the list of rockets
-        /// </summary>
-        void AddRocket()
-        {
-
-            //checks to see if there was a temp rocket
-            if (tempRocket != null)
-                rockets.Add(tempRocket);
-
-            //removes the temp rocket
-            RemoveTempRocket();
-        }
-
-        /// <summary>
-        /// Removes the input rocket from the list
-        /// </summary>
-        /// <param name="r"></param>
-        void RemoveRocket(Rocket r)
-        {
-
-            rockets.Remove(r);
-        }
-
         void ExplodeAllBubbles()
         {
 
@@ -442,6 +458,9 @@ namespace Bubbles
                     bubbles[i].Explode();
         }
 
+        /// <summary>
+        /// Makes each of the rockets take off
+        /// </summary>
         void TakeOffAllRockets()
         {
             //loops backwards through each of the rockets to apply the force
