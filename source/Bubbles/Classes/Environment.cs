@@ -122,7 +122,7 @@ namespace Bubbles
                         if (bubbles[i] != null)
 
                             //calls the check hover event on each bubble
-                            if (bubbles[i].CheckHover(x, y))
+                            if (bubbles[i].CheckInside(x, y))
                             {
 
                                 //snaps the rocket to the bubble
@@ -183,7 +183,6 @@ namespace Bubbles
 
             //implements gravity
             AttractBubbles();
-
             AttractRockets();
 
             //loops backwards through the bubbles
@@ -206,6 +205,7 @@ namespace Bubbles
 
             //checks for collisions
             CheckBubbleCollision();
+            CheckRocketCollision();
         }
 
         /// <summary>
@@ -259,25 +259,12 @@ namespace Bubbles
         /// <summary>
         /// Removes a selected bubble from the list
         /// </summary>
-        /// <param name="id">The id of the bubble to remove</param>
-        public void RemoveBubble(int id)
+        /// <param name="b">The bubble to remove</param>
+        public void RemoveBubble(Bubble b)
         {
 
-            //loops backwards through the bubbles
-            for (int i = bubbles.Count - 1; i >= 0; i--)
-            {
-
-                //makes sure that the bubble exists
-                if (bubbles[i].Id == id)
-                {
-
-                    //ticks each bubble
-                    bubbles.RemoveAt(i);
-
-                    //stops searching
-                    break;
-                }
-            }
+            //removes the bubble
+            bubbles.Remove(b);
         }
 
         /// <summary>
@@ -436,11 +423,67 @@ namespace Bubbles
         }
 
         /// <summary>
+        /// Checks to see if a rocket should resnap to a new bubble
+        /// </summary>
+        /// <param name="toUnsnap">The bubble being checked</param>
+        /// <param name="">The new bubble to reset to</param>
+        public void CheckForReSnap(Bubble toUnsnap, Bubble next)
+        {
+            //loops backwards through each of the rocket to apply the force
+            for (int i = rockets.Count - 1; i >= 0; i--)
+
+                //makes sure that the rocket exists
+                if (rockets[i] != null)
+
+                    //checks to see if the current rocket was snapped to the current bubble
+                    if (rockets[i].snappedTo == toUnsnap)
+
+                        //resnaps the rocket to the next bubble
+                        rockets[i].ReSnap(next, false);
+        }
+
+        public void CheckForUnSnap(Bubble toUnsnap)
+        {
+            //loops backwards through each of the rocket to apply the force
+            for (int i = rockets.Count - 1; i >= 0; i--)
+
+                //makes sure that the rocket exists
+                if (rockets[i] != null)
+
+                    //checks to see if the current rocket was snapped to the current bubble
+                    if (rockets[i].snappedTo == toUnsnap)
+
+                        //unsnaps the rocket from the bubble
+                         rockets[i].UnSnap();
+        }
+
+        /// <summary>
         /// Checks to see if a rocket collides with a bubble
         /// </summary>
         void CheckRocketCollision()
         {
+            //loops backwards through each of the rocket to apply the force
+            for (int i = rockets.Count - 1; i >= 0; i--)
 
+                //makes sure that the rocket exists
+                if (rockets[i] != null)
+
+                    //checks to see if the rocket is available to have gravity applied to it (only if it has taken off of is falling)
+                    if (rockets[i].status == Rocket.Statuses.takeOff || rockets[i].status == Rocket.Statuses.freeFall)
+
+                        //checks to see if the rocket can collide
+                        if (rockets[i].timeTillCollidable <= 0)
+
+                            //loops through each of the bubbles to see what force to apply
+                            for (int j = bubbles.Count - 1; j >= 0; j--)
+
+                                //makes sure that the bubble exists
+                                if (bubbles[j] != null)
+
+                                    //checks to see if the rocker had collided with the bubble
+                                    if (bubbles[j].CheckInside((int)rockets[i].position.x, (int)rockets[i].position.y))
+
+                                        rockets[i].ReSnap(bubbles[j], true);
         }
 
         /// <summary>
@@ -469,7 +512,10 @@ namespace Bubbles
                 //makes sure that the bubble exists
                 if (rockets[i] != null)
 
-                    rockets[i].TakeOff();
+                    //checks to see if the rockets haven't taken off yet
+                    if (rockets[i].status == Rocket.Statuses.snapped)
+
+                        rockets[i].TakeOff();
         }
         #endregion
     }

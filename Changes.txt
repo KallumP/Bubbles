@@ -1,4 +1,6 @@
 v4
+Rocket functionality done, maybe some tweaking required
+Rockets now collide with bubbles after takeoff
 Rockets added, still need some tweaking
 Mode resetting glitch fixed
 

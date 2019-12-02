@@ -152,11 +152,11 @@ namespace Bubbles
         }
 
         /// <summary>
-        /// Checks if the inputed mouse location hovered over this bubble
+        /// Checks if the input coordinates were inside this bubble
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public bool CheckHover(int x, int y)
+        /// <param name="x">Input x</param>
+        /// <param name="y">Input y</param>
+        public bool CheckInside(int x, int y)
         {
             //gets the x distance between the two points
             float xDist = position.x - x;
@@ -332,12 +332,19 @@ namespace Bubbles
                 //sets the new bubble's position to this' position
                 positionToTake = position;
 
+            Bubble next = new Bubble(mass + b.mass, positionToTake, environment, false, false);
+
+
+            //checks to see if any rockets were attatched to the two bubbles being worked with
+            environment.CheckForReSnap(this, next);
+            environment.CheckForReSnap(b, next);
+
             //adds the new bubble with the combined mass
-            environment.AddBubble(new Bubble(mass + b.mass, positionToTake, environment, false, false));
+            environment.AddBubble(next);
 
             //removes the two colliding bubbles
-            environment.RemoveBubble(Id);
-            environment.RemoveBubble(b.Id);
+            environment.RemoveBubble(this);
+            environment.RemoveBubble(b);
         }
 
         /// <summary>
@@ -369,8 +376,12 @@ namespace Bubbles
                     environment.AddBubble(new Bubble(newMass, Vector2D.Add(position, Vector2D.DivideByNumber(force, 2f)), force, environment, false, false));
                 }
 
+
+            //checks to see if any of the rockets need to unsnapped from this bubble
+            environment.CheckForUnSnap(this);
+
             //Removes this bubble instance after the explosion
-            environment.RemoveBubble(Id);
+            environment.RemoveBubble(this);
         }
         #endregion
     }

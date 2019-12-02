@@ -37,9 +37,14 @@ namespace Bubbles
         float thrustAngle;
 
         /// <summary>
+        /// The time that the rocket will last for after colliding
+        /// </summary>
+        int lifetime;
+
+        /// <summary>
         /// An enum containing all the statuses that the rocket can be in
         /// </summary>
-        public enum Statuses { temp, tempSnapped, snapped, takeOff, freeFall }
+        public enum Statuses { temp, tempSnapped, snapped, takeOff, freeFall, collided }
         #endregion
 
         #region Properties
@@ -62,6 +67,11 @@ namespace Bubbles
         /// The rocket's status
         /// </summary>
         public Statuses status;
+
+        /// <summary>
+        /// The time taken for a rocket to become collidable after taking off
+        /// </summary>
+        public int timeTillCollidable { get; set; }
         #endregion
 
         #region Methods
@@ -85,6 +95,10 @@ namespace Bubbles
 
             terminalVelocity = 5;
 
+            timeTillCollidable = 1000;
+
+
+
             status = Statuses.temp;
         }
 
@@ -96,21 +110,30 @@ namespace Bubbles
         {
 
             //checks that the rocket is snapped to a bubble
-            if (status == Statuses.tempSnapped)
+            if (status == Statuses.snapped)
+
+                UpdatePos((int)position.x, (int)position.y);
+
+            //checks that the rocket has collided
+            if (status == Statuses.collided)
 
                 UpdatePos((int)position.x, (int)position.y);
 
             //checks to see if the rocket is taking off
-            else if (status == Statuses.takeOff)
+            if (status == Statuses.takeOff)
             {
                 GenerateThrust(timeInterval);
 
                 Move();
             }
-            else if (status == Statuses.freeFall)
-            {
+
+            //Checks to see if the rocket is freefalling
+            if (status == Statuses.freeFall)
+
                 Move();
-            }
+
+            //keeps track of time
+            timeTillCollidable -= timeInterval;
         }
 
         /// <summary>
@@ -141,19 +164,25 @@ namespace Bubbles
             status = Statuses.tempSnapped;
 
             //updates the position to appear snapped
-            UpdatePos(x, y);
+            UpdateSnapPos(x, y);
         }
 
         /// <summary>
         /// Snapps to a newly created bubble
         /// </summary>
         /// <param name="b">The bubble to snap to</param>
-        public void ReSnap(Bubble b)
+        public void ReSnap(Bubble b, bool collided)
         {
             //sets what bubble it is snapped to
             snappedTo = b;
 
-            UpdatePos((int)position.x, (int)position.y);
+            UpdateSnapPos((int)position.x, (int)position.y);
+
+            //checks to see if this resnap was a result of a collision
+            if (collided)
+
+                //changes the status
+                status = Statuses.collided;
         }
 
         /// <summary>
@@ -165,9 +194,17 @@ namespace Bubbles
             //removes the bubble that was being snapped to
             snappedTo = null;
 
-            //updates the status
-            status = Statuses.temp;
+            //checks to see if the rocket was temp snapped
+            if (status == Statuses.tempSnapped)
+                
+                //changes the status
+                status = Statuses.temp;
 
+            //checks to see if the rocket had taken off and collided
+            else if (status == Statuses.collided)
+
+                //changes the status
+                status = Statuses.freeFall;
         }
 
         /// <summary>
@@ -177,7 +214,23 @@ namespace Bubbles
         {
 
             //saves the status as not being temporary
-            status = Statuses.tempSnapped;
+            status = Statuses.snapped;
+        }
+
+        /// <summary>
+        /// Updates the position for the first time after being snapped
+        /// </summary>
+        /// <param name="x">Input x</param>
+        /// <param name="y">Input y</param>
+        public void UpdateSnapPos(int x, int y)
+        {
+
+            //calculates the angle between the bubble center and the rocket
+            thrustAngle = (float)(2 * Math.PI - (3 * Math.PI / 2 + Vector2D.Angle(snappedTo.position, new Vector2D(x, y))));
+
+            //updates the position to stay snapped to the bubble
+            position.x = snappedTo.mass * (float)Math.Sin(thrustAngle) + snappedTo.position.x;
+            position.y = snappedTo.mass * (float)Math.Cos(thrustAngle) + snappedTo.position.y;
         }
 
         /// <summary>
@@ -195,9 +248,6 @@ namespace Bubbles
             }
             else
             {
-
-                //calculates the angle between the bubble center and the rocket
-                thrustAngle = (float)(2 * Math.PI - (3 * Math.PI / 2 + Vector2D.Angle(snappedTo.position, new Vector2D(x, y))));
 
                 //updates the position to stay snapped to the bubble
                 position.x = snappedTo.mass * (float)Math.Sin(thrustAngle) + snappedTo.position.x;

@@ -18,20 +18,10 @@ trail of bubbles locations
 
 draw velocity debug setting should be static and in bubble
 
-Don't use IDs, just remove from the bubble object itself as the identifier
-
-rockets
+rockets:
 maybe inherit from the bubbles class
 
 rockets will eventually have fuel that when used, slowly gets lighter
 
-update the rockets position each tick so tht it stays snapped to a bubble
-
 When a rocket collides, resnap it, but still apply force (collided mode). 
 If the force's center of mass direction component is negative (pointing away from the mass), then let it get attracted to wards that force
-
-use a tempSnapped mode to signify that the rocket has snapped to a bubble but is still a temp rocket
-
-Use an interface to check if something should be attracted
-
-when a bubble collides, resnap if the one of the two bubbles contained a rocket (loop through each rocket and see if the bubbles being removed were in that rocekt)
