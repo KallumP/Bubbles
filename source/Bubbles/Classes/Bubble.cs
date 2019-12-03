@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -20,12 +21,17 @@ namespace Bubbles
 
         public static float startingAngle = 3.1415f;
 
-        
-        
+
+
         /// <summary>
         /// Debug value that determins whether the vector lines should be draw
         /// </summary>
         public static bool drawVelocityLines = false;
+
+        /// <summary>
+        /// Debug vaule that determins whether the trail should be drawn
+        /// </summary>
+        public static bool drawTrailLines = true;
         #endregion
 
         #region Variables
@@ -48,6 +54,11 @@ namespace Bubbles
         /// The fastest a bubble can move
         /// </summary>
         int terminalVelocity;
+
+        /// <summary>
+        /// A list of all the positions
+        /// </summary>
+        List<Vector2D> trail;
         #endregion
 
         #region Properties
@@ -139,6 +150,8 @@ namespace Bubbles
             Static = _static;
 
             ZeroMass = _zeroMass;
+
+            trail = new List<Vector2D>();
         }
 
         /// <summary>
@@ -275,6 +288,17 @@ namespace Bubbles
                 //draws out the velocity of the bubble
                 e.Graphics.DrawLine(Pens.Black, position.x, position.y, position.x + velocity.x * 3, position.y + velocity.y * 3);
 
+            //checks to see if the trail should be draw
+            if (drawTrailLines)
+
+                //loops through the trail
+                foreach (Vector2D t in trail)
+
+                    //draws the trail
+                    e.Graphics.DrawEllipse(Pens.Red, t.x - 1, t.y - 1, 2, 2);
+
+
+
             //draws out the id of the bubble
             //e.Graphics.DrawString(Id.ToString(), SystemFonts.DefaultFont, Brushes.Blue, position.x, position.y);
         }
@@ -303,6 +327,10 @@ namespace Bubbles
         /// </summary>
         public void Move()
         {
+
+            //saves the position to draw out the trail
+            trail.Add(position);
+
             position = Vector2D.Add(position, velocity);
         }
 

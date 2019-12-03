@@ -173,15 +173,6 @@ namespace Bubbles
             //updates the label
             mode_lbl.Text = "Mode: " + mode.ToString();
         }
-
-        /// <summary>
-        /// Updates the debug values for the environment
-        /// </summary>
-        /// <param name="velocityLines"></param>
-        public void Debugs(bool velocityLines)
-        {
-            Bubble.drawVelocityLines = velocityLines;
-        }
         #endregion
     }
 }

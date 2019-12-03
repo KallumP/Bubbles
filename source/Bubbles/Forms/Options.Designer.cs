@@ -41,6 +41,8 @@
             this.BubbleMass_txt = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label10 = new System.Windows.Forms.Label();
+            this.BubbleTVel_txt = new System.Windows.Forms.TextBox();
             this.BubbleZMass_chk = new System.Windows.Forms.CheckBox();
             this.BubbleStatic_chk = new System.Windows.Forms.CheckBox();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -57,8 +59,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.AngleDemo_pic = new System.Windows.Forms.PictureBox();
             this.BubbleAngle_bar = new System.Windows.Forms.TrackBar();
-            this.label10 = new System.Windows.Forms.Label();
-            this.BubbleTVel_txt = new System.Windows.Forms.TextBox();
+            this.TrailLines_check = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -192,6 +193,23 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(177, 156);
             this.panel2.TabIndex = 13;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(11, 52);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(80, 20);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "Term. Vel.";
+            // 
+            // BubbleTVel_txt
+            // 
+            this.BubbleTVel_txt.Location = new System.Drawing.Point(97, 52);
+            this.BubbleTVel_txt.Name = "BubbleTVel_txt";
+            this.BubbleTVel_txt.Size = new System.Drawing.Size(67, 20);
+            this.BubbleTVel_txt.TabIndex = 13;
             // 
             // BubbleZMass_chk
             // 
@@ -352,28 +370,24 @@
             this.BubbleAngle_bar.Value = 1;
             this.BubbleAngle_bar.Scroll += new System.EventHandler(this.BubbleAngle_bar_Scroll);
             // 
-            // label10
+            // TrailLines_check
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(11, 52);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(80, 20);
-            this.label10.TabIndex = 12;
-            this.label10.Text = "Term. Vel.";
-            // 
-            // BubbleTVel_txt
-            // 
-            this.BubbleTVel_txt.Location = new System.Drawing.Point(97, 52);
-            this.BubbleTVel_txt.Name = "BubbleTVel_txt";
-            this.BubbleTVel_txt.Size = new System.Drawing.Size(67, 20);
-            this.BubbleTVel_txt.TabIndex = 13;
+            this.TrailLines_check.AutoSize = true;
+            this.TrailLines_check.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TrailLines_check.Location = new System.Drawing.Point(600, 77);
+            this.TrailLines_check.Name = "TrailLines_check";
+            this.TrailLines_check.Size = new System.Drawing.Size(102, 33);
+            this.TrailLines_check.TabIndex = 17;
+            this.TrailLines_check.Text = "Trail Lines";
+            this.TrailLines_check.UseVisualStyleBackColor = true;
+            this.TrailLines_check.CheckedChanged += new System.EventHandler(this.TrailLines_check_CheckedChanged);
             // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(598, 338);
+            this.ClientSize = new System.Drawing.Size(599, 338);
+            this.Controls.Add(this.TrailLines_check);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -435,5 +449,6 @@
         private System.Windows.Forms.PictureBox AngleDemo_pic;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox BubbleTVel_txt;
+        private System.Windows.Forms.CheckBox TrailLines_check;
     }
 }

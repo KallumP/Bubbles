@@ -225,6 +225,7 @@ namespace Bubbles
             VelocityLines_check.Checked = Bubble.drawVelocityLines;
         }
 
+        #region Updating Program Values
         /// <summary>
         /// Click event for the velocity lines checkbox
         /// </summary>
@@ -233,11 +234,25 @@ namespace Bubbles
         private void VelocityLines_check_Click(object sender, EventArgs e)
         {
 
-            //sends the status of the checkbox to the main form
-            parent.Debugs(VelocityLines_check.Checked);
+            Bubble.drawVelocityLines = VelocityLines_check.Checked;
 
         }
 
+        /// <summary>
+        /// Click event for the trail lines checkbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TrailLines_check_CheckedChanged(object sender, EventArgs e)
+        {
+            Bubble.drawTrailLines = TrailLines_check.Checked;
+        }
+
+        /// <summary>
+        /// Close event for the options window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Options_FormClosing(object sender, FormClosingEventArgs e)
         {
 
@@ -260,7 +275,7 @@ namespace Bubbles
                 Bubble.startingMass = BMass;
             else
                 Bubble.startingMass = BMassDefault;
-            
+
             if (BTVel != -1)
                 Bubble.startingTerminalVel = BTVel;
             else
@@ -339,6 +354,11 @@ namespace Bubbles
 
         #endregion
 
+        /// <summary>
+        /// Scroll event for the angle bar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BubbleAngle_bar_Scroll(object sender, EventArgs e)
         {
 
@@ -346,7 +366,13 @@ namespace Bubbles
 
             AngleDemo_pic.Invalidate();
         }
+        #endregion
 
+        /// <summary>
+        /// Paint event for the angle demo
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AngleDemo_pic_Paint(object sender, PaintEventArgs e)
         {
 

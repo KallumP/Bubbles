@@ -6,7 +6,6 @@ mass
 
 on settings load, set the debug trigger start and end size
 
-trail of bubbles locations
 
 
 
@@ -18,8 +17,6 @@ Use radius (calculated from mass) to draw the bubble
 Holding down on the screen will start to make a bubble that starts small and grows until mouse up
 
 maybe use a static environment reference instead of having a reference for each object
-
-figure out why the terminal vel doesnt save
 
 stop floating point from rounding to zero, by constraining it to 1 increment above 0
 
