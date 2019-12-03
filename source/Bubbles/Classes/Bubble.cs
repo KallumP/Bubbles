@@ -14,9 +14,11 @@ namespace Bubbles
 
         public static bool startingZeroMass = true;
 
-        public static float startForce = 100;
+        public static int startingTerminalVel = 10;
 
-        public static float startAngle = 3.1415f;
+        public static float startingForce = 100;
+
+        public static float startingAngle = 3.1415f;
 
         
         
@@ -112,7 +114,7 @@ namespace Bubbles
             Setup(startingMass, _position, parent, startingStatic, startingZeroMass);
 
             //applies the default force
-            ApplyForce(Vector2D.CreateVector(startForce, startAngle));
+            ApplyForce(Vector2D.CreateVector(startingForce, startingAngle));
         }
 
         /// <summary>
@@ -132,7 +134,7 @@ namespace Bubbles
             //populates the vector
             velocity = new Vector2D(0, 0);
 
-            terminalVelocity = 10;
+            terminalVelocity = startingTerminalVel;
 
             Static = _static;
 

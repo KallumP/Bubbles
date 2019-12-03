@@ -212,8 +212,9 @@ namespace Bubbles
             BubbleMass_txt.Text = Bubble.startingMass.ToString();
             BubbleStatic_chk.Checked = Bubble.startingStatic;
             BubbleZMass_chk.Checked = Bubble.startingZeroMass;
-            BubbleAngle_bar.Value = (int)(Bubble.startAngle * 1000);
-            BubbleForce_txt.Text = Bubble.startForce.ToString();
+            BubbleAngle_bar.Value = (int)(Bubble.startingAngle * 1000);
+            BubbleForce_txt.Text = Bubble.startingForce.ToString();
+            BubbleTVel_txt.Text = Bubble.startingTerminalVel.ToString();
 
             //gets the rocket default info
             RocketMass_txt.Text = Rocket.startingMass.ToString();
@@ -241,11 +242,15 @@ namespace Bubbles
         {
 
             int BMassDefault = 20;
+            int BTVelDefault = 10;
             int RMassDefault = 50;
             int RTankDefault = 500;
             int RTVelDefault = 5;
+            int BForcDefault = 100;
 
             int BMass = ConvertText(BubbleMass_txt.Text);
+            int BTVel = ConvertText(BubbleTVel_txt.Text);
+            int BForc = ConvertText(BubbleForce_txt.Text);
             int RMass = ConvertText(RocketMass_txt.Text);
             int RTank = ConvertText(RocketTank_txt.Text);
             int RTVel = ConvertText(RocketTVel_txt.Text);
@@ -255,10 +260,18 @@ namespace Bubbles
                 Bubble.startingMass = BMass;
             else
                 Bubble.startingMass = BMassDefault;
+            
+            if (BTVel != -1)
+                Bubble.startingTerminalVel = BTVel;
+            else
+                Bubble.startingTerminalVel = BTVelDefault;
 
+            if (BForc != -1)
+                Bubble.startingForce = BForc;
+            else
+                Bubble.startingForce = BForcDefault;
 
             Bubble.startingStatic = BubbleStatic_chk.Checked;
-
 
             Bubble.startingZeroMass = BubbleZMass_chk.Checked;
 
@@ -268,17 +281,15 @@ namespace Bubbles
             else
                 Rocket.startingMass = RMassDefault;
 
-
             if (RTank != -1)
-                Rocket.startingMass = RTank;
+                Rocket.startingFuelTime = RTank;
             else
-                Rocket.startingMass = RTankDefault;
-
+                Rocket.startingFuelTime = RTankDefault;
 
             if (RTVel != -1)
-                Rocket.startingMass = RTVel;
+                Rocket.startingTerminalVel = RTVel;
             else
-                Rocket.startingMass = RTVelDefault;
+                Rocket.startingTerminalVel = RTVelDefault;
         }
 
         /// <summary>
@@ -331,7 +342,7 @@ namespace Bubbles
         private void BubbleAngle_bar_Scroll(object sender, EventArgs e)
         {
 
-            Bubble.startAngle = (float)BubbleAngle_bar.Value / 1000;
+            Bubble.startingAngle = (float)BubbleAngle_bar.Value / 1000;
 
             AngleDemo_pic.Invalidate();
         }
@@ -340,8 +351,8 @@ namespace Bubbles
         {
 
 
-            int x = (int)(AngleDemo_pic.Width / 2 * Math.Sin(Bubble.startAngle) + AngleDemo_pic.Width / 2);
-            int y = (int)(AngleDemo_pic.Width / 2 * Math.Cos(Bubble.startAngle) + AngleDemo_pic.Height / 2);
+            int x = (int)(AngleDemo_pic.Width / 2 * Math.Sin(Bubble.startingAngle) + AngleDemo_pic.Width / 2);
+            int y = (int)(AngleDemo_pic.Width / 2 * Math.Cos(Bubble.startingAngle) + AngleDemo_pic.Height / 2);
 
             e.Graphics.DrawLine(Pens.Black, AngleDemo_pic.Width / 2, AngleDemo_pic.Height / 2, x, y);
         }

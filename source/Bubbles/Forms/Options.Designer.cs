@@ -57,6 +57,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.AngleDemo_pic = new System.Windows.Forms.PictureBox();
             this.BubbleAngle_bar = new System.Windows.Forms.TrackBar();
+            this.label10 = new System.Windows.Forms.Label();
+            this.BubbleTVel_txt = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -180,20 +182,22 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label10);
+            this.panel2.Controls.Add(this.BubbleTVel_txt);
             this.panel2.Controls.Add(this.BubbleZMass_chk);
             this.panel2.Controls.Add(this.BubbleStatic_chk);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.BubbleMass_txt);
             this.panel2.Location = new System.Drawing.Point(162, 45);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(177, 120);
+            this.panel2.Size = new System.Drawing.Size(177, 156);
             this.panel2.TabIndex = 13;
             // 
             // BubbleZMass_chk
             // 
             this.BubbleZMass_chk.AutoSize = true;
             this.BubbleZMass_chk.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BubbleZMass_chk.Location = new System.Drawing.Point(15, 91);
+            this.BubbleZMass_chk.Location = new System.Drawing.Point(15, 126);
             this.BubbleZMass_chk.Name = "BubbleZMass_chk";
             this.BubbleZMass_chk.Size = new System.Drawing.Size(103, 24);
             this.BubbleZMass_chk.TabIndex = 11;
@@ -204,7 +208,7 @@
             // 
             this.BubbleStatic_chk.AutoSize = true;
             this.BubbleStatic_chk.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BubbleStatic_chk.Location = new System.Drawing.Point(15, 51);
+            this.BubbleStatic_chk.Location = new System.Drawing.Point(15, 86);
             this.BubbleStatic_chk.Name = "BubbleStatic_chk";
             this.BubbleStatic_chk.Size = new System.Drawing.Size(69, 24);
             this.BubbleStatic_chk.TabIndex = 10;
@@ -296,7 +300,7 @@
             this.panel4.Controls.Add(this.label3);
             this.panel4.Controls.Add(this.AngleDemo_pic);
             this.panel4.Controls.Add(this.BubbleAngle_bar);
-            this.panel4.Location = new System.Drawing.Point(162, 164);
+            this.panel4.Location = new System.Drawing.Point(162, 199);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(177, 112);
             this.panel4.TabIndex = 16;
@@ -348,11 +352,28 @@
             this.BubbleAngle_bar.Value = 1;
             this.BubbleAngle_bar.Scroll += new System.EventHandler(this.BubbleAngle_bar_Scroll);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(11, 52);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(80, 20);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "Term. Vel.";
+            // 
+            // BubbleTVel_txt
+            // 
+            this.BubbleTVel_txt.Location = new System.Drawing.Point(97, 52);
+            this.BubbleTVel_txt.Name = "BubbleTVel_txt";
+            this.BubbleTVel_txt.Size = new System.Drawing.Size(67, 20);
+            this.BubbleTVel_txt.TabIndex = 13;
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(598, 304);
+            this.ClientSize = new System.Drawing.Size(598, 338);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -412,5 +433,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox AngleDemo_pic;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox BubbleTVel_txt;
     }
 }

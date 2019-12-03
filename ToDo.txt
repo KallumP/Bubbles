@@ -19,6 +19,9 @@ Holding down on the screen will start to make a bubble that starts small and gro
 
 maybe use a static environment reference instead of having a reference for each object
 
+figure out why the terminal vel doesnt save
+
+stop floating point from rounding to zero, by constraining it to 1 increment above 0
 
 
 Rockets:
