@@ -148,7 +148,7 @@ namespace Bubbles
         public void Draw(PaintEventArgs e, Size windowSize)
         {
 
-            e.Graphics.FillRectangle(Brushes.Green, position.x - 5, position.y - 5, 10, 10);
+            e.Graphics.FillEllipse(Brushes.Green, position.x - 5, position.y - 5, 10, 10);
 
         }
 

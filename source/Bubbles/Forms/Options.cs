@@ -221,8 +221,9 @@ namespace Bubbles
             RocketTank_txt.Text = Rocket.startingFuelTime.ToString();
             RocketTVel_txt.Text = Rocket.startingTerminalVel.ToString();
 
-            //checks or unchecks the velocity line debug box
+            //checks or unchecks the debug boxes
             VelocityLines_check.Checked = Bubble.drawVelocityLines;
+            TrailLines_check.Checked = Bubble.drawVelocityLines;
         }
 
         #region Updating Program Values

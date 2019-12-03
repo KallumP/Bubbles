@@ -1,3 +1,9 @@
+v6
+Rockets changed to circles
+Bubble trail now fades away
+Bubble trail added
+
+
 v5
 Settings window now lets you change a lot more about the program
 

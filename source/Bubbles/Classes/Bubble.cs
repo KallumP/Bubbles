@@ -32,6 +32,11 @@ namespace Bubbles
         /// Debug vaule that determins whether the trail should be drawn
         /// </summary>
         public static bool drawTrailLines = true;
+
+        /// <summary>
+        /// The amount of trail points allowed in the trail list
+        /// </summary>
+        public static int trailLength = 200;
         #endregion
 
         #region Variables
@@ -327,9 +332,7 @@ namespace Bubbles
         /// </summary>
         public void Move()
         {
-
-            //saves the position to draw out the trail
-            trail.Add(position);
+            SaveTrail();
 
             position = Vector2D.Add(position, velocity);
         }
@@ -433,6 +436,38 @@ namespace Bubbles
 
             //Removes this bubble instance after the explosion
             environment.RemoveBubble(this);
+        }
+
+        /// <summary>
+        /// Saves the position in the trail list
+        /// </summary>
+        void SaveTrail()
+        {
+
+            //checks to see if there was anything in the trail list
+            if (trail.Count > 0)
+            {
+
+                //checks to see if the bubble has moved since the last trail addition
+                if (position != trail[trail.Count - 1])
+                {
+
+                    //checks to see if the trail was too long
+                    if (trail.Count >= trailLength)
+
+                        //removes the first trail point
+                        trail.RemoveAt(0);
+
+                    //saves the position to draw out the trail
+                    trail.Add(position);
+                }
+            }
+            else
+            {
+
+                //saves the position to draw out the trail
+                trail.Add(position);
+            }
         }
         #endregion
     }
