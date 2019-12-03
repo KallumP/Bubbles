@@ -1,3 +1,6 @@
+v5
+Settings window now lets you change a lot more about the program
+
 v4
 Rocket functionality done, maybe some tweaking required
 Rockets now collide with bubbles after takeoff
