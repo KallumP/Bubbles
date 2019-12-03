@@ -4,21 +4,24 @@ change the color
 start size
 mass
 
+on settings load, set the debug trigger start and end size
+
+trail of bubbles locations
+
 
 
 Functionality:
-
 collision will make the bubbles combine masses (and have the net velocity of the two bubbles)
 
 Use radius (calculated from mass) to draw the bubble
 
 Holding down on the screen will start to make a bubble that starts small and grows until mouse up
 
-trail of bubbles locations
+maybe use a static environment reference instead of having a reference for each object
 
-draw velocity debug setting should be static and in bubble
 
-rockets:
+
+Rockets:
 maybe inherit from the bubbles class
 
 rockets will eventually have fuel that when used, slowly gets lighter

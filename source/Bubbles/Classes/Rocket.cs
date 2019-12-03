@@ -10,6 +10,12 @@ namespace Bubbles
 {
     class Rocket
     {
+        #region Statics
+        public static int startingMass = 30;
+        public static int startingFuelTime = 500;
+        public static int startingTerminalVel = 5;
+        #endregion
+
         #region Variables
         /// <summary>
         /// A reference to the environment
@@ -81,23 +87,21 @@ namespace Bubbles
         /// <param name="_mass">Mass of the rocket</param>
         /// <param name="parent">Environment reference</param>
         /// <param name="_fuelTime">The time to use the fuel</param>
-        public Rocket(int _mass, Environment parent, int _fuelTime)
+        public Rocket(Environment parent)
         {
-            mass = _mass;
-
             e = parent;
+
+            mass = startingMass;
+
+            fuelTime = startingFuelTime;
+
+            terminalVelocity = startingTerminalVel;
+
+            timeTillCollidable = 1000;
 
             position = new Vector2D();
 
             velocity = new Vector2D(0, 0);
-
-            fuelTime = _fuelTime;
-
-            terminalVelocity = 5;
-
-            timeTillCollidable = 1000;
-
-
 
             status = Statuses.temp;
         }

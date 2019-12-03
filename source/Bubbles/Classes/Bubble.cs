@@ -6,16 +6,31 @@ namespace Bubbles
 {
     class Bubble
     {
+        #region Statics
+
+        public static int startingMass = 20;
+
+        public static bool startingStatic = false;
+
+        public static bool startingZeroMass = true;
+
+        public static float startForce = 100;
+
+        public static float startAngle = 3.1415f;
+
+        
+        
+        /// <summary>
+        /// Debug value that determins whether the vector lines should be draw
+        /// </summary>
+        public static bool drawVelocityLines = false;
+        #endregion
+
         #region Variables
         /// <summary>
         /// A variable used to generate random numbers
         /// </summary>
         static Random rnd = new Random();
-
-        /// <summary>
-        /// Keeps track of the next id to assign to a bubble
-        /// </summary>
-        public static int nextId;
 
         /// <summary>
         /// An reference to the environment
@@ -34,10 +49,6 @@ namespace Bubbles
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Used to identify the bubble
-        /// </summary>
-        public int Id { get; set; }
 
         /// <summary>
         /// Stores if the bubble can move
@@ -92,13 +103,26 @@ namespace Bubbles
         }
 
         /// <summary>
+        /// A constructor that just uses the default values
+        /// </summary>
+        /// <param name="parent">Reference to the environment</param>
+        /// <param name="_position">The position of the bubble</param>
+        public Bubble(Environment parent, Vector2D _position)
+        {
+            Setup(startingMass, _position, parent, startingStatic, startingZeroMass);
+
+            //applies the default force
+            ApplyForce(Vector2D.CreateVector(startForce, startAngle));
+        }
+
+        /// <summary>
         /// Sets up the bubble
         /// </summary>
-        /// <param name="_mass"></param>
-        /// <param name="_position"></param>
-        /// <param name="parent"></param>
-        /// <param name="_static"></param>
-        /// <param name="_zeroMass"></param>
+        /// <param name="_mass">Mass of the bubble</param>
+        /// <param name="_position">Position of the bubble</param>
+        /// <param name="parent">Reference to the environment</param>
+        /// <param name="_static">If the bubble can move</param>
+        /// <param name="_zeroMass">If the bubble has any mass</param>
         public void Setup(int _mass, Vector2D _position, Environment parent, bool _static, bool _zeroMass)
         {
             environment = parent;
@@ -113,10 +137,6 @@ namespace Bubbles
             Static = _static;
 
             ZeroMass = _zeroMass;
-
-
-            //assgns the next id
-            Id = nextId++;
         }
 
         /// <summary>
@@ -180,7 +200,7 @@ namespace Bubbles
         /// <param name="e"></param>
         /// <param name="windowSize">The size of the window being drawn to</param>
         /// <param name="velocityLines">If the program should draw the velocity lines of the bubble</param>
-        public void Draw(PaintEventArgs e, Size windowSize, bool velocityLines)
+        public void Draw(PaintEventArgs e, Size windowSize)
         {
             Point pointer = new Point();
             bool draw = true;
@@ -248,7 +268,7 @@ namespace Bubbles
 
 
             //checks to see if the velocity lines should be drawn
-            if (velocityLines)
+            if (drawVelocityLines)
 
                 //draws out the velocity of the bubble
                 e.Graphics.DrawLine(Pens.Black, position.x, position.y, position.x + velocity.x * 3, position.y + velocity.y * 3);
@@ -327,6 +347,7 @@ namespace Bubbles
 
                 //sets the new bubble's position to b's position
                 positionToTake = b.position;
+
             else
 
                 //sets the new bubble's position to this' position

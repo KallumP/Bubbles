@@ -142,7 +142,7 @@ namespace Bubbles
             {
 
                 //opens the options window
-                Options o = new Options(this, environment.drawVectorLines);
+                Options o = new Options(this);
                 o.Show();
             }
 
@@ -180,10 +180,8 @@ namespace Bubbles
         /// <param name="velocityLines"></param>
         public void Debugs(bool velocityLines)
         {
-            environment.drawVectorLines = velocityLines;
+            Bubble.drawVelocityLines = velocityLines;
         }
         #endregion
-
-
     }
 }

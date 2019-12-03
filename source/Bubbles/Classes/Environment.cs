@@ -30,10 +30,7 @@ namespace Bubbles
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Debug values that determins whether the vector lines should be draw
-        /// </summary>
-        public bool drawVectorLines { get; set; }
+
         #endregion
 
         #region Methods
@@ -42,11 +39,6 @@ namespace Bubbles
         /// </summary>
         public Environment()
         {
-            //sets up the debug values
-            drawVectorLines = false;
-
-            //resets the bubble id counter
-            Bubble.nextId = 0;
 
             //instantiates the lists
             bubbles = new List<Bubble>();
@@ -64,7 +56,7 @@ namespace Bubbles
             //checks to see if create mode was on
             if (mode == MainWindow.Modes.Create)
 
-                AddBubble(new Bubble(20, new Vector2D(x, y), new Vector2D(100, 0), this, false, true));
+                AddBubble(new Bubble(this, new Vector2D(x, y)));
 
             //checks if explode mode was on
             else if (mode == MainWindow.Modes.Explode)
@@ -240,7 +232,7 @@ namespace Bubbles
                 if (bubbles[i] != null)
 
                     //draws out the current bubble
-                    bubbles[i].Draw(e, windowSize, drawVectorLines);
+                    bubbles[i].Draw(e, windowSize);
         }
 
         /// <summary>
@@ -342,7 +334,7 @@ namespace Bubbles
         /// </summary>
         void AddTempRocket()
         {
-            tempRocket = new Rocket(30, this, 500);
+            tempRocket = new Rocket(this);
         }
 
         /// <summary>
@@ -442,6 +434,10 @@ namespace Bubbles
                         rockets[i].ReSnap(next, false);
         }
 
+        /// <summary>
+        /// Checks to see if a rocket needs to unsnap from the input bubble
+        /// </summary>
+        /// <param name="toUnsnap">The bubble being checked for rockets</param>
         public void CheckForUnSnap(Bubble toUnsnap)
         {
             //loops backwards through each of the rocket to apply the force

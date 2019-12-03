@@ -18,11 +18,9 @@ namespace Bubbles
         /// </summary>
         bool debugOpen;
 
-        bool checkBoxFocus;
-
         #region AnimationVariables
         /// <summary>
-        /// The length used for all animations
+        /// The length used for all animations (milliseconds)
         /// </summary>
         int animationLength;
 
@@ -53,7 +51,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="_parent">A reference to the main window</param>
         /// <param name="drawVel">If the drawVelocity was true in the environment</param>
-        public Options(MainWindow _parent, bool drawVel)
+        public Options(MainWindow _parent)
         {
             InitializeComponent();
 
@@ -63,11 +61,9 @@ namespace Bubbles
 
             resizeAmount = 150;
 
-            checkBoxFocus = false;
-
             animating = false;
 
-            CheckBoxes(drawVel);
+            UpdateControls();
         }
 
         /// <summary>
@@ -87,8 +83,8 @@ namespace Bubbles
         void CheckForDebugAction(MouseEventArgs e)
         {
 
-            int triggerStart = 160;
-            int triggerEnd = 400;
+            int triggerStart = 580;
+            int triggerEnd = 750;
 
             //checks to see if the mouse was in the right place to trigger the debug open
             if (e.Y > 0 && e.Y < Size.Height && e.X > triggerStart && e.X < triggerEnd)
@@ -124,11 +120,8 @@ namespace Bubbles
         void CloseDebug()
         {
 
-            //doesnt close the debug if the mouse is over the checkbox
-            if (!checkBoxFocus)
-
-                //animates the window to collapse the debug panel
-                SetupSizeAnimation(Size, new Size(Size.Width - resizeAmount, Size.Height), animationLength);
+            //animates the window to collapse the debug panel
+            SetupSizeAnimation(Size, new Size(Size.Width - resizeAmount, Size.Height), animationLength);
         }
 
         /// <summary>
@@ -198,6 +191,120 @@ namespace Bubbles
             timeLeft -= (int)SizeAnimationTimer.Interval;
         }
 
+        /// <summary>
+        /// Checks the relevant boxes
+        /// </summary>
+        /// <param name="drawVel">The draw velocity lines debug setting</param>
+        void UpdateControls()
+        {
+
+            //selectes the right radio button for the mode
+            if (parent.mode == MainWindow.Modes.Create)
+                SpawnMass_radio.Checked = true;
+
+            else if (parent.mode == MainWindow.Modes.Explode)
+                ExplodeMass_radio.Checked = true;
+
+            else if (parent.mode == MainWindow.Modes.Rocket)
+                CreateRockets_radio.Checked = true;
+
+            //gets the bubble default info
+            BubbleMass_txt.Text = Bubble.startingMass.ToString();
+            BubbleStatic_chk.Checked = Bubble.startingStatic;
+            BubbleZMass_chk.Checked = Bubble.startingZeroMass;
+            BubbleAngle_bar.Value = (int)(Bubble.startAngle * 1000);
+            BubbleForce_txt.Text = Bubble.startForce.ToString();
+
+            //gets the rocket default info
+            RocketMass_txt.Text = Rocket.startingMass.ToString();
+            RocketTank_txt.Text = Rocket.startingFuelTime.ToString();
+            RocketTVel_txt.Text = Rocket.startingTerminalVel.ToString();
+
+            //checks or unchecks the velocity line debug box
+            VelocityLines_check.Checked = Bubble.drawVelocityLines;
+        }
+
+        /// <summary>
+        /// Click event for the velocity lines checkbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VelocityLines_check_Click(object sender, EventArgs e)
+        {
+
+            //sends the status of the checkbox to the main form
+            parent.Debugs(VelocityLines_check.Checked);
+
+        }
+
+        private void Options_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            int BMassDefault = 20;
+            int RMassDefault = 50;
+            int RTankDefault = 500;
+            int RTVelDefault = 5;
+
+            int BMass = ConvertText(BubbleMass_txt.Text);
+            int RMass = ConvertText(RocketMass_txt.Text);
+            int RTank = ConvertText(RocketTank_txt.Text);
+            int RTVel = ConvertText(RocketTVel_txt.Text);
+
+
+            if (BMass != -1)
+                Bubble.startingMass = BMass;
+            else
+                Bubble.startingMass = BMassDefault;
+
+
+            Bubble.startingStatic = BubbleStatic_chk.Checked;
+
+
+            Bubble.startingZeroMass = BubbleZMass_chk.Checked;
+
+
+            if (RMass != -1)
+                Rocket.startingMass = RMass;
+            else
+                Rocket.startingMass = RMassDefault;
+
+
+            if (RTank != -1)
+                Rocket.startingMass = RTank;
+            else
+                Rocket.startingMass = RTankDefault;
+
+
+            if (RTVel != -1)
+                Rocket.startingMass = RTVel;
+            else
+                Rocket.startingMass = RTVelDefault;
+        }
+
+        /// <summary>
+        /// Checks to see if the input string was good
+        /// </summary>
+        /// <param name="inputText"></param>
+        /// <returns>Returns the input number, or -1 if no conversian was possible</returns>
+        int ConvertText(string inputText)
+        {
+            int returner;
+
+            //checks to see if the input was empty
+            if (inputText == "")
+
+                //sets the return to -1
+                returner = -1;
+
+            //checks if the input wasnt a number (while also converting if it was)
+            else if (!int.TryParse(inputText, out returner))
+
+                returner = -1;
+
+            //returns the value
+            return returner;
+        }
+
         #region Mode Switching
 
         private void SpawnMass_radio_CheckedChanged(object sender, EventArgs e)
@@ -218,41 +325,25 @@ namespace Bubbles
             parent.SwitchModes(false);
         }
 
-        /// <summary>
-        /// Checks the relevant boxes
-        /// </summary>
-        /// <param name="drawVel">The draw velocity lines debug setting</param>
-        void CheckBoxes(bool drawVel)
-        {
-            VelocityLines_check.Checked = drawVel;
 
-            if (parent.mode == MainWindow.Modes.Create)
-                SpawnMass_radio.Checked = true;
-
-            else if (parent.mode == MainWindow.Modes.Explode)
-                ExplodeMass_radio.Checked = true;
-
-            else if (parent.mode == MainWindow.Modes.Rocket)
-                CreateRockets_radio.Checked = true;
-        }
         #endregion
 
-        /// <summary>
-        /// Click event for the velocity lines checkbox
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void VelocityLines_check_Click(object sender, EventArgs e)
+        private void BubbleAngle_bar_Scroll(object sender, EventArgs e)
         {
-            bool velocityLinesChecked = false;
 
-            //checks to see if the box was checked
-            if (VelocityLines_check.Checked)
-                velocityLinesChecked = true;
+            Bubble.startAngle = (float)BubbleAngle_bar.Value / 1000;
 
-            //sends the status of the checkbox to the main form
-            parent.Debugs(velocityLinesChecked);
+            AngleDemo_pic.Invalidate();
+        }
 
+        private void AngleDemo_pic_Paint(object sender, PaintEventArgs e)
+        {
+
+
+            int x = (int)(AngleDemo_pic.Width / 2 * Math.Sin(Bubble.startAngle) + AngleDemo_pic.Width / 2);
+            int y = (int)(AngleDemo_pic.Width / 2 * Math.Cos(Bubble.startAngle) + AngleDemo_pic.Height / 2);
+
+            e.Graphics.DrawLine(Pens.Black, AngleDemo_pic.Width / 2, AngleDemo_pic.Height / 2, x, y);
         }
     }
 }
