@@ -1,4 +1,7 @@
 v6
+pause functionality added
+Bubbles don't explode if they are too small
+
 Rockets changed to circles
 Bubble trail now fades away
 Bubble trail added

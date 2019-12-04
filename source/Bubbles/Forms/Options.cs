@@ -223,7 +223,7 @@ namespace Bubbles
 
             //checks or unchecks the debug boxes
             VelocityLines_check.Checked = Bubble.drawVelocityLines;
-            TrailLines_check.Checked = Bubble.drawVelocityLines;
+            TrailLines_check.Checked = Bubble.drawTrailLines;
         }
 
         #region Updating Program Values

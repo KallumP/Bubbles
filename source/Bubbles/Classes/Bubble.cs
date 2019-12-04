@@ -413,9 +413,9 @@ namespace Bubbles
             //sets up the size of the new bubbles
             int newMass = mass / newBubbleCount;
 
-            //makes sure that the new masses are not too small
+            //makes sure that the new masses are big enough to explode
             if (newMass > 1)
-
+            {
                 //loops through and makes the correct amount of bubbles
                 for (int i = 0; i < newBubbleCount; i++)
                 {
@@ -431,11 +431,12 @@ namespace Bubbles
                 }
 
 
-            //checks to see if any of the rockets need to unsnapped from this bubble
-            environment.CheckForUnSnap(this);
+                //checks to see if any of the rockets need to unsnapped from this bubble
+                environment.CheckForUnSnap(this);
 
-            //Removes this bubble instance after the explosion
-            environment.RemoveBubble(this);
+                //Removes this bubble instance after the explosion
+                environment.RemoveBubble(this);
+            }
         }
 
         /// <summary>

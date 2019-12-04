@@ -151,7 +151,7 @@ namespace Bubbles
             if (mode == MainWindow.Modes.Explode)
             {
                 //checks to see if the space key was pressed
-                if (pressedKey == Keys.Space.ToString())
+                if (pressedKey == Keys.Enter.ToString())
 
                     ExplodeAllBubbles();
 
@@ -160,7 +160,7 @@ namespace Bubbles
             {
 
                 //checks to see if the space key was 
-                if (pressedKey == Keys.Space.ToString())
+                if (pressedKey == Keys.Enter.ToString())
 
                     TakeOffAllRockets();
             }
@@ -208,9 +208,11 @@ namespace Bubbles
         /// <param name="timeInterval">Time passed since the last tick</param>
         public void Draw(PaintEventArgs e, Size windowSize, int timeInterval)
         {
+            //checks to see if the environment should tick
+            if (MainWindow.timeOn)
 
-            //ticks the environment first
-            Tick(timeInterval);
+                //ticks the environment first
+                Tick(timeInterval);
 
             //checks to see that the temp rocket exists
             if (tempRocket != null)
@@ -450,7 +452,7 @@ namespace Bubbles
                     if (rockets[i].snappedTo == toUnsnap)
 
                         //unsnaps the rocket from the bubble
-                         rockets[i].UnSnap();
+                        rockets[i].UnSnap();
         }
 
         /// <summary>

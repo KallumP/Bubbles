@@ -21,6 +21,11 @@ namespace Bubbles
         /// The starting mass for a newly spawned mass
         /// </summary>
         int startingMass = 200;
+
+        /// <summary>
+        /// Stores if the timer should tick the environment
+        /// </summary>
+        public static bool timeOn = true;
         #endregion
 
         #region Properties
@@ -76,6 +81,26 @@ namespace Bubbles
         /// <param name="e"></param>
         private void MainWindow_Paint(object sender, PaintEventArgs e)
         {
+
+            //variable used to store the size of the play/pause button
+            int buttonSize = 50;
+
+            if (timeOn)
+
+                e.Graphics.DrawImage(
+                    Properties.Resources.play,
+                    0,
+                    0,
+                    buttonSize,
+                    buttonSize);
+            else
+
+                e.Graphics.DrawImage(
+                    Properties.Resources.pause,
+                    0,
+                    0,
+                    buttonSize,
+                    buttonSize);
 
             //draws the environment
             environment.Draw(e, Size, ProgramTimer.Interval);
@@ -133,6 +158,7 @@ namespace Bubbles
             //checks to see if the tab key was pressed
             else if (e.KeyCode == Keys.Tab)
             {
+
                 //switches modes
                 SwitchModes(true);
             }
@@ -147,8 +173,16 @@ namespace Bubbles
             }
 
             else if (e.KeyCode == Keys.Space)
+            {
+
+                ToggleTimer();
+            }
+
+            else if (e.KeyCode == Keys.Enter)
+            {
 
                 environment.KeyDown(mode, e.KeyCode.ToString());
+            }
         }
 
         /// <summary>
@@ -172,6 +206,14 @@ namespace Bubbles
 
             //updates the label
             mode_lbl.Text = "Mode: " + mode.ToString();
+        }
+
+        /// <summary>
+        /// Toggles turning the timer on or off
+        /// </summary>
+        public void ToggleTimer()
+        {
+            timeOn = !timeOn;
         }
         #endregion
     }
