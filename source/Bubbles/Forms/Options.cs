@@ -66,6 +66,7 @@ namespace Bubbles
             UpdateControls();
         }
 
+        #region Animation
         /// <summary>
         /// Mouse move event
         /// </summary>
@@ -190,6 +191,7 @@ namespace Bubbles
             //keeps track of how much time has passed
             timeLeft -= (int)SizeAnimationTimer.Interval;
         }
+        #endregion
 
         /// <summary>
         /// Checks the relevant boxes
@@ -224,6 +226,8 @@ namespace Bubbles
             //checks or unchecks the debug boxes
             VelocityLines_check.Checked = Bubble.drawVelocityLines;
             TrailLines_check.Checked = Bubble.drawTrailLines;
+            Speed_lbl.Text = Environment.speed.ToString();
+            Speed_bar.Value = (int)(Environment.speed * 10);
         }
 
         #region Updating Program Values
@@ -366,6 +370,24 @@ namespace Bubbles
             Bubble.startingAngle = (float)BubbleAngle_bar.Value / 1000;
 
             AngleDemo_pic.Invalidate();
+        }
+
+        /// <summary>
+        /// Scroll event for the speed bar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Speed_bar_Scroll(object sender, EventArgs e)
+        {
+
+            Environment.speed = (float)Speed_bar.Value / 10;
+
+            if (Environment.speed == 0)
+                Environment.speed = 0.1f;
+
+            Speed_lbl.Text = Environment.speed.ToString();
+
+            parent.UpdateTimerInterval();
         }
         #endregion
 

@@ -60,12 +60,15 @@
             this.AngleDemo_pic = new System.Windows.Forms.PictureBox();
             this.BubbleAngle_bar = new System.Windows.Forms.TrackBar();
             this.TrailLines_check = new System.Windows.Forms.CheckBox();
+            this.Speed_bar = new System.Windows.Forms.TrackBar();
+            this.Speed_lbl = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AngleDemo_pic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BubbleAngle_bar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Speed_bar)).BeginInit();
             this.SuspendLayout();
             // 
             // SpawnMass_radio
@@ -382,11 +385,32 @@
             this.TrailLines_check.UseVisualStyleBackColor = true;
             this.TrailLines_check.CheckedChanged += new System.EventHandler(this.TrailLines_check_CheckedChanged);
             // 
+            // Speed_bar
+            // 
+            this.Speed_bar.Location = new System.Drawing.Point(600, 156);
+            this.Speed_bar.Maximum = 40;
+            this.Speed_bar.Name = "Speed_bar";
+            this.Speed_bar.Size = new System.Drawing.Size(127, 45);
+            this.Speed_bar.TabIndex = 18;
+            this.Speed_bar.Scroll += new System.EventHandler(this.Speed_bar_Scroll);
+            // 
+            // Speed_lbl
+            // 
+            this.Speed_lbl.AutoSize = true;
+            this.Speed_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Speed_lbl.Location = new System.Drawing.Point(600, 132);
+            this.Speed_lbl.Name = "Speed_lbl";
+            this.Speed_lbl.Size = new System.Drawing.Size(56, 20);
+            this.Speed_lbl.TabIndex = 19;
+            this.Speed_lbl.Text = "Speed";
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(599, 338);
+            this.Controls.Add(this.Speed_lbl);
+            this.Controls.Add(this.Speed_bar);
             this.Controls.Add(this.TrailLines_check);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
@@ -412,6 +436,7 @@
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AngleDemo_pic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BubbleAngle_bar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Speed_bar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -450,5 +475,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox BubbleTVel_txt;
         private System.Windows.Forms.CheckBox TrailLines_check;
+        private System.Windows.Forms.TrackBar Speed_bar;
+        private System.Windows.Forms.Label Speed_lbl;
     }
 }

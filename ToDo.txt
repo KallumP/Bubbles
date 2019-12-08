@@ -20,7 +20,7 @@ maybe use a static environment reference instead of having a reference for each 
 
 scalable viewport (times or divide the draw coordinates to fit in the new viewport)
 
-
+fix rockets making too much thrust, (scale it with the timers tick interval)
 Rockets:
 maybe inherit from the bubbles class
 

@@ -6,6 +6,10 @@ namespace Bubbles
 {
     public partial class MainWindow : Form
     {
+        #region Statics
+        public static int baseTimerInterval = 17;
+        #endregion
+
         #region Variables
         /// <summary>
         /// What types of modes there are in the program
@@ -214,6 +218,16 @@ namespace Bubbles
         public void ToggleTimer()
         {
             timeOn = !timeOn;
+        }
+
+        /// <summary>
+        /// Updates the speed of the timer
+        /// </summary>
+        public void UpdateTimerInterval()
+        {
+
+            //updates the timer interval using the speed set from the options window
+            ProgramTimer.Interval = (int)(baseTimerInterval / Environment.speed);
         }
         #endregion
     }

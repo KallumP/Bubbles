@@ -7,6 +7,14 @@ namespace Bubbles
 {
     class Environment
     {
+        #region Statics
+
+        /// <summary>
+        /// Speed of the program
+        /// </summary>
+        public static float speed = 1;
+        #endregion
+
         #region Variables
         /// <summary>
         /// Stores the bubbles
@@ -292,11 +300,14 @@ namespace Bubbles
                                         //gets the distance between the two bubbles
                                         float distance = Vector2D.Distance(bubbles[i].position, bubbles[j].position);
 
-                                        //gets the angle between the two bubbles
+                                        //calculates the magnitude of the force using F = (GMm) / (r^2)
+                                        float magnitude = G * bubbles[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2);
+
+                                        //gets the angle between the two bubbles 
                                         float angle = Vector2D.Angle(bubbles[i].position, bubbles[j].position);
 
-                                        //creates a gravitational force using F = (GMm) / (r^2)
-                                        Vector2D force = Vector2D.CreateGravityFixedVector(G * bubbles[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2), angle);
+                                        //creates a gravitational force from the magnitude and the angle
+                                        Vector2D force = Vector2D.CreateGravityFixedVector(magnitude, angle);
 
                                         //applies the gravitational force to the bubble;
                                         bubbles[i].ApplyForce(force);
@@ -405,11 +416,14 @@ namespace Bubbles
                                     //gets the distance between the two bubbles
                                     float distance = Vector2D.Distance(rockets[i].position, bubbles[j].position);
 
+                                    //calculates the magnitude using F = (GMm) / (r^2)
+                                    float magnitude = G * rockets[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2);
+
                                     //gets the angle between the two bubbles
                                     float angle = Vector2D.Angle(rockets[i].position, bubbles[j].position);
 
-                                    //creates a gravitational force using F = (GMm) / (r^2)
-                                    Vector2D force = Vector2D.CreateGravityFixedVector(G * rockets[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2), angle);
+                                    //creates a gravitational force using the magnitude and the angle
+                                    Vector2D force = Vector2D.CreateGravityFixedVector(magnitude, angle);
 
                                     //applies the gravitational force to the bubble;
                                     rockets[i].ApplyForce(force);

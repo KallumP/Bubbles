@@ -1,4 +1,5 @@
 v6
+time speed up and down added
 pause functionality added
 Bubbles don't explode if they are too small
 
