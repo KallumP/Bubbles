@@ -31,7 +31,7 @@
             // ProgramTimer
             // 
             this.ProgramTimer.Enabled = true;
-            this.ProgramTimer.Interval = 17;
+            this.ProgramTimer.Interval = 16;
             this.ProgramTimer.Tick += new System.EventHandler(this.ProgramTimer_Tick);
             // 
             // mode_lbl
@@ -51,10 +51,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.mode_lbl);
             this.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MainWindow";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "Bubbles";

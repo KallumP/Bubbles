@@ -43,14 +43,9 @@ namespace Bubbles
         float thrustAngle;
 
         /// <summary>
-        /// The time that the rocket will last for after colliding
-        /// </summary>
-        int lifetime;
-
-        /// <summary>
         /// An enum containing all the statuses that the rocket can be in
         /// </summary>
-        public enum Statuses { temp, tempSnapped, snapped, takeOff, freeFall, collided }
+        public enum Statuses { temp, tempSnapped, snapped, unsnapped, takeOff, freeFall, collided }
         #endregion
 
         #region Properties
@@ -118,26 +113,36 @@ namespace Bubbles
 
                 UpdatePos((int)position.x, (int)position.y);
 
+            //checks to see if the rocket has unsnapped
+            else if (status == Statuses.unsnapped)
+
+                Move();
+
             //checks that the rocket has collided
-            if (status == Statuses.collided)
+            else if (status == Statuses.collided)
 
                 UpdatePos((int)position.x, (int)position.y);
 
             //checks to see if the rocket is taking off
-            if (status == Statuses.takeOff)
+            else if (status == Statuses.takeOff)
             {
                 GenerateThrust(timeInterval);
 
                 Move();
+
+                //keeps track of time
+                timeTillCollidable -= timeInterval;
             }
 
             //Checks to see if the rocket is freefalling
-            if (status == Statuses.freeFall)
+            else if (status == Statuses.freeFall)
+            {
 
                 Move();
 
-            //keeps track of time
-            timeTillCollidable -= timeInterval;
+                //keeps track of time
+                timeTillCollidable -= timeInterval;
+            }
         }
 
         /// <summary>
@@ -184,9 +189,20 @@ namespace Bubbles
 
             //checks to see if this resnap was a result of a collision
             if (collided)
+            {
 
-                //changes the status
-                status = Statuses.collided;
+                //checks to see if the rocket had taken off or was free falling
+                if (status == Statuses.freeFall || status == Statuses.takeOff)
+
+                    //changes the status to collided
+                    status = Statuses.collided;
+            }
+
+            //checks to see if the rocket was unsnapped
+            else if (status == Statuses.unsnapped)
+
+                //changes the status to snapped
+                status = Statuses.snapped;
         }
 
         /// <summary>
@@ -200,15 +216,22 @@ namespace Bubbles
 
             //checks to see if the rocket was temp snapped
             if (status == Statuses.tempSnapped)
-                
-                //changes the status
+
+                //changes the status to temp
                 status = Statuses.temp;
+
+            //checks to see if the status was snapped
+            else if (status == Statuses.snapped)
+
+                //changes the status to unsnapped
+                status = Statuses.unsnapped;
 
             //checks to see if the rocket had taken off and collided
             else if (status == Statuses.collided)
 
-                //changes the status
+                //changes the status to freefall
                 status = Statuses.freeFall;
+
         }
 
         /// <summary>
@@ -256,6 +279,7 @@ namespace Bubbles
                 //updates the position to stay snapped to the bubble
                 position.x = snappedTo.mass * (float)Math.Sin(thrustAngle) + snappedTo.position.x;
                 position.y = snappedTo.mass * (float)Math.Cos(thrustAngle) + snappedTo.position.y;
+
             }
 
         }

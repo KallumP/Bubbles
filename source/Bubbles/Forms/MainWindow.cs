@@ -7,14 +7,21 @@ namespace Bubbles
     public partial class MainWindow : Form
     {
         #region Statics
-        public static int baseTimerInterval = 17;
+        static int baseTimerInterval = 16;
+
+        /// <summary>
+        /// The types of starting modes for the program
+        /// </summary>
+        public enum StartModes { default_, twoBod, threeBod, solar}
+
+        /// <summary>
+        /// What types of interactive modes there are in the program
+        /// </summary>
+        public enum Modes { Create, Explode, Rocket }
         #endregion
 
         #region Variables
-        /// <summary>
-        /// What types of modes there are in the program
-        /// </summary>
-        public enum Modes { Create, Explode, Rocket }
+
 
         /// <summary>
         /// An environment instance
@@ -37,6 +44,11 @@ namespace Bubbles
         /// The current mode of the program
         /// </summary>
         public Modes mode { get; set; }
+
+        /// <summary>
+        /// The current start mode
+        /// </summary>
+        public StartModes startMode { get; set; }
         #endregion
 
         #region Methods
@@ -55,28 +67,60 @@ namespace Bubbles
         /// <param name="e"></param>
         private void MainWindow_Load(object sender, EventArgs e)
         {
+
+            //maximises the form
             WindowState = FormWindowState.Maximized;
 
+            //sets the interactive mode to explode
             mode = Modes.Explode;
 
+            //updates the mode text
             mode_lbl.Text = "Mode: " + mode.ToString();
 
+            //sets the starting mode to default
+            startMode = StartModes.default_;
+
+            //starts the program
             Restart();
         }
 
+        #region ResetMethods
         /// <summary>
         /// Sets up the environment
         /// </summary>
-        void Restart()
+        public void Restart()
         {
 
             //instantiates the environment variable
             environment = new Environment();
 
+            //checks to see what sort of restart was required
+            if (startMode == StartModes.default_)
+                DefaultScene();
+
+            else if (startMode == StartModes.twoBod)
+                TwoBodyScene();
+        }
+
+        /// <summary>
+        /// The default starting scene
+        /// </summary>
+        void DefaultScene()
+        {
             //adds one bubble into the center of the scene on load
             environment.AddBubble(new Bubble(startingMass, new Vector2D(Size.Width / 2, Size.Height / 2), environment, true, false)); ;
-
         }
+
+        /// <summary>
+        /// Two body scene, where two masses go toward each other
+        /// </summary>
+        void TwoBodyScene()
+        {
+            //adds two bubble into the going towards each other offset on the y axis
+            environment.AddBubble(new Bubble(50, new Vector2D(Width/2, 4* Height/10), Vector2D.CreateVector(150, (float)(3 * Math.PI / 2)), environment, false, false));
+            environment.AddBubble(new Bubble(50, new Vector2D(Width/2, 6*Height/10), Vector2D.CreateVector(150, (float)(Math.PI / 2)), environment, false, false));
+        }
+        #endregion
 
         /// <summary>
         /// The sequence for drawing out (invalidating) the form
@@ -174,6 +218,14 @@ namespace Bubbles
                 //opens the options window
                 Options o = new Options(this);
                 o.Show();
+            }
+
+            else if (e.KeyCode == Keys.P)
+            {
+
+                //opens the presets window
+                Presets p = new Presets(this);
+                p.Show();
             }
 
             else if (e.KeyCode == Keys.Space)

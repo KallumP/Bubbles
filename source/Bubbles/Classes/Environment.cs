@@ -400,8 +400,11 @@ namespace Bubbles
                 //makes sure that the rocket exists
                 if (rockets[i] != null)
 
-                    //checks to see if the rocket is available to have gravity applied to it (only if it has taken off of is falling)
-                    if (rockets[i].status == Rocket.Statuses.takeOff || rockets[i].status == Rocket.Statuses.freeFall)
+                    //checks to see if the rocket is available to have gravity applied to it 
+                    //(only if it has unsnapped, taken off o is falling)
+                    if (rockets[i].status == Rocket.Statuses.takeOff ||
+                        rockets[i].status == Rocket.Statuses.freeFall ||
+                        rockets[i].status == Rocket.Statuses.unsnapped)
 
                         //loops through each of the bubbles to see what force to apply
                         for (int j = bubbles.Count - 1; j >= 0; j--)
@@ -482,8 +485,10 @@ namespace Bubbles
 
                     //checks to see if the rocket is available to have gravity applied to it (only if it has taken off of is falling)
                     if (rockets[i].status == Rocket.Statuses.takeOff || rockets[i].status == Rocket.Statuses.freeFall)
+                    {
 
-                        //checks to see if the rocket can collide
+
+                        //checks to see if the rocket can collide after take off
                         if (rockets[i].timeTillCollidable <= 0)
 
                             //loops through each of the bubbles to see what force to apply
@@ -495,7 +500,23 @@ namespace Bubbles
                                     //checks to see if the rocker had collided with the bubble
                                     if (bubbles[j].CheckInside((int)rockets[i].position.x, (int)rockets[i].position.y))
 
+                                        //resnaps the rocket to the collided bubble
                                         rockets[i].ReSnap(bubbles[j], true);
+                    }
+                    else if (rockets[i].status == Rocket.Statuses.unsnapped)
+                    {
+                        //loops through each of the bubbles to see what force to apply
+                        for (int j = bubbles.Count - 1; j >= 0; j--)
+
+                            //makes sure that the bubble exists
+                            if (bubbles[j] != null)
+
+                                //checks to see if the rocker had collided with the bubble
+                                if (bubbles[j].CheckInside((int)rockets[i].position.x, (int)rockets[i].position.y))
+
+                                    //resnaps the rocket to the collided bubble
+                                    rockets[i].ReSnap(bubbles[j], false);
+                    }
         }
 
         /// <summary>
