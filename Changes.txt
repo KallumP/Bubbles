@@ -1,3 +1,8 @@
+v7
+three body system added (still needs some tweaking)
+two body system added
+presets started
+
 v6
 time speed up and down added
 pause functionality added

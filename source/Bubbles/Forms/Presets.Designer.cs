@@ -51,7 +51,7 @@
             // 
             this.SolarSys_btn.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.SolarSys_btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Silver;
-            this.SolarSys_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.SolarSys_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.SolarSys_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SolarSys_btn.Location = new System.Drawing.Point(12, 12);
             this.SolarSys_btn.Name = "SolarSys_btn";

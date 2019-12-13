@@ -27,9 +27,9 @@ namespace Bubbles {
         /// <param name="e"></param>
         private void SolarSys_btn_Click(object sender, EventArgs e) {
 
-            parent.startMode = MainWindow.StartModes.solar;
-            parent.Restart();
-            Close();
+            //parent.startMode = MainWindow.StartModes.solar;
+            //parent.Restart();
+            //Close();
         }
 
         /// <summary>
