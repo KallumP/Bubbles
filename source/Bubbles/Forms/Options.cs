@@ -2,10 +2,8 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Bubbles
-{
-    public partial class Options : Form
-    {
+namespace Bubbles {
+    public partial class Options : Form {
 
         #region Variables
         /// <summary>
@@ -51,8 +49,8 @@ namespace Bubbles
         /// </summary>
         /// <param name="_parent">A reference to the main window</param>
         /// <param name="drawVel">If the drawVelocity was true in the environment</param>
-        public Options(MainWindow _parent)
-        {
+        public Options(MainWindow _parent) {
+
             InitializeComponent();
 
             parent = _parent;
@@ -72,8 +70,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Options_MouseMove(object sender, MouseEventArgs e)
-        {
+        private void Options_MouseMove(object sender, MouseEventArgs e) {
             CheckForDebugAction(e);
         }
 
@@ -81,23 +78,19 @@ namespace Bubbles
         /// Checks to see if the mouse was in the right place to activate the debug screen
         /// </summary>
         /// <param name="e"></param>
-        void CheckForDebugAction(MouseEventArgs e)
-        {
+        void CheckForDebugAction(MouseEventArgs e) {
 
             int triggerStart = 580;
             int triggerEnd = 750;
 
             //checks to see if the mouse was in the right place to trigger the debug open
-            if (e.Y > 0 && e.Y < Size.Height && e.X > triggerStart && e.X < triggerEnd)
-            {
+            if (e.Y > 0 && e.Y < Size.Height && e.X > triggerStart && e.X < triggerEnd) {
 
                 //checks to see if the debug was closed
                 if (!debugOpen)
 
                     OpenDebug();
-            }
-            else
-            {
+            } else {
 
                 //checks to see if the debug was open
                 if (debugOpen)
@@ -109,8 +102,7 @@ namespace Bubbles
         /// <summary>
         /// Starts the debug open sequence
         /// </summary>
-        void OpenDebug()
-        {
+        void OpenDebug() {
             //animates the window to open the debug panel
             SetupSizeAnimation(Size, new Size(Size.Width + resizeAmount, Size.Height), animationLength);
         }
@@ -118,8 +110,7 @@ namespace Bubbles
         /// <summary>
         /// Starts the debug close sequence
         /// </summary>
-        void CloseDebug()
-        {
+        void CloseDebug() {
 
             //animates the window to collapse the debug panel
             SetupSizeAnimation(Size, new Size(Size.Width - resizeAmount, Size.Height), animationLength);
@@ -131,12 +122,10 @@ namespace Bubbles
         /// <param name="start">The starting vakue of the size</param>
         /// <param name="end">The ending value of the size</param>
         /// <param name="length">The time, in milliseconds, for the animation to last</param>
-        void SetupSizeAnimation(Size start, Size end, int length)
-        {
+        void SetupSizeAnimation(Size start, Size end, int length) {
 
             //checks to see if the window isn't being animated
-            if (!animating)
-            {
+            if (!animating) {
 
                 //inverts the debug bool
                 debugOpen = !debugOpen;
@@ -170,18 +159,14 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void AnimateResize(object sender, EventArgs e)
-        {
+        void AnimateResize(object sender, EventArgs e) {
 
             //makes sure that the timer is ticking for the right amount of time
-            if (timeLeft > 0)
-            {
+            if (timeLeft > 0) {
                 //Console.WriteLine(timeLeft);
                 Size newSize = new Size(Size.Width + sizeAnimationStep.X, Size.Height + sizeAnimationStep.Y);
                 Size = newSize;
-            }
-            else
-            {
+            } else {
                 //stops the timer is too long has passed
                 SizeAnimationTimer.Stop();
 
@@ -197,17 +182,16 @@ namespace Bubbles
         /// Checks the relevant boxes
         /// </summary>
         /// <param name="drawVel">The draw velocity lines debug setting</param>
-        void UpdateControls()
-        {
+        void UpdateControls() {
 
             //selectes the right radio button for the mode
-            if (parent.mode == MainWindow.Modes.Create)
+            if (parent.mode == MainWindow.InteractiveModes.Create)
                 SpawnMass_radio.Checked = true;
 
-            else if (parent.mode == MainWindow.Modes.Explode)
+            else if (parent.mode == MainWindow.InteractiveModes.Explode)
                 ExplodeMass_radio.Checked = true;
 
-            else if (parent.mode == MainWindow.Modes.Rocket)
+            else if (parent.mode == MainWindow.InteractiveModes.Rocket)
                 CreateRockets_radio.Checked = true;
 
             //gets the bubble default info
@@ -236,8 +220,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void VelocityLines_check_Click(object sender, EventArgs e)
-        {
+        private void VelocityLines_check_Click(object sender, EventArgs e) {
 
             Bubble.drawVelocityLines = VelocityLines_check.Checked;
 
@@ -248,8 +231,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TrailLines_check_CheckedChanged(object sender, EventArgs e)
-        {
+        private void TrailLines_check_CheckedChanged(object sender, EventArgs e) {
             Bubble.drawTrailLines = TrailLines_check.Checked;
         }
 
@@ -258,8 +240,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Options_FormClosing(object sender, FormClosingEventArgs e)
-        {
+        private void Options_FormClosing(object sender, FormClosingEventArgs e) {
 
             int BMassDefault = 20;
             int BTVelDefault = 10;
@@ -317,8 +298,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="inputText"></param>
         /// <returns>Returns the input number, or -1 if no conversian was possible</returns>
-        int ConvertText(string inputText)
-        {
+        int ConvertText(string inputText) {
             int returner;
 
             //checks to see if the input was empty
@@ -338,21 +318,18 @@ namespace Bubbles
 
         #region Mode Switching
 
-        private void SpawnMass_radio_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.mode = MainWindow.Modes.Create;
+        private void SpawnMass_radio_CheckedChanged(object sender, EventArgs e) {
+            parent.mode = MainWindow.InteractiveModes.Create;
             parent.SwitchModes(false);
         }
 
-        private void ExplodeMass_radio_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.mode = MainWindow.Modes.Explode;
+        private void ExplodeMass_radio_CheckedChanged(object sender, EventArgs e) {
+            parent.mode = MainWindow.InteractiveModes.Explode;
             parent.SwitchModes(false);
         }
 
-        private void CreateRockets_radio_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.mode = MainWindow.Modes.Rocket;
+        private void CreateRockets_radio_CheckedChanged(object sender, EventArgs e) {
+            parent.mode = MainWindow.InteractiveModes.Rocket;
             parent.SwitchModes(false);
         }
 
@@ -364,8 +341,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BubbleAngle_bar_Scroll(object sender, EventArgs e)
-        {
+        private void BubbleAngle_bar_Scroll(object sender, EventArgs e) {
 
             Bubble.startingAngle = (float)BubbleAngle_bar.Value / 1000;
 
@@ -377,8 +353,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Speed_bar_Scroll(object sender, EventArgs e)
-        {
+        private void Speed_bar_Scroll(object sender, EventArgs e) {
 
             Environment.speed = (float)Speed_bar.Value / 10;
 
@@ -396,9 +371,7 @@ namespace Bubbles
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AngleDemo_pic_Paint(object sender, PaintEventArgs e)
-        {
-
+        private void AngleDemo_pic_Paint(object sender, PaintEventArgs e) {
 
             int x = (int)(AngleDemo_pic.Width / 2 * Math.Sin(Bubble.startingAngle) + AngleDemo_pic.Width / 2);
             int y = (int)(AngleDemo_pic.Width / 2 * Math.Cos(Bubble.startingAngle) + AngleDemo_pic.Height / 2);
