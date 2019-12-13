@@ -8,7 +8,6 @@ on settings load, set the debug trigger start and end size
 
 
 
-
 Functionality:
 collided bubble should have the net velocity of the two original bubbles
 
@@ -20,7 +19,8 @@ maybe use a static environment reference instead of having a reference for each 
 
 scalable viewport (times or divide the draw coordinates to fit in the new viewport)
 
-fix rockets making too much thrust, (scale it with the timers tick interval)
+make masses tick multiple times depending on the speed (Maybe constrain the speed to 1-2-3-4)
+
 Rockets:
 maybe inherit from the bubbles class
 
