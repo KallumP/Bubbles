@@ -11,7 +11,7 @@ namespace Bubbles {
         /// <summary>
         /// Speed of the program
         /// </summary>
-        public static float speed = 1;
+        public static int speed = 1;
         #endregion
 
         #region Variables
@@ -50,7 +50,6 @@ namespace Bubbles {
             bubbles = new List<Bubble>();
             rockets = new List<Rocket>();
         }
-
 
         /// <summary>
         /// The click event
@@ -212,8 +211,11 @@ namespace Bubbles {
             //checks to see if the environment should tick
             if (MainWindow.timeOn)
 
-                //ticks the environment first
-                Tick(timeInterval);
+                //loops "speed" amount of times
+                for (int i = 0; i < speed; i++)
+
+                    //ticks the environment first
+                    Tick(timeInterval);
 
             //checks to see that the temp rocket exists
             if (tempRocket != null)

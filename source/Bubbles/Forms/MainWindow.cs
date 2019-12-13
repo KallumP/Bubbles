@@ -6,7 +6,11 @@ namespace Bubbles {
     public partial class MainWindow : Form {
 
         #region Statics
-        static int baseTimerInterval = 16;
+
+        /// <summary>
+        /// The speed of the timer (relative to the base tick speed)
+        /// </summary>
+        public static float timerSpeed = 1;
 
         /// <summary>
         /// The types of starting modes for the program
@@ -21,6 +25,10 @@ namespace Bubbles {
 
         #region Variables
 
+        /// <summary>
+        /// The starting and base speed of the timer (ms)
+        /// </summary>
+        int baseTimerInterval = 16;
 
         /// <summary>
         /// An environment instance
@@ -123,8 +131,8 @@ namespace Bubbles {
 
         void ThreeBodyScene() {
 
-            environment.AddBubble(new Bubble(93, new Vector2D(Width / 3, Height/2), environment,true, false));
-            environment.AddBubble(new Bubble(93, new Vector2D(2 * Width / 3, Height/2), environment, true, false));
+            environment.AddBubble(new Bubble(93, new Vector2D(Width / 3, Height / 2), environment, true, false));
+            environment.AddBubble(new Bubble(93, new Vector2D(2 * Width / 3, Height / 2), environment, true, false));
 
             environment.AddBubble(new Bubble(30, new Vector2D(Width / 3, 24 * Height / 100), Vector2D.CreateVector(150, (float)(3 * Math.PI / 2)), environment, false, true));
 
@@ -208,6 +216,7 @@ namespace Bubbles {
 
                 //resets the program
                 Restart();
+
             }
 
             //checks to see if the tab key was pressed
@@ -215,6 +224,7 @@ namespace Bubbles {
 
                 //switches modes
                 SwitchModes(true);
+
             }
 
             //checks to see if the S key was pressed
@@ -224,20 +234,79 @@ namespace Bubbles {
                 Options o = new Options(this);
                 o.Show();
 
-            } else if (e.KeyCode == Keys.P) {
+            }
+
+            //checks to see if the p key was pressed
+            else if (e.KeyCode == Keys.P) {
 
                 //opens the presets window
                 Presets p = new Presets(this);
                 p.Show();
 
-            } else if (e.KeyCode == Keys.Space) {
+            }
 
+            //checks to see if the space keys was pressed
+            else if (e.KeyCode == Keys.Space) {
+
+                //pauses or plays the timer
                 ToggleTimer();
 
-            } else if (e.KeyCode == Keys.Enter) {
-
-                environment.KeyDown(mode, e.KeyCode.ToString());
             }
+
+            //checks to see if the enter key was pressed
+            else if (e.KeyCode == Keys.Enter) {
+
+                //sends a mass action event
+                environment.KeyDown(mode, e.KeyCode.ToString());
+
+            }
+
+            //checks to see if number keys were pressed and updates the speed of the environment
+            else if (e.KeyCode == Keys.D1)
+                Environment.speed = 1;
+            else if (e.KeyCode == Keys.D2)
+                Environment.speed = 2;
+            else if (e.KeyCode == Keys.D3)
+                Environment.speed = 3;
+            else if (e.KeyCode == Keys.D4)
+                Environment.speed = 4;
+            else if (e.KeyCode == Keys.D5)
+                Environment.speed = 5;
+            else if (e.KeyCode == Keys.D6)
+                Environment.speed = 6;
+            else if (e.KeyCode == Keys.D7)
+                Environment.speed = 7;
+            else if (e.KeyCode == Keys.D8)
+                Environment.speed = 8;
+            else if (e.KeyCode == Keys.D9)
+                Environment.speed = 9;
+
+            //checks to see if the greater than key was pressed
+            else if (e.KeyCode == Keys.OemPeriod) {
+
+                //adds 0.1 to the timer speed
+                timerSpeed += 0.1f;
+
+                //constrains the timer speed to 1
+                if (timerSpeed > 1)
+                    timerSpeed = 1;
+
+                UpdateTimerInterval();
+            } 
+            
+            //checks to see if the less than key was pressed
+            else if (e.KeyCode == Keys.Oemcomma) {
+
+                //adds 0.1 to the timer speed
+                timerSpeed -= 0.1f;
+
+                //constrains the timer speed to 1
+                if (timerSpeed < 0.1)
+                    timerSpeed = 0.1f;
+
+                UpdateTimerInterval();
+            }
+
         }
 
         /// <summary>
@@ -276,7 +345,7 @@ namespace Bubbles {
         public void UpdateTimerInterval() {
 
             //updates the timer interval using the speed set from the options window
-            ProgramTimer.Interval = (int)(baseTimerInterval / Environment.speed);
+            ProgramTimer.Interval = (int)(baseTimerInterval / timerSpeed);
         }
         #endregion
     }

@@ -210,8 +210,8 @@ namespace Bubbles {
             //checks or unchecks the debug boxes
             VelocityLines_check.Checked = Bubble.drawVelocityLines;
             TrailLines_check.Checked = Bubble.drawTrailLines;
-            Speed_lbl.Text = Environment.speed.ToString();
-            Speed_bar.Value = (int)(Environment.speed * 10);
+            Speed_lbl.Text = MainWindow.timerSpeed.ToString();
+            Speed_bar.Value = (int)(MainWindow.timerSpeed * 10);
         }
 
         #region Updating Program Values
@@ -355,12 +355,12 @@ namespace Bubbles {
         /// <param name="e"></param>
         private void Speed_bar_Scroll(object sender, EventArgs e) {
 
-            Environment.speed = (float)Speed_bar.Value / 10;
+            MainWindow.timerSpeed = (float)Speed_bar.Value / 10;
 
-            if (Environment.speed == 0)
-                Environment.speed = 0.1f;
+            if (MainWindow.timerSpeed == 0)
+                MainWindow.timerSpeed = 0.1f;
 
-            Speed_lbl.Text = Environment.speed.ToString();
+            Speed_lbl.Text = MainWindow.timerSpeed.ToString();
 
             parent.UpdateTimerInterval();
         }

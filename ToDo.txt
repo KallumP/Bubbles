@@ -1,27 +1,27 @@
 Settings:
-Here you can select the increase rate, the speed at which a bubble grows when adding to the window
+
 change the color
-start size
-mass
 
 on settings load, set the debug trigger start and end size
 
 
 
+
+
 Functionality:
+
 collided bubble should have the net velocity of the two original bubbles
-
-Use radius (calculated from mass) to draw the bubble
-
-Holding down on the screen can start to make a bubble that starts small and grows until mouse up
 
 maybe use a static environment reference instead of having a reference for each object
 
 scalable viewport (times or divide the draw coordinates to fit in the new viewport)
 
-make masses tick multiple times depending on the speed (Maybe constrain the speed to 1-2-3-4)
+
+
+
 
 Rockets:
-maybe inherit from the bubbles class
 
-rockets will eventually have fuel that when used, slowly gets lighter
+maybe inherit from the mass class (same goes for bubbles)
+
+rockets will have fuel that when used, slowly gets lighter
