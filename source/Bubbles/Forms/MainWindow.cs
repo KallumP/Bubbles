@@ -125,17 +125,20 @@ namespace Bubbles {
         void TwoBodyScene() {
 
             //adds two bubble into the going towards each other offset on the y axis
-            environment.AddBubble(new Bubble(50, new Vector2D(Width / 2, 4 * Height / 10), Vector2D.CreateVector(150, (float)(3 * Math.PI / 2)), environment, false, false));
-            environment.AddBubble(new Bubble(50, new Vector2D(Width / 2, 6 * Height / 10), Vector2D.CreateVector(150, (float)(Math.PI / 2)), environment, false, false));
+            environment.AddBubble(new Bubble((int)(Height / 21.12), new Vector2D(Width / 2, 4 * Height / 10), Vector2D.CreateVector((int)(Height / 7.04), (float)(3 * Math.PI / 2)), environment, false, false));
+            environment.AddBubble(new Bubble((int)(Height / 21.12), new Vector2D(Width / 2, 6 * Height / 10), Vector2D.CreateVector((int)(Height / 7.04), (float)(Math.PI / 2)), environment, false, false));
+
         }
 
+        /// <summary>
+        /// Three body scene where one mass orbits two masses
+        /// </summary>
         void ThreeBodyScene() {
 
-            environment.AddBubble(new Bubble(93, new Vector2D(Width / 3, Height / 2), environment, true, false));
-            environment.AddBubble(new Bubble(93, new Vector2D(2 * Width / 3, Height / 2), environment, true, false));
+            environment.AddBubble(new Bubble((int)(Height / 7.65), new Vector2D(Width / 3, Height / 2), environment, true, false));
+            environment.AddBubble(new Bubble((int)(Height / 7.65), new Vector2D(2 * Width / 3, Height / 2), environment, true, false));
 
-            environment.AddBubble(new Bubble(30, new Vector2D(Width / 3, 24 * Height / 100), Vector2D.CreateVector(150, (float)(3 * Math.PI / 2)), environment, false, true));
-
+            environment.AddBubble(new Bubble((int)(Height / 24.8), new Vector2D(Width / 3, 24 * Height / 100), Vector2D.CreateVector((int)(Height / 4.96), (float)(3 * Math.PI / 2)), environment, false, true));
 
         }
         #endregion
@@ -292,8 +295,8 @@ namespace Bubbles {
                     timerSpeed = 1;
 
                 UpdateTimerInterval();
-            } 
-            
+            }
+
             //checks to see if the less than key was pressed
             else if (e.KeyCode == Keys.Oemcomma) {
 
