@@ -1,4 +1,5 @@
 v7
+presets made scalable to the center of the screen (no the size of the screen)
 program timer can be slowed and sped up using the less than and greater keys (0.1 - 1)
 program speed can now be updated using the number keys (works up to 9 times as fast)
 three body system added (still needs some tweaking)

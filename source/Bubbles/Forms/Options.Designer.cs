@@ -388,7 +388,6 @@
             // Speed_bar
             // 
             this.Speed_bar.Location = new System.Drawing.Point(600, 156);
-            this.Speed_bar.Maximum = 40;
             this.Speed_bar.Name = "Speed_bar";
             this.Speed_bar.Size = new System.Drawing.Size(127, 45);
             this.Speed_bar.TabIndex = 18;
