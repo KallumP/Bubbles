@@ -27,7 +27,7 @@ namespace Bubbles {
         /// <param name="e"></param>
         private void Default_btn_Click(object sender, EventArgs e) {
 
-            parent.startMode = MainWindow.StartModes.default_;
+            parent.StartMode = MainWindow.StartModes.default_;
             parent.Restart();
             Close();
         }
@@ -51,7 +51,7 @@ namespace Bubbles {
         /// <param name="e"></param>
         private void TwoBodySys_btn_Click(object sender, EventArgs e) {
 
-            parent.startMode = MainWindow.StartModes.twoBod;
+            parent.StartMode = MainWindow.StartModes.twoBod;
             parent.Restart();
             Close();
         }
@@ -63,7 +63,7 @@ namespace Bubbles {
         /// <param name="e"></param>
         private void ThreeBodySys_btn_Click(object sender, EventArgs e) {
 
-            parent.startMode = MainWindow.StartModes.threeBod;
+            parent.StartMode = MainWindow.StartModes.threeBod;
             parent.Restart();
             Close();
         }

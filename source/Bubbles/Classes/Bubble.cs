@@ -63,6 +63,11 @@ namespace Bubbles {
         /// A list of all the positions
         /// </summary>
         List<Vector2D> trail;
+
+        /// <summary>
+        /// An enum containing all the statuses a bubble can be in
+        /// </summary>
+        public enum Statuses { FreeFall, MouseControl }
         #endregion
 
         #region Properties
@@ -80,12 +85,17 @@ namespace Bubbles {
         /// <summary>
         /// The position (center of the bubble)
         /// </summary>
-        public Vector2D position { get; set; }
+        public Vector2D Position { get; set; }
 
         /// <summary>
         /// The mass (radius is direcly correlated to mass)
         /// </summary>
-        public int mass { get; set; }
+        public int Mass { get; set; }
+
+        /// <summary>
+        /// The bubble's status
+        /// </summary>
+        public Statuses status;
         #endregion
 
         #region Methods
@@ -143,8 +153,8 @@ namespace Bubbles {
         public void Setup(int _mass, Vector2D _position, Environment parent, bool _static, bool _zeroMass) {
 
             environment = parent;
-            mass = _mass;
-            position = _position;
+            Mass = _mass;
+            Position = _position;
 
             //populates the vector
             velocity = new Vector2D(0, 0);
@@ -161,30 +171,70 @@ namespace Bubbles {
         /// <summary>
         /// Checks to see if the bubble was clicked
         /// </summary>
-        /// <param name="x">The x coordinate of the click</param>
-        /// <param name="y">The y coordinate of the click</param>
-        public void CheckClick(int x, int y) {
+        /// <param name="x">The x coordinate of the mouse</param>
+        /// <param name="y">The y coordinate of the mouse</param>
+        /// <param name="mode"> The mode of the program</param>
+        public void CheckClick(int x, int y, MainWindow.InteractiveModes mode) {
 
             //gets the x distance between the two points
-            float xDist = position.x - x;
+            float xDist = Position.x - x;
 
             //gets the y distance between the two points
-            float yDist = position.y - y;
+            float yDist = Position.y - y;
 
             //calculates the hypotenuse using pythagoras
             float dist = (float)Math.Sqrt(Math.Pow(xDist, 2) + Math.Pow(yDist, 2));
 
             //checks to see if the distance found is smaller than the radius
-            if (dist < mass)
-                Click();
+            if (dist < Mass)
+                MouseDown(mode);
         }
 
         /// <summary>
-        /// What happens when the bubble is clicked
+        /// Bubble mouse down event
         /// </summary>
-        void Click() {
+        void MouseDown(MainWindow.InteractiveModes mode) {
 
-            Explode();
+            //checks to see if explode mode was on
+            if (mode == MainWindow.InteractiveModes.Explode)
+                Explode();
+
+            //checks to see if ineraction mode was on
+            else if (mode == MainWindow.InteractiveModes.Interact)
+                status = Statuses.MouseControl;
+        }
+
+        /// <summary>
+        /// Bubble mouse up event
+        /// </summary>
+        /// <param name="mode"></param>
+        public void MouseUp(MainWindow.InteractiveModes mode) {
+
+            //makes sure that the bubble was in mousecontrol mode
+            if (status == Statuses.MouseControl)
+
+                //checks to see if the mode was set to interact
+                if (mode == MainWindow.InteractiveModes.Interact)
+
+                    SetToFreeFall();
+        }
+
+        /// <summary>
+        /// Bubble mouse move event
+        /// </summary>
+        /// <param name="x">The x coordinate of the mouse</param>
+        /// <param name="y">The y coordinate of the mouse</param>
+        /// <param name="mode">The mode of the program</param>
+        public void MouseMove(int x, int y, MainWindow.InteractiveModes mode) {
+
+            //checks to see if the mode was set to interact
+            if (mode == MainWindow.InteractiveModes.Interact)
+
+                //makes sure that the bubble was in mousecontrol mode
+                if (status == Statuses.MouseControl)
+
+                    //moves the bubble to the mouse position
+                    ConstrainToMouse(new Vector2D(x, y));
         }
 
         /// <summary>
@@ -195,16 +245,16 @@ namespace Bubbles {
         public bool CheckInside(int x, int y) {
 
             //gets the x distance between the two points
-            float xDist = position.x - x;
+            float xDist = Position.x - x;
 
             //gets the y distance between the two points
-            float yDist = position.y - y;
+            float yDist = Position.y - y;
 
             //calculates the hypotenuse using pythagoras
             float dist = (float)Math.Sqrt(Math.Pow(xDist, 2) + Math.Pow(yDist, 2));
 
             //checks to see if the distance found is smaller than the radius
-            if (dist < mass)
+            if (dist < Mass)
                 return true;
 
             return false;
@@ -227,18 +277,18 @@ namespace Bubbles {
             int inset = 5;
 
             //checks to see if any part of the bubble was within the width
-            if (position.x - mass < windowSize.Width - inset && position.x + mass > inset) {
+            if (Position.x - Mass < windowSize.Width - inset && Position.x + Mass > inset) {
 
                 //saves the x position of the pointer as the bubble's x postion
-                pointer.X = (int)position.x;
+                pointer.X = (int)Position.x;
 
-            } else if (position.x - mass > windowSize.Width - inset) {
+            } else if (Position.x - Mass > windowSize.Width - inset) {
 
                 //saves the x position of the pointer as the right most side of the window
                 pointer.X = windowSize.Width - inset;
                 draw = false;
 
-            } else if (position.x + mass < inset) {
+            } else if (Position.x + Mass < inset) {
 
                 //saves the x position of the pointer as the left most side of the window
                 pointer.X = inset;
@@ -246,18 +296,18 @@ namespace Bubbles {
             }
 
 
-            if (position.y - mass < windowSize.Height - inset && position.y + mass > inset) {
+            if (Position.y - Mass < windowSize.Height - inset && Position.y + Mass > inset) {
 
                 //saves the y position of the pointer as the bubble's y postion
-                pointer.Y = (int)position.y;
+                pointer.Y = (int)Position.y;
 
-            } else if (position.y - mass > windowSize.Height - inset) {
+            } else if (Position.y - Mass > windowSize.Height - inset) {
 
                 //saves the y position of the pointer as the right most side of the window
                 pointer.Y = windowSize.Height - inset;
                 draw = false;
 
-            } else if (position.y + mass < inset) {
+            } else if (Position.y + Mass < inset) {
 
                 //saves the y position of the pointer as the left most side of the window
                 pointer.Y = inset;
@@ -268,7 +318,7 @@ namespace Bubbles {
             if (draw)
 
                 //draws the bubble with a default color, position and radius
-                e.Graphics.DrawEllipse(Pens.Blue, position.x - mass, position.y - mass, mass * 2, mass * 2);
+                e.Graphics.DrawEllipse(Pens.Blue, Position.x - Mass, Position.y - Mass, Mass * 2, Mass * 2);
 
             else
 
@@ -280,7 +330,7 @@ namespace Bubbles {
             if (drawVelocityLines)
 
                 //draws out the velocity of the bubble
-                e.Graphics.DrawLine(Pens.Black, position.x, position.y, position.x + velocity.x * 3, position.y + velocity.y * 3);
+                e.Graphics.DrawLine(Pens.Black, Position.x, Position.y, Position.x + velocity.x * 3, Position.y + velocity.y * 3);
 
             //checks to see if the trail should be draw
             if (drawTrailLines)
@@ -299,7 +349,7 @@ namespace Bubbles {
         public void ApplyForce(Vector2D _force) {
 
             //calculates the accelaration of the bubble
-            Vector2D accelaration = Vector2D.DivideByNumber(_force, mass);
+            Vector2D accelaration = Vector2D.DivideByNumber(_force, Mass);
 
             //calculates the velocity of the bubble
             velocity = Vector2D.Add(velocity, accelaration);
@@ -318,7 +368,8 @@ namespace Bubbles {
 
             SaveTrail();
 
-            position = Vector2D.Add(position, velocity);
+            if (status == Statuses.FreeFall)
+                Position = Vector2D.Add(Position, velocity);
         }
 
         /// <summary>
@@ -329,7 +380,7 @@ namespace Bubbles {
         public bool CheckCollision(Bubble b) {
 
             //checks to see if the distance between the two points is smaller than the two radii (mass = radius)
-            if (Vector2D.Distance(position, b.position) <= mass + b.mass) {
+            if (Vector2D.Distance(Position, b.Position) <= Mass + b.Mass) {
 
                 //starts the collision sequence
                 Collide(b);
@@ -353,21 +404,21 @@ namespace Bubbles {
             Vector2D positionToTake;
 
             //checks to see if the two masses were equal
-            if (mass == b.mass)
+            if (Mass == b.Mass)
 
                 //sets the new bubble's position to the midpoint of the two colliding bubbles
-                positionToTake = Vector2D.Midpoint(position, b.position);
+                positionToTake = Vector2D.Midpoint(Position, b.Position);
 
             //checks to see if this has less mass than b
-            else if (mass < b.mass)
+            else if (Mass < b.Mass)
 
                 //sets the new bubble's position to b's position
-                positionToTake = b.position;
+                positionToTake = b.Position;
 
             else
 
                 //sets the new bubble's position to this' position
-                positionToTake = position;
+                positionToTake = Position;
 
 
             //calculates the net velocity of the two colliding bubbles
@@ -377,7 +428,7 @@ namespace Bubbles {
             //Vector2D forceForNet = Vector2D.DivideByNumber(net, 1f / (mass + b.mass));
 
             //creates the new bubble to be added to the simulation
-            Bubble next = new Bubble(mass + b.mass, positionToTake, net, environment, false, false);
+            Bubble next = new Bubble(Mass + b.Mass, positionToTake, net, environment, false, false);
 
 
             //checks to see if any rockets were attatched to the two bubbles being worked with
@@ -401,7 +452,7 @@ namespace Bubbles {
             int newBubbleCount = rnd.Next(20, 30);
 
             //sets up the size of the new bubbles
-            int newMass = mass / newBubbleCount;
+            int newMass = Mass / newBubbleCount;
 
             //makes sure that the new masses are big enough to explode
             if (newMass > 1) {
@@ -415,7 +466,7 @@ namespace Bubbles {
                     Vector2D force = Vector2D.CreateVector(forceMagnitude);
 
                     //adds a bubble into the environment
-                    environment.AddBubble(new Bubble(newMass, Vector2D.Add(position, Vector2D.DivideByNumber(force, 2f)), force, environment, false, false));
+                    environment.AddBubble(new Bubble(newMass, Vector2D.Add(Position, Vector2D.DivideByNumber(force, 2f)), force, environment, false, false));
                 }
 
 
@@ -436,7 +487,7 @@ namespace Bubbles {
             if (trail.Count > 0) {
 
                 //checks to see if the bubble has moved since the last trail addition
-                if (position != trail[trail.Count - 1]) {
+                if (Position != trail[trail.Count - 1]) {
 
                     //checks to see if the trail was too long
                     if (trail.Count >= trailLength)
@@ -445,14 +496,34 @@ namespace Bubbles {
                         trail.RemoveAt(0);
 
                     //saves the position to draw out the trail
-                    trail.Add(position);
+                    trail.Add(Position);
                 }
 
             } else {
 
                 //saves the position to draw out the trail
-                trail.Add(position);
+                trail.Add(Position);
             }
+        }
+
+        /// <summary>
+        /// Sets the bubble back to free fall
+        /// </summary>
+        void SetToFreeFall() {
+
+            status = Statuses.FreeFall;
+
+        }
+
+        /// <summary>
+        /// Constrains the position of the bubble to the position of the mouse
+        /// </summary>
+        /// <param name="newPosition">The position of the mouse</param>
+        void ConstrainToMouse(Vector2D newPosition) {
+
+            velocity = Vector2D.Difference(Position, newPosition);
+
+            Position = newPosition;
         }
         #endregion
     }

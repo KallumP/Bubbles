@@ -185,13 +185,13 @@ namespace Bubbles {
         void UpdateControls() {
 
             //selectes the right radio button for the mode
-            if (parent.mode == MainWindow.InteractiveModes.Create)
+            if (parent.Mode == MainWindow.InteractiveModes.Create)
                 SpawnMass_radio.Checked = true;
 
-            else if (parent.mode == MainWindow.InteractiveModes.Explode)
+            else if (parent.Mode == MainWindow.InteractiveModes.Explode)
                 ExplodeMass_radio.Checked = true;
 
-            else if (parent.mode == MainWindow.InteractiveModes.Rocket)
+            else if (parent.Mode == MainWindow.InteractiveModes.Rocket)
                 CreateRockets_radio.Checked = true;
 
             //gets the bubble default info
@@ -319,17 +319,17 @@ namespace Bubbles {
         #region Mode Switching
 
         private void SpawnMass_radio_CheckedChanged(object sender, EventArgs e) {
-            parent.mode = MainWindow.InteractiveModes.Create;
+            parent.Mode = MainWindow.InteractiveModes.Create;
             parent.SwitchModes(false);
         }
 
         private void ExplodeMass_radio_CheckedChanged(object sender, EventArgs e) {
-            parent.mode = MainWindow.InteractiveModes.Explode;
+            parent.Mode = MainWindow.InteractiveModes.Explode;
             parent.SwitchModes(false);
         }
 
         private void CreateRockets_radio_CheckedChanged(object sender, EventArgs e) {
-            parent.mode = MainWindow.InteractiveModes.Rocket;
+            parent.Mode = MainWindow.InteractiveModes.Rocket;
             parent.SwitchModes(false);
         }
 

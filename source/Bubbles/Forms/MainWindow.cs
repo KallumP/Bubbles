@@ -6,25 +6,13 @@ namespace Bubbles {
     public partial class MainWindow : Form {
 
         #region Statics
-
         /// <summary>
         /// The speed of the timer (relative to the base tick speed)
         /// </summary>
         public static float timerSpeed = 1;
-
-        /// <summary>
-        /// The types of starting modes for the program
-        /// </summary>
-        public enum StartModes { default_, twoBod, threeBod, solar }
-
-        /// <summary>
-        /// What types of interactive modes there are in the program
-        /// </summary>
-        public enum InteractiveModes { Create, Explode, Rocket }
         #endregion
 
         #region Variables
-
         /// <summary>
         /// The starting and base speed of the timer (ms)
         /// </summary>
@@ -44,18 +32,28 @@ namespace Bubbles {
         /// Stores if the timer should tick the environment
         /// </summary>
         public static bool timeOn = true;
+
+        /// <summary>
+        /// The types of starting modes for the program
+        /// </summary>
+        public enum StartModes { default_, twoBod, threeBod, solar }
+
+        /// <summary>
+        /// What types of interactive modes there are in the program
+        /// </summary>
+        public enum InteractiveModes { Create, Explode, Rocket, Interact }
         #endregion
 
         #region Properties
         /// <summary>
         /// The current mode of the program
         /// </summary>
-        public InteractiveModes mode { get; set; }
+        public InteractiveModes Mode { get; set; }
 
         /// <summary>
         /// The current start mode
         /// </summary>
-        public StartModes startMode { get; set; }
+        public StartModes StartMode { get; set; }
         #endregion
 
         #region Methods
@@ -65,6 +63,17 @@ namespace Bubbles {
         public MainWindow() {
 
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Allows time to pass in the program
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ProgramTimer_Tick(object sender, EventArgs e) {
+
+            //redraws the form
+            Invalidate();
         }
 
         /// <summary>
@@ -78,13 +87,13 @@ namespace Bubbles {
             WindowState = FormWindowState.Maximized;
 
             //sets the interactive mode to explode
-            mode = InteractiveModes.Explode;
+            Mode = InteractiveModes.Explode;
 
             //updates the mode text
-            mode_lbl.Text = "Mode: " + mode.ToString();
+            mode_lbl.Text = "Mode: " + Mode.ToString();
 
             //sets the starting mode to default
-            startMode = StartModes.default_;
+            StartMode = StartModes.default_;
 
             //starts the program
             Restart();
@@ -100,17 +109,17 @@ namespace Bubbles {
             environment = new Environment();
 
             //checks to see what sort of restart was required
-            if (startMode == StartModes.default_)
+            if (StartMode == StartModes.default_)
                 DefaultScene();
 
-            else if (startMode == StartModes.twoBod)
+            else if (StartMode == StartModes.twoBod)
                 TwoBodyScene();
 
-            else if (startMode == StartModes.threeBod)
+            else if (StartMode == StartModes.threeBod)
                 ThreeBodyScene();
 
-            else if (startMode == StartModes.solar) {
-                
+            else if (StartMode == StartModes.solar) {
+
             }
         }
 
@@ -179,25 +188,14 @@ namespace Bubbles {
         }
 
         /// <summary>
-        /// Allows time to pass in the program
+        /// Mouse down event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ProgramTimer_Tick(object sender, EventArgs e) {
+        private void MainWindow_MouseDown(object sender, MouseEventArgs e) {
 
-            //redraws the form
-            Invalidate();
-        }
-
-        /// <summary>
-        /// Sends a click position to the environment
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainWindow_MouseClick(object sender, MouseEventArgs e) {
-
-            //sends the click event into the environment
-            environment.Click(mode, e.X, e.Y);
+            //calls the mouse down event into the environment
+            environment.MouseDown(Mode, e.X, e.Y);
         }
 
         /// <summary>
@@ -207,8 +205,19 @@ namespace Bubbles {
         /// <param name="e"></param>
         private void MainWindow_MouseMove(object sender, MouseEventArgs e) {
 
-            //sends the mouse move event
-            environment.Hover(mode, e.X, e.Y);
+            //calls the mouse move event
+            environment.MouseMove(Mode, e.X, e.Y);
+        }
+
+        /// <summary>
+        /// Mouse up event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_MouseUp(object sender, MouseEventArgs e) {
+
+            //calls the mouseup event
+            environment.MouseUp(Mode);
         }
 
         /// <summary>
@@ -264,7 +273,7 @@ namespace Bubbles {
             else if (e.KeyCode == Keys.Enter) {
 
                 //sends a mass action event
-                environment.KeyDown(mode, e.KeyCode.ToString());
+                environment.KeyDown(Mode, e.KeyCode.ToString());
 
             }
 
@@ -325,17 +334,20 @@ namespace Bubbles {
             //checks to see if the mode should be switched
             if (updateMode)
 
-                if (mode == InteractiveModes.Create)
-                    mode = InteractiveModes.Explode;
+                if (Mode == InteractiveModes.Create)
+                    Mode = InteractiveModes.Explode;
 
-                else if (mode == InteractiveModes.Explode)
-                    mode = InteractiveModes.Rocket;
+                else if (Mode == InteractiveModes.Explode)
+                    Mode = InteractiveModes.Rocket;
 
-                else if (mode == InteractiveModes.Rocket)
-                    mode = InteractiveModes.Create;
+                else if (Mode == InteractiveModes.Rocket)
+                    Mode = InteractiveModes.Interact;
+
+                else if (Mode == InteractiveModes.Interact)
+                    Mode = InteractiveModes.Create;
 
             //updates the label
-            mode_lbl.Text = "Mode: " + mode.ToString();
+            mode_lbl.Text = "Mode: " + Mode.ToString();
         }
 
         /// <summary>

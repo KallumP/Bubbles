@@ -1,7 +1,5 @@
 Functionality:
 
-maybe use a static environment references instead of having a reference for each object
-
 scalable viewport (times or divide the draw coordinates to fit in the new viewport)
 
 Change the speed value in the environment to not be static
@@ -11,7 +9,25 @@ Change divideBy into multiplyBy and change each exisiting reference to pass in 1
 collided bubble should have the net velocity of the two original bubbles
 need to use momentum to figure out how fast the new bubble should travel
 
+ability to move bubbles by clicking on them
 
+need to fix terminal velocity (when letting go of a bubble, it snaps to the terminal vel speed)
+instead, slowly approach it, (like air resistance)
+
+
+
+Optimisations:
+
+Check to see if a bubble is in effective range before applying gravity to it.
+(need to find out what the effective range is)
+
+maybe use a static environment references instead of having a reference for each object
+
+move if gravity should effect to the bubble class that returns a bool and call that 
+instead of having a long list of if statements in the environment class
+
+bubble.checkclick should return a value
+stop searching through bubbles if the returned value was true
 
 
 
