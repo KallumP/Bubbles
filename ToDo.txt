@@ -9,8 +9,6 @@ Change divideBy into multiplyBy and change each exisiting reference to pass in 1
 collided bubble should have the net velocity of the two original bubbles
 need to use momentum to figure out how fast the new bubble should travel
 
-ability to move bubbles by clicking on them
-
 need to fix terminal velocity (when letting go of a bubble, it snaps to the terminal vel speed)
 instead, slowly approach it, (like air resistance)
 

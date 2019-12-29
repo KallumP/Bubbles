@@ -187,21 +187,25 @@ namespace Bubbles {
 
             //checks to see if the distance found is smaller than the radius
             if (dist < Mass)
-                MouseDown(mode);
+                MouseDown(x, y, mode);
         }
 
         /// <summary>
         /// Bubble mouse down event
         /// </summary>
-        void MouseDown(MainWindow.InteractiveModes mode) {
+        void MouseDown(int x, int y, MainWindow.InteractiveModes mode) {
 
             //checks to see if explode mode was on
             if (mode == MainWindow.InteractiveModes.Explode)
                 Explode();
 
             //checks to see if ineraction mode was on
-            else if (mode == MainWindow.InteractiveModes.Interact)
+            else if (mode == MainWindow.InteractiveModes.Interact) {
                 status = Statuses.MouseControl;
+
+                ConstrainToMouse(new Vector2D(x, y));
+            }
+
         }
 
         /// <summary>

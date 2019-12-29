@@ -5,7 +5,7 @@ When adding a new mode:
 
 2. Update the "SwitchModes" method with the new mode
 
-3. Add the new mode to the options window
+3. Add the new mode to the options window (add mode switch, and update correct radio button on click)
 
 4. Make sure the environment checks for the new mode in each of it's event methods
 
