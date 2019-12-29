@@ -179,20 +179,22 @@ namespace Bubbles {
         #endregion
 
         /// <summary>
-        /// Checks the relevant boxes
+        /// Updates all the controls with data from the rest of the data
         /// </summary>
-        /// <param name="drawVel">The draw velocity lines debug setting</param>
         void UpdateControls() {
 
             //selectes the right radio button for the mode
-            if (parent.mode == MainWindow.InteractiveModes.Create)
+            if (parent.Mode == MainWindow.InteractiveModes.Create)
                 SpawnMass_radio.Checked = true;
 
-            else if (parent.mode == MainWindow.InteractiveModes.Explode)
+            else if (parent.Mode == MainWindow.InteractiveModes.Explode)
                 ExplodeMass_radio.Checked = true;
 
-            else if (parent.mode == MainWindow.InteractiveModes.Rocket)
+            else if (parent.Mode == MainWindow.InteractiveModes.Rocket)
                 CreateRockets_radio.Checked = true;
+
+            else if (parent.Mode == MainWindow.InteractiveModes.Interact)
+                Interaction_radio.Checked = true;
 
             //gets the bubble default info
             BubbleMass_txt.Text = Bubble.startingMass.ToString();
@@ -210,7 +212,7 @@ namespace Bubbles {
             //checks or unchecks the debug boxes
             VelocityLines_check.Checked = Bubble.drawVelocityLines;
             TrailLines_check.Checked = Bubble.drawTrailLines;
-            Speed_lbl.Text = MainWindow.timerSpeed.ToString();
+            Speed_lbl.Text = "Speed: " + MainWindow.timerSpeed.ToString();
             Speed_bar.Value = (int)(MainWindow.timerSpeed * 10);
         }
 
@@ -319,21 +321,24 @@ namespace Bubbles {
         #region Mode Switching
 
         private void SpawnMass_radio_CheckedChanged(object sender, EventArgs e) {
-            parent.mode = MainWindow.InteractiveModes.Create;
+            parent.Mode = MainWindow.InteractiveModes.Create;
             parent.SwitchModes(false);
         }
 
         private void ExplodeMass_radio_CheckedChanged(object sender, EventArgs e) {
-            parent.mode = MainWindow.InteractiveModes.Explode;
+            parent.Mode = MainWindow.InteractiveModes.Explode;
             parent.SwitchModes(false);
         }
 
         private void CreateRockets_radio_CheckedChanged(object sender, EventArgs e) {
-            parent.mode = MainWindow.InteractiveModes.Rocket;
+            parent.Mode = MainWindow.InteractiveModes.Rocket;
             parent.SwitchModes(false);
         }
 
-
+        private void Interaction_radio_CheckedChanged(object sender, EventArgs e) {
+            parent.Mode = MainWindow.InteractiveModes.Interact;
+            parent.SwitchModes(false);
+        }
         #endregion
 
         /// <summary>
@@ -360,7 +365,7 @@ namespace Bubbles {
             if (MainWindow.timerSpeed == 0)
                 MainWindow.timerSpeed = 0.1f;
 
-            Speed_lbl.Text = MainWindow.timerSpeed.ToString();
+            Speed_lbl.Text = "Speed: " + MainWindow.timerSpeed.ToString();
 
             parent.UpdateTimerInterval();
         }
