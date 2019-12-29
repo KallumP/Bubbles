@@ -3,6 +3,13 @@
 namespace Bubbles {
     class Vector2D {
 
+        #region Statics
+        /// <summary>
+        /// Random number generator
+        /// </summary>
+        static Random rnd = new Random();
+        #endregion
+
         #region Variables
         /// <summary>
         /// X value
@@ -13,11 +20,6 @@ namespace Bubbles {
         /// Y value
         /// </summary>
         public float y { get; set; }
-
-        /// <summary>
-        /// Random number generator
-        /// </summary>
-        static Random rnd = new Random();
         #endregion
 
         #region Methods
@@ -38,8 +40,6 @@ namespace Bubbles {
             x = _x;
             y = _y;
         }
-
-
 
         /// <summary>
         /// Adds a Vector2D object's components onto this Vector2D object.
@@ -209,17 +209,19 @@ namespace Bubbles {
         }
 
         /// <summary>
-        /// Calculates the net measurement of the two inputs
+        /// Calculates the difference between two vectors
         /// </summary>
         /// <param name="v1">The first vector</param>
         /// <param name="v2">The second vector</param>
-        /// <returns>A vector of the net measurement between the two inputs</returns>
-        public static Vector2D Net(Vector2D v1, Vector2D v2) {
+        /// <returns>A vector of the difference between the two inputs</returns>
+        public static Vector2D Difference(Vector2D v1, Vector2D v2) {
 
+            //calculates the difference in x and y
+            float xDif = v2.x - v1.x;
+            float yDif = v2.y - v1.y;
 
-
-
-            return null;
+            //returns a vector made up of the two differences
+            return new Vector2D(xDif, yDif);
         }
 
         /// <summary>

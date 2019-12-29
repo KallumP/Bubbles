@@ -1,0 +1,15 @@
+When adding a new mode:
+
+
+1. Add the mode to the MainWindow class's InteractiveModes enumerator
+
+2. Update the "SwitchModes" method with the new mode
+
+3. Add the new mode to the options window (add mode switch, and update correct radio button on click)
+
+4. Make sure the environment checks for the new mode in each of it's event methods
+
+
+
+After pushing, check the github changes, 
+and make sure that any new method parameters have their xml documentatino comments added

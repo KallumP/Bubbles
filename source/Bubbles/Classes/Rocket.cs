@@ -42,7 +42,7 @@ namespace Bubbles {
         float thrustAngle;
 
         /// <summary>
-        /// An enum containing all the statuses that the rocket can be in
+        /// An enum containing all the statuses a rocket can be in
         /// </summary>
         public enum Statuses { temp, tempSnapped, snapped, unsnapped, takeOff, freeFall, collided }
         #endregion
@@ -243,11 +243,11 @@ namespace Bubbles {
         public void UpdateSnapPos(int x, int y) {
 
             //calculates the angle between the bubble center and the rocket
-            thrustAngle = (float)(2 * Math.PI - (3 * Math.PI / 2 + Vector2D.Angle(snappedTo.position, new Vector2D(x, y))));
+            thrustAngle = (float)(2 * Math.PI - (3 * Math.PI / 2 + Vector2D.Angle(snappedTo.Position, new Vector2D(x, y))));
 
             //updates the position to stay snapped to the bubble
-            position.x = snappedTo.mass * (float)Math.Sin(thrustAngle) + snappedTo.position.x;
-            position.y = snappedTo.mass * (float)Math.Cos(thrustAngle) + snappedTo.position.y;
+            position.x = snappedTo.Mass * (float)Math.Sin(thrustAngle) + snappedTo.Position.x;
+            position.y = snappedTo.Mass * (float)Math.Cos(thrustAngle) + snappedTo.Position.y;
         }
 
         /// <summary>
@@ -266,8 +266,8 @@ namespace Bubbles {
             } else {
 
                 //updates the position to stay snapped to the bubble
-                position.x = snappedTo.mass * (float)Math.Sin(thrustAngle) + snappedTo.position.x;
-                position.y = snappedTo.mass * (float)Math.Cos(thrustAngle) + snappedTo.position.y;
+                position.x = snappedTo.Mass * (float)Math.Sin(thrustAngle) + snappedTo.Position.x;
+                position.y = snappedTo.Mass * (float)Math.Cos(thrustAngle) + snappedTo.Position.y;
             }
         }
 

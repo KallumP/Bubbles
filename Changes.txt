@@ -1,3 +1,8 @@
+v8
+Bubble momentum was started for collisions (bubbles should maintain momentum, instead of staying still after a collision)
+A lot of methods were updated to be consistent (mostly event methods)
+Mouse interactions added. The user can now click and drag bubbles about
+
 v7
 presets made scalable to the center of the screen (no the size of the screen)
 program timer can be slowed and sped up using the less than and greater than keys (0.1 - 1)

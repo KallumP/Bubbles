@@ -62,6 +62,7 @@
             this.TrailLines_check = new System.Windows.Forms.CheckBox();
             this.Speed_bar = new System.Windows.Forms.TrackBar();
             this.Speed_lbl = new System.Windows.Forms.Label();
+            this.Interaction_radio = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -88,7 +89,7 @@
             // 
             this.ExplodeMass_radio.AutoSize = true;
             this.ExplodeMass_radio.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExplodeMass_radio.Location = new System.Drawing.Point(3, 70);
+            this.ExplodeMass_radio.Location = new System.Drawing.Point(3, 61);
             this.ExplodeMass_radio.Name = "ExplodeMass_radio";
             this.ExplodeMass_radio.Size = new System.Drawing.Size(126, 24);
             this.ExplodeMass_radio.TabIndex = 1;
@@ -101,7 +102,7 @@
             // 
             this.CreateRockets_radio.AutoSize = true;
             this.CreateRockets_radio.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CreateRockets_radio.Location = new System.Drawing.Point(3, 109);
+            this.CreateRockets_radio.Location = new System.Drawing.Point(3, 91);
             this.CreateRockets_radio.Name = "CreateRockets_radio";
             this.CreateRockets_radio.Size = new System.Drawing.Size(138, 24);
             this.CreateRockets_radio.TabIndex = 2;
@@ -124,6 +125,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.Interaction_radio);
             this.panel1.Controls.Add(this.SpawnMass_radio);
             this.panel1.Controls.Add(this.ExplodeMass_radio);
             this.panel1.Controls.Add(this.CreateRockets_radio);
@@ -131,7 +133,7 @@
             this.panel1.Location = new System.Drawing.Point(10, 45);
             this.panel1.Name = "panel1";
             this.panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.panel1.Size = new System.Drawing.Size(146, 144);
+            this.panel1.Size = new System.Drawing.Size(146, 156);
             this.panel1.TabIndex = 4;
             // 
             // SizeAnimationTimer
@@ -403,6 +405,19 @@
             this.Speed_lbl.TabIndex = 19;
             this.Speed_lbl.Text = "Speed";
             // 
+            // Interaction_radio
+            // 
+            this.Interaction_radio.AutoSize = true;
+            this.Interaction_radio.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Interaction_radio.Location = new System.Drawing.Point(3, 121);
+            this.Interaction_radio.Name = "Interaction_radio";
+            this.Interaction_radio.Size = new System.Drawing.Size(103, 24);
+            this.Interaction_radio.TabIndex = 4;
+            this.Interaction_radio.TabStop = true;
+            this.Interaction_radio.Text = "Interaction";
+            this.Interaction_radio.UseVisualStyleBackColor = true;
+            this.Interaction_radio.CheckedChanged += new System.EventHandler(this.Interaction_radio_CheckedChanged);
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -476,5 +491,6 @@
         private System.Windows.Forms.CheckBox TrailLines_check;
         private System.Windows.Forms.TrackBar Speed_bar;
         private System.Windows.Forms.Label Speed_lbl;
+        private System.Windows.Forms.RadioButton Interaction_radio;
     }
 }
