@@ -108,6 +108,10 @@ namespace Bubbles {
 
             else if (startMode == StartModes.threeBod)
                 ThreeBodyScene();
+
+            else if (startMode == StartModes.solar) {
+                
+            }
         }
 
         /// <summary>

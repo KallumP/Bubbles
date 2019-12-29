@@ -209,6 +209,20 @@ namespace Bubbles {
         }
 
         /// <summary>
+        /// Calculates the net measurement of the two inputs
+        /// </summary>
+        /// <param name="v1">The first vector</param>
+        /// <param name="v2">The second vector</param>
+        /// <returns>A vector of the net measurement between the two inputs</returns>
+        public static Vector2D Net(Vector2D v1, Vector2D v2) {
+
+
+
+
+            return null;
+        }
+
+        /// <summary>
         /// Calculates the magnitude for the vector (0 based)
         /// </summary>
         /// <returns>The magnitude of the vector</returns>

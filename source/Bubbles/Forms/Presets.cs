@@ -21,6 +21,18 @@ namespace Bubbles {
         }
 
         /// <summary>
+        /// Event for the default scene button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Default_btn_Click(object sender, EventArgs e) {
+
+            parent.startMode = MainWindow.StartModes.default_;
+            parent.Restart();
+            Close();
+        }
+
+        /// <summary>
         /// Event for the solar system button click
         /// </summary>
         /// <param name="sender"></param>
@@ -55,5 +67,7 @@ namespace Bubbles {
             parent.Restart();
             Close();
         }
+
+
     }
 }

@@ -1,20 +1,15 @@
-Settings:
-
-change the color
-
-on settings load, set the debug trigger start and end size
-
-
-
-
-
 Functionality:
 
-collided bubble should have the net velocity of the two original bubbles
-
-maybe use a static environment reference instead of having a reference for each object
+maybe use a static environment references instead of having a reference for each object
 
 scalable viewport (times or divide the draw coordinates to fit in the new viewport)
+
+Change the speed value in the environment to not be static
+
+Change divideBy into multiplyBy and change each exisiting reference to pass in 1/x instead of the current x
+
+collided bubble should have the net velocity of the two original bubbles
+need to use momentum to figure out how fast the new bubble should travel
 
 
 
@@ -25,3 +20,11 @@ Rockets:
 maybe inherit from the mass class (same goes for bubbles)
 
 rockets will have fuel that when used, slowly gets lighter
+
+
+
+Settings:
+
+ability to change the color of bubbles
+
+on settings load, set the debug trigger start and end size

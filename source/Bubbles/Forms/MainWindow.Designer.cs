@@ -56,7 +56,6 @@
             this.Controls.Add(this.mode_lbl);
             this.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MainWindow";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "Bubbles";

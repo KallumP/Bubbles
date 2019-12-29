@@ -369,7 +369,15 @@ namespace Bubbles {
                 //sets the new bubble's position to this' position
                 positionToTake = position;
 
-            Bubble next = new Bubble(mass + b.mass, positionToTake, environment, false, false);
+
+            //calculates the net velocity of the two colliding bubbles
+            Vector2D net = Vector2D.Add(b.velocity, velocity);
+
+            //calculates how much force is needed to push the new bubble to the net velocity
+            //Vector2D forceForNet = Vector2D.DivideByNumber(net, 1f / (mass + b.mass));
+
+            //creates the new bubble to be added to the simulation
+            Bubble next = new Bubble(mass + b.mass, positionToTake, net, environment, false, false);
 
 
             //checks to see if any rockets were attatched to the two bubbles being worked with
