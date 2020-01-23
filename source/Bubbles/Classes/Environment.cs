@@ -52,34 +52,36 @@ namespace Bubbles {
         }
 
         /// <summary>
-        /// The click event
+        /// The mouse down event
         /// </summary>
         /// <param name="mode">The interactive mode of the program</param>
         /// <param name="x">The x coord of the click</param>
         /// <param name="y">The y coord of the click</param>
-        public void Click(MainWindow.InteractiveModes mode, int x, int y) {
+        public void MouseDown(MainWindow.InteractiveModes mode, int x, int y) {
 
             //checks to see if create mode was on
-            if (mode == MainWindow.InteractiveModes.Create)
+            if (mode == MainWindow.InteractiveModes.Create) {
 
                 AddBubble(new Bubble(this, new Vector2D(x, y)));
+            }
 
-            //checks if explode mode was on
-            else if (mode == MainWindow.InteractiveModes.Explode)
+            //checks if explode or interact mode was on
+            else if (
+                mode == MainWindow.InteractiveModes.Explode ||
+                mode == MainWindow.InteractiveModes.Interact) {
 
                 //loops backwards through the bubbles
-                for (int i = bubbles.Count - 1; i >= 0; i--) {
+                for (int i = bubbles.Count - 1; i >= 0; i--)
 
                     //makes sure that the bubble exists
                     if (bubbles[i] != null)
 
                         //calls the check click event on each bubble
-                        bubbles[i].CheckClick(x, y);
-                }
+                        bubbles[i].CheckClick(x, y, mode);
+            }
 
             //checks if rocket mode was on
-            else if (mode == MainWindow.InteractiveModes.Rocket)
-
+            else if (mode == MainWindow.InteractiveModes.Rocket) {
 
                 //checks to see if there is no temp rocket
                 if (tempRocket == null)
@@ -93,6 +95,26 @@ namespace Bubbles {
                 else if (tempRocket.status == Rocket.Statuses.tempSnapped)
                     AddRocket();
 
+            }
+        }
+
+        /// <summary>
+        /// The mouse up event
+        /// </summary>
+        /// <param name="mode">The interactive mode of the program</param>
+        public void MouseUp(MainWindow.InteractiveModes mode) {
+
+            //checks to see if the interact mode was on
+            if (mode == MainWindow.InteractiveModes.Interact)
+
+                //loops backwards through the bubbles
+                for (int i = bubbles.Count - 1; i >= 0; i--)
+
+                    //makes sure that the bubble exists
+                    if (bubbles[i] != null)
+
+                        //calls the mouse up event on each bubble
+                        bubbles[i].MouseUp(mode);
         }
 
         /// <summary>
@@ -101,10 +123,10 @@ namespace Bubbles {
         /// <param name="mode">The interactive mode of the program</param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void Hover(MainWindow.InteractiveModes mode, int x, int y) {
+        public void MouseMove(MainWindow.InteractiveModes mode, int x, int y) {
 
-            //checks to see what mode is active
-            if (mode == MainWindow.InteractiveModes.Rocket)
+            //checks to see if rocket mode is on
+            if (mode == MainWindow.InteractiveModes.Rocket) {
 
                 //checks to see if the rocket exists
                 if (tempRocket != null) {
@@ -141,6 +163,20 @@ namespace Bubbles {
                         tempRocket.UnSnap();
                     }
                 }
+            }
+            
+            //checks to see if the interact mode was on
+            else if (mode == MainWindow.InteractiveModes.Interact) {
+
+                //loops backwards through the bubbles
+                for (int i = bubbles.Count - 1; i >= 0; i--)
+
+                    //makes sure that the bubble exists
+                    if (bubbles[i] != null)
+
+                        //calls the check click event on each bubble
+                        bubbles[i].MouseMove(x, y, mode);
+            }
         }
 
         /// <summary>
@@ -266,42 +302,45 @@ namespace Bubbles {
         /// </summary>
         void AttractBubbles() {
 
-            //loops backwards through each of the bubbles to apply the force
+            //loops backwards through each of the bubbles to apply forces to
             for (int i = bubbles.Count - 1; i >= 0; i--)
 
                 //makes sure that the bubble exists
                 if (bubbles[i] != null)
 
-                    //checks to see if the bubble should move (not static)
-                    if (!bubbles[i].Static)
+                    //checcks to see if the bubble is in free fall
+                    if (bubbles[i].status == Bubble.Statuses.FreeFall)
 
-                        //loops through each of the bubbles to see what force to apply
-                        for (int j = bubbles.Count - 1; j >= 0; j--)
+                        //checks to see if the bubble should move (not static)
+                        if (!bubbles[i].Static)
 
-                            //makes sure that the bubble exists
-                            if (bubbles[j] != null)
+                            //loops through each of the bubbles to see what force to apply
+                            for (int j = bubbles.Count - 1; j >= 0; j--)
 
-                                //makes sure that bubbles isnt attracting to itself
-                                if (i != j)
+                                //makes sure that the bubble exists
+                                if (bubbles[j] != null)
 
-                                    //checks to see if the current bubble will induce a force
-                                    if (!bubbles[j].ZeroMass) {
+                                    //makes sure that bubbles isnt attracting to itself
+                                    if (i != j)
 
-                                        //gets the distance between the two bubbles
-                                        float distance = Vector2D.Distance(bubbles[i].position, bubbles[j].position);
+                                        //checks to see if the current bubble will induce a force
+                                        if (!bubbles[j].ZeroMass) {
 
-                                        //calculates the magnitude of the force using F = (GMm) / (r^2)
-                                        float magnitude = G * bubbles[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2);
+                                            //gets the distance between the two bubbles
+                                            float distance = Vector2D.Distance(bubbles[i].Position, bubbles[j].Position);
 
-                                        //gets the angle between the two bubbles 
-                                        float angle = Vector2D.Angle(bubbles[i].position, bubbles[j].position);
+                                            //calculates the magnitude of the force using F = (GMm) / (r^2)
+                                            float magnitude = G * bubbles[i].Mass * bubbles[j].Mass / (float)Math.Pow(distance, 2);
 
-                                        //creates a gravitational force from the magnitude and the angle
-                                        Vector2D force = Vector2D.CreateGravityFixedVector(magnitude, angle);
+                                            //gets the angle between the two bubbles 
+                                            float angle = Vector2D.Angle(bubbles[i].Position, bubbles[j].Position);
 
-                                        //applies the gravitational force to the bubble;
-                                        bubbles[i].ApplyForce(force);
-                                    }
+                                            //creates a gravitational force from the magnitude and the angle
+                                            Vector2D force = Vector2D.CreateGravityFixedVector(magnitude, angle);
+
+                                            //applies the gravitational force to the bubble;
+                                            bubbles[i].ApplyForce(force);
+                                        }
         }
 
         /// <summary>
@@ -401,13 +440,13 @@ namespace Bubbles {
                                 if (!bubbles[j].ZeroMass) {
 
                                     //gets the distance between the two bubbles
-                                    float distance = Vector2D.Distance(rockets[i].position, bubbles[j].position);
+                                    float distance = Vector2D.Distance(rockets[i].position, bubbles[j].Position);
 
                                     //calculates the magnitude using F = (GMm) / (r^2)
-                                    float magnitude = G * rockets[i].mass * bubbles[j].mass / (float)Math.Pow(distance, 2);
+                                    float magnitude = G * rockets[i].mass * bubbles[j].Mass / (float)Math.Pow(distance, 2);
 
                                     //gets the angle between the two bubbles
-                                    float angle = Vector2D.Angle(rockets[i].position, bubbles[j].position);
+                                    float angle = Vector2D.Angle(rockets[i].position, bubbles[j].Position);
 
                                     //creates a gravitational force using the magnitude and the angle
                                     Vector2D force = Vector2D.CreateGravityFixedVector(magnitude, angle);
