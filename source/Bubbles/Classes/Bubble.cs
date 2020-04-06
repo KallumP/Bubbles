@@ -269,9 +269,10 @@ namespace Bubbles {
         /// </summary>
         /// <param name="e"></param>
         /// <param name="windowSize">The size of the window being drawn to</param>
-        public void Draw(PaintEventArgs e, Size windowSize) {
+        /// <param name="camera">The camera to draw within</param>
+        public void Draw(PaintEventArgs e, Size windowSize, ViewPort camera) {
 
-            Point pointer = new Point();
+            Vector2D pointer = new Vector2D();
             bool draw = true;
 
             //sets up the window size to be right actual size
@@ -280,70 +281,99 @@ namespace Bubbles {
 
             int inset = 5;
 
+            float x = (Position.x - camera.Position.x) * camera.Zoom;
+            float y = (Position.y + camera.Position.y) * camera.Zoom;
+            int _size = (int)(Mass * camera.Zoom);
+
+            int height = (int)(windowSize.Height * camera.Zoom);
+            int width = (int)(windowSize.Width * camera.Zoom);
+
+
+
             //checks to see if any part of the bubble was within the width
-            if (Position.x - Mass < windowSize.Width - inset && Position.x + Mass > inset) {
+            if (x - _size < camera.Position.x + width / 2 - inset && x + _size > camera.Position.x - width / 2 + inset) {
 
                 //saves the x position of the pointer as the bubble's x postion
-                pointer.X = (int)Position.x;
+                pointer.x = (int)x;
 
-            } else if (Position.x - Mass > windowSize.Width - inset) {
+            } else if (x - _size > camera.Position.x + width / 2 - inset) {
 
                 //saves the x position of the pointer as the right most side of the window
-                pointer.X = windowSize.Width - inset;
+                pointer.x = width - inset;
                 draw = false;
 
-            } else if (Position.x + Mass < inset) {
+            } else if (x + Mass < camera.Position.x - width / 2 + inset) {
 
                 //saves the x position of the pointer as the left most side of the window
-                pointer.X = inset;
+                pointer.x = inset;
                 draw = false;
             }
 
 
-            if (Position.y - Mass < windowSize.Height - inset && Position.y + Mass > inset) {
+            if (y - _size < camera.Position.y + height / 2 - inset && y + _size > camera.Position.y - height / 2 + inset) {
 
                 //saves the y position of the pointer as the bubble's y postion
-                pointer.Y = (int)Position.y;
+                pointer.y = (int)y;
 
-            } else if (Position.y - Mass > windowSize.Height - inset) {
+            } else if (y - Mass > camera.Position.y + height / 2 - inset) {
 
                 //saves the y position of the pointer as the right most side of the window
-                pointer.Y = windowSize.Height - inset;
+                pointer.y = height - inset;
                 draw = false;
 
-            } else if (Position.y + Mass < inset) {
+            } else if (y + Mass < camera.Position.y - height / 2 + inset) {
 
                 //saves the y position of the pointer as the left most side of the window
-                pointer.Y = inset;
+                pointer.y = inset;
                 draw = false;
             }
+
+
 
             //checks to see if the bubble should be drawn
             if (draw)
 
                 //draws the bubble with a default color, position and radius
-                e.Graphics.DrawEllipse(Pens.Blue, Position.x - Mass, Position.y - Mass, Mass * 2, Mass * 2);
+                e.Graphics.DrawEllipse(Pens.Blue,
+                    (x - Mass - camera.Position.x) * camera.Zoom,
+                    (y - Mass + camera.Position.y) * camera.Zoom,
+                    Mass * 2 * camera.Zoom,
+                    Mass * 2 * camera.Zoom);
 
             else
 
                 //draws out a pointer showing where the bubble is offscreen
-                e.Graphics.FillEllipse(Brushes.Red, pointer.X, pointer.Y, 5, 5);
+                e.Graphics.FillEllipse(Brushes.Red, pointer.x, pointer.y, 5, 5);
 
 
             //checks to see if the velocity lines should be drawn
             if (drawVelocityLines)
 
                 //draws out the velocity of the bubble
-                e.Graphics.DrawLine(Pens.Black, Position.x, Position.y, Position.x + velocity.x * 3, Position.y + velocity.y * 3);
+                e.Graphics.DrawLine(Pens.Black,
+                    x - camera.Position.x,
+                    y + camera.Position.y,
+                    x + velocity.x * 3,
+                    y + velocity.y * 3); ;
 
             //checks to see if the trail should be draw
             if (drawTrailLines)
 
                 //loops through the trail
-                foreach (Vector2D t in trail)
+                foreach (Vector2D t in trail) {
+
+                    float tx = (t.x - camera.Position.x) * camera.Zoom;
+
+                    float ty = (t.y + camera.Position.y) * camera.Zoom;
 
                     //draws the trail
-                    e.Graphics.DrawEllipse(Pens.Red, t.x - 1, t.y - 1, 2, 2);
+                    e.Graphics.DrawEllipse(Pens.Red,
+                        tx - 1,
+                        ty - 1,
+                        2, 2);
+                }
+
+
         }
 
         /// <summary>

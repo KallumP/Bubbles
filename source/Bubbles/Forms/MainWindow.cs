@@ -54,6 +54,8 @@ namespace Bubbles {
         /// The current start mode
         /// </summary>
         public StartModes StartMode { get; set; }
+
+        int cameraMoveAmount = 10;
         #endregion
 
         #region Methods
@@ -321,8 +323,50 @@ namespace Bubbles {
                     timerSpeed = 0.1f;
 
                 UpdateTimerInterval();
+
             }
 
+            //checks if the user pressed the up arrow
+            else if (e.KeyCode == Keys.Up) {
+
+                if (e.Modifiers == Keys.Control) {
+
+                    environment.ScrollUp(Mode);
+                } else {
+                    environment.MoveCamera(new Vector2D(0, -cameraMoveAmount));
+                }
+            }
+
+            //checks if the user pressed the down arrow
+            else if (e.KeyCode == Keys.Down) {
+
+                if (e.Modifiers == Keys.Control) {
+
+                    environment.ScrollDown(Mode);
+                } else {
+                    environment.MoveCamera(new Vector2D(0, cameraMoveAmount));
+                }
+            }
+
+            //checks if the user pressed the left arrow
+            else if (e.KeyCode == Keys.Left) {
+                
+                environment.MoveCamera(new Vector2D(-cameraMoveAmount, 0));
+                
+            }
+
+            //checks if the user pressed the right arrow
+            else if (e.KeyCode == Keys.Right) {
+
+                environment.MoveCamera(new Vector2D(cameraMoveAmount, 0));
+
+            }
+
+        }
+
+        private void MainWindow_Scroll(object sender, ScrollEventArgs e) {
+            if (e.NewValue > e.OldValue)
+                environment.ScrollUp(Mode);
         }
 
         /// <summary>

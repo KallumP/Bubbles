@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Bubble.cs" />
+    <Compile Include="Classes\ViewPort.cs" />
     <Compile Include="Classes\Environment.cs" />
     <Compile Include="Forms\MainWindow.cs">
       <SubType>Form</SubType>

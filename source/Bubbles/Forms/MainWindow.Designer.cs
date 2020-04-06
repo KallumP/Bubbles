@@ -60,6 +60,7 @@
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "Bubbles";
             this.Load += new System.EventHandler(this.MainWindow_Load);
+            this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.MainWindow_Scroll);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainWindow_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyDown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseDown);

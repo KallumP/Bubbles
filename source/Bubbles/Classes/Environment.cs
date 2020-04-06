@@ -34,6 +34,11 @@ namespace Bubbles {
         /// Gravitational constant
         /// </summary>
         int G = 50;
+
+        /// <summary>
+        /// The camera
+        /// </summary>
+        ViewPort camera;
         #endregion
 
         #region Properties
@@ -41,6 +46,9 @@ namespace Bubbles {
         #endregion
 
         #region Methods
+
+
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -49,232 +57,7 @@ namespace Bubbles {
             //instantiates the lists
             bubbles = new List<Bubble>();
             rockets = new List<Rocket>();
-        }
-
-        /// <summary>
-        /// The mouse down event
-        /// </summary>
-        /// <param name="mode">The interactive mode of the program</param>
-        /// <param name="x">The x coord of the click</param>
-        /// <param name="y">The y coord of the click</param>
-        public void MouseDown(MainWindow.InteractiveModes mode, int x, int y) {
-
-            //checks to see if create mode was on
-            if (mode == MainWindow.InteractiveModes.Create) {
-
-                AddBubble(new Bubble(this, new Vector2D(x, y)));
-            }
-
-            //checks if explode or interact mode was on
-            else if (
-                mode == MainWindow.InteractiveModes.Explode ||
-                mode == MainWindow.InteractiveModes.Interact) {
-
-                //loops backwards through the bubbles
-                for (int i = bubbles.Count - 1; i >= 0; i--)
-
-                    //makes sure that the bubble exists
-                    if (bubbles[i] != null)
-
-                        //calls the check click event on each bubble
-                        bubbles[i].CheckClick(x, y, mode);
-            }
-
-            //checks if rocket mode was on
-            else if (mode == MainWindow.InteractiveModes.Rocket) {
-
-                //checks to see if there is no temp rocket
-                if (tempRocket == null)
-                    AddTempRocket();
-
-                //checks to see if the temp rocket wasn't snapped to a bubble
-                else if (tempRocket.status == Rocket.Statuses.temp)
-                    RemoveTempRocket();
-
-                //checks to see if the temp rocket was snapped to a bubble
-                else if (tempRocket.status == Rocket.Statuses.tempSnapped)
-                    AddRocket();
-
-            }
-        }
-
-        /// <summary>
-        /// The mouse up event
-        /// </summary>
-        /// <param name="mode">The interactive mode of the program</param>
-        public void MouseUp(MainWindow.InteractiveModes mode) {
-
-            //checks to see if the interact mode was on
-            if (mode == MainWindow.InteractiveModes.Interact)
-
-                //loops backwards through the bubbles
-                for (int i = bubbles.Count - 1; i >= 0; i--)
-
-                    //makes sure that the bubble exists
-                    if (bubbles[i] != null)
-
-                        //calls the mouse up event on each bubble
-                        bubbles[i].MouseUp(mode);
-        }
-
-        /// <summary>
-        /// The hover event
-        /// </summary>
-        /// <param name="mode">The interactive mode of the program</param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public void MouseMove(MainWindow.InteractiveModes mode, int x, int y) {
-
-            //checks to see if rocket mode is on
-            if (mode == MainWindow.InteractiveModes.Rocket) {
-
-                //checks to see if the rocket exists
-                if (tempRocket != null) {
-
-                    //stores if the rockets position should be updated (if no bubble was found)
-                    bool updatePos = true;
-
-                    //loops backwards through the bubbles
-                    for (int i = bubbles.Count - 1; i >= 0; i--)
-
-                        //makes sure that the bubble exists
-                        if (bubbles[i] != null)
-
-                            //calls the check hover event on each bubble
-                            if (bubbles[i].CheckInside(x, y)) {
-
-                                //snaps the rocket to the bubble
-                                tempRocket.Snap(bubbles[i], x, y);
-
-                                //lets the program know not to update the positon after the loop ends
-                                updatePos = false;
-
-                                //stops searching after a bubble was found
-                                break;
-                            }
-
-                    //checks to see if the position needs to be updated
-                    if (updatePos) {
-
-                        //updates the rockets position
-                        tempRocket.UpdatePos(x, y);
-
-                        //unsnaps the rocket from the is current bubble
-                        tempRocket.UnSnap();
-                    }
-                }
-            }
-            
-            //checks to see if the interact mode was on
-            else if (mode == MainWindow.InteractiveModes.Interact) {
-
-                //loops backwards through the bubbles
-                for (int i = bubbles.Count - 1; i >= 0; i--)
-
-                    //makes sure that the bubble exists
-                    if (bubbles[i] != null)
-
-                        //calls the check click event on each bubble
-                        bubbles[i].MouseMove(x, y, mode);
-            }
-        }
-
-        /// <summary>
-        /// The key down event
-        /// </summary>
-        /// <param name="mode">The interactive mode of the program</param>
-        /// <param name="pressedKey">The key that was pressed</param>
-        public void KeyDown(MainWindow.InteractiveModes mode, string pressedKey) {
-
-            //checks to see what modes was activated
-            if (mode == MainWindow.InteractiveModes.Explode) {
-
-                //checks to see if the space key was pressed
-                if (pressedKey == Keys.Enter.ToString())
-
-                    ExplodeAllBubbles();
-
-            } else if (mode == MainWindow.InteractiveModes.Rocket) {
-
-                //checks to see if the space key was 
-                if (pressedKey == Keys.Enter.ToString())
-
-                    TakeOffAllRockets();
-            }
-        }
-
-        /// <summary>
-        /// The tick sequence
-        /// </summary>
-        /// <param name="timeInterval">The time since the last tick (ms)</param>
-        public void Tick(int timeInterval) {
-
-            //implements gravity
-            AttractBubbles();
-            AttractRockets();
-
-            //loops backwards through the bubbles
-            for (int i = bubbles.Count - 1; i >= 0; i--)
-
-                //makes sure that the bubble exists
-                if (bubbles[i] != null)
-
-                    //ticks each bubble
-                    bubbles[i].Move();
-
-            //loops backwards through the bubbles
-            for (int i = rockets.Count - 1; i >= 0; i--)
-
-                //makes sure that the bubble exists
-                if (rockets[i] != null)
-
-                    //ticks each bubble
-                    rockets[i].Tick(timeInterval);
-
-            //checks for collisions
-            CheckBubbleCollision();
-            CheckRocketCollision();
-        }
-
-        /// <summary>
-        /// Draws out the instance of the environment, along with everything in it
-        /// </summary>
-        /// <param name="e">The paint event</param>
-        /// <param name="windowSize">The size of the window being draw to</param>
-        /// <param name="timeInterval">Time passed since the last tick</param>
-        public void Draw(PaintEventArgs e, Size windowSize, int timeInterval) {
-
-            //checks to see if the environment should tick
-            if (MainWindow.timeOn)
-
-                //loops "speed" amount of times
-                for (int i = 0; i < speed; i++)
-
-                    //ticks the environment first
-                    Tick(timeInterval);
-
-            //checks to see that the temp rocket exists
-            if (tempRocket != null)
-
-                tempRocket.Draw(e, windowSize);
-
-            //loops backwards through the bubbles
-            for (int i = rockets.Count - 1; i >= 0; i--)
-
-                //makes sure that the bubble exists
-                if (rockets[i] != null)
-
-                    //draws out the current bubble
-                    rockets[i].Draw(e, windowSize);
-
-            //loops backwards through the bubbles
-            for (int i = bubbles.Count - 1; i >= 0; i--)
-
-                //makes sure that the bubble exists
-                if (bubbles[i] != null)
-
-                    //draws out the current bubble
-                    bubbles[i].Draw(e, windowSize);
+            camera = new ViewPort();
         }
 
         /// <summary>
@@ -570,6 +353,251 @@ namespace Bubbles {
 
                         rockets[i].TakeOff();
         }
+        
+        public void MoveCamera(Vector2D movement) {
+
+            camera.Position = Vector2D.Add(camera.Position, movement);
+
+
+        }
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// The mouse down event
+        /// </summary>
+        /// <param name="mode">The interactive mode of the program</param>
+        /// <param name="x">The x coord of the click</param>
+        /// <param name="y">The y coord of the click</param>
+        public void MouseDown(MainWindow.InteractiveModes mode, int x, int y) {
+
+            //checks to see if create mode was on
+            if (mode == MainWindow.InteractiveModes.Create) {
+
+                AddBubble(new Bubble(this, new Vector2D(x, y)));
+            }
+
+            //checks if explode or interact mode was on
+            else if (
+                mode == MainWindow.InteractiveModes.Explode ||
+                mode == MainWindow.InteractiveModes.Interact) {
+
+                //loops backwards through the bubbles
+                for (int i = bubbles.Count - 1; i >= 0; i--)
+
+                    //makes sure that the bubble exists
+                    if (bubbles[i] != null)
+
+                        //calls the check click event on each bubble
+                        bubbles[i].CheckClick(x, y, mode);
+            }
+
+            //checks if rocket mode was on
+            else if (mode == MainWindow.InteractiveModes.Rocket) {
+
+                //checks to see if there is no temp rocket
+                if (tempRocket == null)
+                    AddTempRocket();
+
+                //checks to see if the temp rocket wasn't snapped to a bubble
+                else if (tempRocket.status == Rocket.Statuses.temp)
+                    RemoveTempRocket();
+
+                //checks to see if the temp rocket was snapped to a bubble
+                else if (tempRocket.status == Rocket.Statuses.tempSnapped)
+                    AddRocket();
+
+            }
+        }
+
+        /// <summary>
+        /// The mouse up event
+        /// </summary>
+        /// <param name="mode">The interactive mode of the program</param>
+        public void MouseUp(MainWindow.InteractiveModes mode) {
+
+            //checks to see if the interact mode was on
+            if (mode == MainWindow.InteractiveModes.Interact)
+
+                //loops backwards through the bubbles
+                for (int i = bubbles.Count - 1; i >= 0; i--)
+
+                    //makes sure that the bubble exists
+                    if (bubbles[i] != null)
+
+                        //calls the mouse up event on each bubble
+                        bubbles[i].MouseUp(mode);
+        }
+
+        /// <summary>
+        /// The hover event
+        /// </summary>
+        /// <param name="mode">The interactive mode of the program</param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void MouseMove(MainWindow.InteractiveModes mode, int x, int y) {
+
+            //checks to see if rocket mode is on
+            if (mode == MainWindow.InteractiveModes.Rocket) {
+
+                //checks to see if the rocket exists
+                if (tempRocket != null) {
+
+                    //stores if the rockets position should be updated (if no bubble was found)
+                    bool updatePos = true;
+
+                    //loops backwards through the bubbles
+                    for (int i = bubbles.Count - 1; i >= 0; i--)
+
+                        //makes sure that the bubble exists
+                        if (bubbles[i] != null)
+
+                            //calls the check hover event on each bubble
+                            if (bubbles[i].CheckInside(x, y)) {
+
+                                //snaps the rocket to the bubble
+                                tempRocket.Snap(bubbles[i], x, y);
+
+                                //lets the program know not to update the positon after the loop ends
+                                updatePos = false;
+
+                                //stops searching after a bubble was found
+                                break;
+                            }
+
+                    //checks to see if the position needs to be updated
+                    if (updatePos) {
+
+                        //updates the rockets position
+                        tempRocket.UpdatePos(x, y);
+
+                        //unsnaps the rocket from the is current bubble
+                        tempRocket.UnSnap();
+                    }
+                }
+            }
+
+            //checks to see if the interact mode was on
+            else if (mode == MainWindow.InteractiveModes.Interact) {
+
+                //loops backwards through the bubbles
+                for (int i = bubbles.Count - 1; i >= 0; i--)
+
+                    //makes sure that the bubble exists
+                    if (bubbles[i] != null)
+
+                        //calls the check click event on each bubble
+                        bubbles[i].MouseMove(x, y, mode);
+            }
+        }
+
+        /// <summary>
+        /// The key down event
+        /// </summary>
+        /// <param name="mode">The interactive mode of the program</param>
+        /// <param name="pressedKey">The key that was pressed</param>
+        public void KeyDown(MainWindow.InteractiveModes mode, string pressedKey) {
+
+            //checks to see what modes was activated
+            if (mode == MainWindow.InteractiveModes.Explode) {
+
+                //checks to see if the space key was pressed
+                if (pressedKey == Keys.Enter.ToString())
+
+                    ExplodeAllBubbles();
+
+            } else if (mode == MainWindow.InteractiveModes.Rocket) {
+
+                //checks to see if the space key was 
+                if (pressedKey == Keys.Enter.ToString())
+
+                    TakeOffAllRockets();
+            }
+        }
+
+        public void ScrollUp(MainWindow.InteractiveModes mode) {
+            camera.Zoom += 0.1f;
+        }
+
+        public void ScrollDown(MainWindow.InteractiveModes mode) {
+            camera.Zoom -= 0.1f;
+        }
+
+        /// <summary>
+        /// The tick sequence
+        /// </summary>
+        /// <param name="timeInterval">The time since the last tick (ms)</param>
+        public void Tick(int timeInterval) {
+
+            //implements gravity
+            AttractBubbles();
+            AttractRockets();
+
+            //loops backwards through the bubbles
+            for (int i = bubbles.Count - 1; i >= 0; i--)
+
+                //makes sure that the bubble exists
+                if (bubbles[i] != null)
+
+                    //ticks each bubble
+                    bubbles[i].Move();
+
+            //loops backwards through the bubbles
+            for (int i = rockets.Count - 1; i >= 0; i--)
+
+                //makes sure that the bubble exists
+                if (rockets[i] != null)
+
+                    //ticks each bubble
+                    rockets[i].Tick(timeInterval);
+
+            //checks for collisions
+            CheckBubbleCollision();
+            CheckRocketCollision();
+        }
+
+        /// <summary>
+        /// Draws out the instance of the environment, along with everything in it
+        /// </summary>
+        /// <param name="e">The paint event</param>
+        /// <param name="windowSize">The size of the window being draw to</param>
+        /// <param name="timeInterval">Time passed since the last tick</param>
+        public void Draw(PaintEventArgs e, Size windowSize, int timeInterval) {
+
+            //checks to see if the environment should tick
+            if (MainWindow.timeOn)
+
+                //loops "speed" amount of times
+                for (int i = 0; i < speed; i++)
+
+                    //ticks the environment first
+                    Tick(timeInterval);
+
+            //checks to see that the temp rocket exists
+            if (tempRocket != null)
+
+                tempRocket.Draw(e, windowSize, camera);
+
+            //loops backwards through the bubbles
+            for (int i = rockets.Count - 1; i >= 0; i--)
+
+                //makes sure that the bubble exists
+                if (rockets[i] != null)
+
+                    //draws out the current bubble
+                    rockets[i].Draw(e, windowSize, camera);
+
+            //loops backwards through the bubbles
+            for (int i = bubbles.Count - 1; i >= 0; i--)
+
+                //makes sure that the bubble exists
+                if (bubbles[i] != null)
+
+                    //draws out the current bubble
+                    bubbles[i].Draw(e, windowSize, camera);
+        }
+
         #endregion
     }
 }

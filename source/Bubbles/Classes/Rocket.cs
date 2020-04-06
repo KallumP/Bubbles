@@ -145,7 +145,7 @@ namespace Bubbles {
         /// </summary>
         /// <param name="e"></param>
         /// <param name="windowSize">The size of the window</param>
-        public void Draw(PaintEventArgs e, Size windowSize) {
+        public void Draw(PaintEventArgs e, Size windowSize, ViewPort camera) {
 
             e.Graphics.FillEllipse(Brushes.Green, position.x - 5, position.y - 5, 10, 10);
 

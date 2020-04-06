@@ -42,3 +42,8 @@ Settings:
 ability to change the color of bubbles
 
 on settings load, set the debug trigger start and end size
+
+
+ViewPort
+figure out why the trail moves at a different rate to the bubble
+camera is at 0,0 but everything should be drawing to width/2, height/2
